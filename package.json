@@ -1,0 +1,12 @@
+{
+  "name": "sw-ext",
+  "version": "0.1.0",
+  "description": "Tools extending the Sutton Signwriting packages",
+  "license": "MIT",
+  "author": "Michael Cooper",
+  "type": "module",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
