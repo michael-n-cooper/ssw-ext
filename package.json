@@ -16,5 +16,9 @@
     "jiti": "^2.6.1",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.53.0"
+  },
+  "dependencies": {
+    "@sutton-signwriting/core": "^2.0.1",
+    "@sutton-signwriting/font-ttf": "^1.6.0"
   }
 }
