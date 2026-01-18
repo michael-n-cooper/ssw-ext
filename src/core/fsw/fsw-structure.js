@@ -20,7 +20,7 @@ export function symbolParts(fswSym) {
 	const rotNum = parseInt(rot, 16);
 	return {
 		"base": base, "fill": fill, "rot": rot, "baseNum": baseNum, "fillNum": fillNum, "rotNum": rotNum
-	 };
+	};
 }
 
 /**

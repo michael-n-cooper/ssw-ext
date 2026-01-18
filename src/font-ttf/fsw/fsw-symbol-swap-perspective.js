@@ -1,1 +1,0 @@
-// Swap signer and viewer perspective
