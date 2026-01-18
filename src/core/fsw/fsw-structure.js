@@ -13,7 +13,7 @@ export function baseSymbol(fswSym) {
  */
 export function symbolParts(fswSym) {
 	const base = fswSym.slice(0, 4);
-	const baseNum = parseInt(base, 16);
+	const baseNum = parseInt(base.slice(1), 16);
 	const fill = fswSym.slice(4, 5);
 	const fillNum = parseInt(fill, 16);
 	const rot = fswSym.slice(5, 6);
@@ -25,9 +25,13 @@ export function symbolParts(fswSym) {
 
 /**
  * Pair of FSW symbols that define a range
+ * @typedef {[number, number]} SymbolRange 
  */
-type SymbolRange = [number, number];
-type RangeSet = SymbolRange | SymbolRange[];
+
+/**
+ * Set of symbol ranges
+ * @typedef {SymbolRange | SymbolRange[]} RangeSet 
+ */
 
 /**
  * ranges for hand and plane variants of symbols
@@ -73,10 +77,9 @@ export const planeVariantGroups = ["planeGroup1", "planeGroup2"];
  * @param {RangeSet} rangeSet Set of ranges to test
  */
 function inRangeSet(val, rangeSet) {
-	rangeSet.forEach((range) => {
-		if (range[0] <= val <= range[1]) return true;
+	return rangeSet.some((range) => {
+		return (range[0] <= val && val <= range[1]);
 	});
-	return false;
 }
 
 /**
@@ -88,7 +91,7 @@ function inRangeSet(val, rangeSet) {
 export function isVariant(key, variant) {
 	const rangeSet = variantRanges[variant];
 	if (rangeSet) {
-		return (inRangeSet(key));
+		return (inRangeSet(key, rangeSet));
 	}
 	return false;
 }

@@ -1,5 +1,5 @@
 import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
-import * as structure from "./fsw-structure.js";
+import * as structure from "../../core/fsw/fsw-structure.js";
 
 /**
  * Swap between left-hand and right-hand symbol

@@ -1,5 +1,5 @@
-import * as swap from "./fsw-symbol-swap-hands.js";
-import * as core from "@sutton-signwriting/core";
+import * as swap from "./fsw-symbol-swap.js";
+import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
 
 /**
  * Change sign between left-handed and right-handed

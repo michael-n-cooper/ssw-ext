@@ -1,7 +1,7 @@
 // Describe a sign
-import * as core from "@sutton-signwriting/core";
+import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
 import * as structure from "../../core/fsw/fsw-structure.js";
-import defmessages from "@sutton-signwriting/signmaker/config/messages.js";
+import "../../../node_modules/@sutton-signwriting/signmaker/config/messages.js";
 
 export function describeSign(signFsw) {
 	const sign = core.fsw.parse.sign(signFsw);

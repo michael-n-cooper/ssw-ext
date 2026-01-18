@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SignWriting extensions demo</title>
+		<script src="demo.js" type="module"></script>
+		<link rel="stylesheet" href="demo.css"/>
+	</head>
+	<body>
+		<h1>SignWriting extensions demo</h1>
+		<div id="symbolDemo" class="demoArea">
+			<div class="renderArea"></div>
+			<div class="optionsArea">
+				<div class="inputArea">
+					<label for="symbolFsw">Symbol FSW:</label>
+					<input type="text" id="symbolFsw" />
+				</div>
+				<fieldset class="infoArea" id="symbolInfo">
+					<legend>Info</legend>
+					<label><input type="radio" name="symbolInfo" value="left" id="symbolInfoLeft"/> Left hand</label>
+					<label><input type="radio" name="symbolInfo" value="right" id="symbolInfoRight" /> Right hand</label>
+					<label><input type="radio" name="symbolInfo" value="both" id="symbolInfoBoth"/> Both hands</label>
+					<label><input type="radio" name="symbolInfo" value="floor" id="symbolInfoFloor"/> Floor plane</label>
+					<label><input type="radio" name="symbolInfo" value="wall" id="symbolInfoWall"/> Wall plane</label>
+					<label><input type="radio" name="symbolInfo" value="diagonal" id="symbolInfoDiagonal" /> Diagonal plane</label>
+
+				</fieldset>
+				<fieldset class="modifyArea">
+					<legend>Modify</legend>
+					<label><input type="radio" name="symbolModify" value="hands" id="symbolModifyHands"/> Swap hands</label>
+					<label><input type="radio" name="symbolModify" value="plane" id="symbolModifyPlane" /> Swap plane</label>
+
+				</fieldset>
+			</div>
+			<div class="outputArea"></div>
+		</div>
+		<div id="signDemo" class="demoArea">
+
+		</div>
+	</body>
+</html>

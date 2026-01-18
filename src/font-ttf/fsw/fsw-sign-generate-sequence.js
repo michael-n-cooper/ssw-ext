@@ -1,4 +1,4 @@
-import * as core from "@sutton-signwriting/core";
+import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
 import * as structure from "../../core/fsw/fsw-structure.js";
 
 export function generateTemporalIdx(sign) {
