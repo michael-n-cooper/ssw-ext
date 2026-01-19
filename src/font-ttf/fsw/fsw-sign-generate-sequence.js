@@ -1,5 +1,6 @@
 import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
-import * as structure from "../../core/fsw/fsw-structure.js";
+//import * as structure from "../../core/fsw/fsw-structure.js";
+import * as variants from "../../core/fsw/fsw-symbol-variant.js";
 
 export function generateTemporalIdx(sign) {
 	const signObj = core.fsw.parse.sign(sign);
@@ -17,8 +18,8 @@ export function generateTemporalIdx(sign) {
 
 	function getOrder(symbol) {
 		//all, writing, hand, movement, dynamic, head, hcenter, vcenter, trunk, limb, location, punctuation
-		if (structure.isRightHand(symbol)) return 1;
-		if (structure.isLeftHand(symbol)) return 2;
+		if (variants.isRightHand(symbol)) return 1;
+		if (variants.isLeftHand(symbol)) return 2;
 		if (core.fsw.isType(symbol, "movement")) return 3;
 		if (core.fsw.isType(symbol, "dynamic")) return 4;
 		if (core.fsw.isType(symbol, "head")) return 5;

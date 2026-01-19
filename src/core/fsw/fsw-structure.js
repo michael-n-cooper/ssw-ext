@@ -12,15 +12,19 @@ export function baseSymbol(fswSym) {
  * @returns {string, string, string} base, fill, and rotation components of symbol
  */
 export function symbolParts(fswSym) {
-	const base = fswSym.slice(0, 4);
-	const baseNum = parseInt(base.slice(1), 16);
-	const fill = fswSym.slice(4, 5);
-	const fillNum = parseInt(fill, 16);
-	const rot = fswSym.slice(5, 6);
-	const rotNum = parseInt(rot, 16);
-	return {
-		"base": base, "fill": fill, "rot": rot, "baseNum": baseNum, "fillNum": fillNum, "rotNum": rotNum
-	};
+	const parsed = core.fsw.parse.symbol(fswSym);
+	if (parsed.symbol) {
+		const base = fswSym.slice(0, 4);
+		const baseNum = parseInt(base.slice(1), 16);
+		const fill = fswSym.slice(4, 5);
+		const fillNum = parseInt(fill, 16);
+		const rot = fswSym.slice(5, 6);
+		const rotNum = parseInt(rot, 16);
+		return {
+			"base": base, "fill": fill, "rot": rot, "baseNum": baseNum, "fillNum": fillNum, "rotNum": rotNum
+		};
+	}
+	return undefined;
 }
 
 /**
