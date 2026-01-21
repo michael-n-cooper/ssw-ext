@@ -73,12 +73,30 @@ export function isBothHand(fswSym) {
 }
 
 export function isFloorPlane(fswSym) {
-
+	const parsed = core.fsw.parse.symbol(fswSym);
+	if (parsed.symbol) {
+		let sp = structure.symbolParts(parsed.symbol);
+		if (core.fsw.isType(parsed.symbol, "hand") && sp.fillNum > 2) return true;
+		return structure.isVariant(sp.baseNum, "planeFloor");
+	}
+	return false;
 }
 export function isWallPlane(fswSym) {
-
+	const parsed = core.fsw.parse.symbol(fswSym);
+	if (parsed.symbol) {
+		let sp = structure.symbolParts(parsed.symbol);
+		if (core.fsw.isType(parsed.symbol, "hand") && sp.fillNum < 3) return true;
+		return structure.isVariant(sp.baseNum, "planeWall");
+	}
+	return false;
 }
 export function isDiagonalPlane(fswSym) {
-	
+	const parsed = core.fsw.parse.symbol(fswSym);
+	if (parsed.symbol) {
+		let sp = structure.symbolParts(parsed.symbol);
+		if (structure.isVariant(sp.baseNum, "planeDiagonalTowards")) return true;
+		if (structure.isVariant(sp.baseNum, "planeDiagonalAway")) return true;
+	}
+	return false;
 }
 

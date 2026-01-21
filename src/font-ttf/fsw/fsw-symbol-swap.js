@@ -1,4 +1,5 @@
 import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
+import * as ttf from "../../../node_modules/@sutton-signwriting/font-ttf/index.mjs";
 import * as structure from "../../core/fsw/fsw-structure.js";
 
 /**
@@ -16,25 +17,25 @@ export function fswSymbolSwapHands(fswSym) {
 		}
 		if (structure.isVariant(sp.baseNum, "handGroup2")) {
 			let newFill = sp.fillNum;
-			if (newFill == 0) newFill = 1;
-			if (newFill == 1) newFill = 0;
+			if (sp.fillNum == 0) newFill = 1;
+			if (sp.fillNum == 1) newFill = 0;
 			parsed.symbol = sp.base + newFill + sp.rot;
 		}
 		if (structure.isVariant(sp.baseNum, "handGroup3")) {
 			let newFill = sp.fillNum;
-			if (newFill == 0) newFill = 1;
-			if (newFill == 1) newFill = 0;
-			if (newFill == 3) newFill = 4;
-			if (newFill == 4) newFill = 3;
+			if (sp.fillNum == 0) newFill = 1;
+			if (sp.fillNum == 1) newFill = 0;
+			if (sp.fillNum == 3) newFill = 4;
+			if (sp.fillNum == 4) newFill = 3;
 			parsed.symbol = sp.base + newFill + sp.rot;
 		}
 		if (structure.isVariant(sp.baseNum, "handGroup4")) {
 			let newFill = sp.fillNum;
-			if (newFill == 1) newFill = 2;
-			if (newFill == 2) newFill = 1;
+			if (sp.fillNum == 1) newFill = 2;
+			if (sp.fillNum == 2) newFill = 1;
 			parsed.symbol = sp.base + newFill + sp.rot;
 		}
-		return core.compose.symbol(parsed);
+		return core.fsw.compose.symbol(parsed);
 	}
 	return fswSym;
 }
@@ -48,17 +49,15 @@ export function fswSymbolSwapPerspective(fswSym) {
 
 }
 
-/**
- * @typedef {object} SpatialSymbol
- * @property {string} fswSym Symbol to change
- * @property {number[]} coord Position of symbol upper left
- */
 
 /**
  * Swap horizontal position of symbol across centre
- * @param {SpatialSymbol} spatialSymbol Symbol with coordinates
- * @returns {SpatialSymbol} Updated symbol with coordinates
+ * @param {SymbolObject} spatialSymbol Symbol with coordinates
+ * @returns {SymbolObject} Updated symbol with coordinates
  */
-export function fswSymbolSwapSides(spatialSymbol) {
-
+export function fswSymbolSwapSides(symObj) {
+	if (!symObj.coord) return symObj;
+	const symWidth = ttf.fsw.symbolSize(symObj.symbol)[0];
+	symObj.coord[0] = 749 - (symObj.coord[0] + symWidth);
+	return symObj;
 }

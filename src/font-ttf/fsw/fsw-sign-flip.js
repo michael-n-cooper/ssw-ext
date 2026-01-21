@@ -4,16 +4,16 @@ import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
 /**
  * Change sign between left-handed and right-handed
  * Conceptually flips sign in the X direction
- * @param {string} fswSign Sign to flip
- * @returns {string} Updated sign
+ * @param {SignObject} fswSign Sign to flip
+ * @returns {SignObject} Updated sign
  */
-export function fswSignFlipX(fswSign) {
-	let sign = core.fsw.parse.sign(fswSign);
-	sign.spatials.map((sym) => {
+export function fswSignFlipX(signObj) {
+	signObj.spatials.map((sym) => {
 		let newSym = swap.fswSymbolSwapSides(sym);
 		newSym.symbol = swap.fswSymbolSwapHands(newSym.symbol);
 		return newSym;
-	})
+	});
+	return signObj;
 }
 
 /**

@@ -16,18 +16,22 @@
 				</div>
 				<fieldset class="infoArea" id="symbolInfo">
 					<legend>Info</legend>
-					<button type="button" name="symbolInfo" value="left" id="symbolInfoLeft"> Left hand</button>
-					<button type="button" name="symbolInfo" value="right" id="symbolInfoRight"> Right hand</button>
-					<button type="button" name="symbolInfo" value="both" id="symbolInfoBoth"> Both hands</button>
-					<button type="button" name="symbolInfo" value="floor" id="symbolInfoFloor"> Floor plane</button>
-					<button type="button" name="symbolInfo" value="wall" id="symbolInfoWall"> Wall plane</button>
-					<button type="button" name="symbolInfo" value="diagonal" id="symbolInfoDiagonal"> Diagonal plane</button>
+					<button type="button" name="symbolInfo" value="left" id="symbolInfoLeft">Left hand</button>
+					<button type="button" name="symbolInfo" value="right" id="symbolInfoRight">Right hand</button>
+					<button type="button" name="symbolInfo" value="both" id="symbolInfoBoth">Both hands</button>
+					<button type="button" name="symbolInfo" value="floor" id="symbolInfoFloor">Floor plane</button>
+					<button type="button" name="symbolInfo" value="wall" id="symbolInfoWall">Wall plane</button>
+					<button type="button" name="symbolInfo" value="diagonal" id="symbolInfoDiagonal">Diagonal plane</button>
+					<button type="button" name="symbolInfo" value="width" id="symbolInfoWidth">Width</button>
 
 				</fieldset>
 				<fieldset class="modifyArea">
 					<legend>Modify</legend>
-					<button type="button" name="symbolModify" value="hands" id="symbolModifyHands"> Swap hands</button>
-					<button type="button" name="symbolModify" value="plane" id="symbolModifyPlane"> Swap plane</button>
+					<button type="button" name="symbolModify" value="hands" id="symbolModifyHands">Swap hands</button>
+					<!--
+					<button type="button" name="symbolModify" value="plane" id="symbolModifyPlane">Swap plane</button>
+					-->
+					<button type="button" name="symbolModify" value="sides" id="symbolModifySides">Flip sides</button>
 
 				</fieldset>
 			</form>
@@ -48,8 +52,10 @@
 				<fieldset class="modifyArea">
 					<legend>Modify</legend>
 					<button type="button" name="signModify" value="flipX" id="signModifyFlipX"> Flip X</button>
+					<!--
 					<button type="button" name="signModify" value="flipZ" id="signModifyFlipZ"> Flip Z</button>
 					<button type="button" name="signModify" value="flipXZ" id="signModifyFlipXZ"> Flip XZ</button>
+					-->
 					<button type="button" name="signModify" value="sequence" id="signModifySequence"> Generate temporal segment</button>
 
 				</fieldset>
