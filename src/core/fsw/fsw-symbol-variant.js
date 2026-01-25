@@ -19,9 +19,6 @@ export function isLeftHand(fswSym) {
 		if (structure.isVariant(sp.baseNum, "handGroup3")) {
 			return (sp.fillNum == 1 || sp.fillNum == 4);
 		}
-		if (structure.isVariant(sp.baseNum, "handGroup4")) {
-			return (sp.fillNum == 2);
-		}
 	}
 	return false;
 }
@@ -43,9 +40,6 @@ export function isRightHand(fswSym) {
 		if (structure.isVariant(sp.baseNum, "handGroup3")) {
 			return (sp.fillNum == 0 || sp.fillNum == 3);
 		}
-		if (structure.isVariant(sp.baseNum, "handGroup4")) {
-			return (sp.fillNum == 1);
-		}
 	}
 	return false;
 }
@@ -64,9 +58,6 @@ export function isBothHand(fswSym) {
 		}
 		if (structure.isVariant(sp.baseNum, "handGroup3")) {
 			return (sp.fillNum == 2 || sp.fillNum == 5);
-		}
-		if (structure.isVariant(sp.baseNum, "handGroup4")) {
-			return (sp.fillNum == 0);
 		}
 	}
 	return false;

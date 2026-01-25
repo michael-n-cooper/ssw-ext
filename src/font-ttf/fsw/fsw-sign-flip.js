@@ -1,5 +1,6 @@
 import * as swap from "./fsw-symbol-swap.js";
 import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
+import * as ttf from "../../../node_modules/@sutton-signwriting/font-ttf/index.mjs";
 
 /**
  * Change sign between left-handed and right-handed
@@ -9,9 +10,10 @@ import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
  */
 export function fswSignFlipX(signObj) {
 	signObj.spatials.map((sym) => {
-		let newSym = swap.fswSymbolSwapSides(sym);
-		newSym.symbol = swap.fswSymbolSwapHands(newSym.symbol);
-		return newSym;
+		sym.symbol = swap.symbolMirror(sym.symbol);
+		sym.symbol = swap.fswSymbolSwapHands(sym.symbol);
+		sym = swap.fswSymbolSwapSides(sym);
+		return sym;
 	});
 	return signObj;
 }

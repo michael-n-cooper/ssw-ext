@@ -60,13 +60,40 @@ const variantRanges = {
 		[0x2c6, 0x2c7],
 		[0x2e7, 0x2ec]
 	],
-	"handGroup4": [
+	"mirrorGroup1": [
 		[0x30a, 0x310],
 		[0x314, 0x320],
 		[0x32a, 0x330],
 		[0x335, 0x336],
 		[0x356, 0x358],
 		[0x367, 0x367]
+	],
+	"mirrorGroup2": [0x2b4, 0x2b6],
+	"mirrorGroup3": [
+		[0x2b7, 0x2d4],
+		[0x2f5, 0x2f6]
+	],
+	"mirrorGroup4": [
+		[0x2f9, 0x2fa],
+		[0x339, 0x33a]
+	],
+	"mirrorGroup5": [
+		[0x2a6, 0x2b3],
+		[0x2ef, 0x2f0],
+		[0x302, 0x302],
+		[0x306, 0x307]
+	],
+	"mirrorGroup6": [
+		[0x2f1, 0x2f2],
+		[0x328, 0x329],
+		[0x386, 0x386]
+	],
+	"mirrorGroup7": [0x382, 0x382],
+	"mirrorGroup8": [0x35e, 0x35e],
+	"mirrorGroup9": [0x2f3, 0x2f4],
+	"mirrorGroup10": [
+		[0x381, 0x381],
+		[0x383, 0x383]
 	],
 	"planeWall": [
 		[0x228, 0x228],
@@ -99,7 +126,8 @@ const variantRanges = {
 	]
 }
 
-export const handVariantGroups = ["handGroup1", "handGroup2", "handGroup3", "handGroup4"];
+export const handVariantGroups = ["handGroup1", "handGroup2", "handGroup3"];
+export const mirrorGroups = ["mirrorGroup1"];
 export const planeVariantGroups = ["planeGroup1", "planeGroup2"];
 
 /**
@@ -108,9 +136,10 @@ export const planeVariantGroups = ["planeGroup1", "planeGroup2"];
  * @param {RangeSet} rangeSet Set of ranges to test
  */
 function inRangeSet(val, rangeSet) {
-	return rangeSet.some((range) => {
+	if (Array.isArray(rangeSet[0])) return rangeSet.some((range) => {
 		return (range[0] <= val && val <= range[1]);
 	});
+	else return rangeSet[0] <= val && val <= rangeSet[1];
 }
 
 /**
