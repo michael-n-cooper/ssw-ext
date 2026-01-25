@@ -2,6 +2,7 @@ import * as ext from "../src/index.js";
 import * as core from "../node_modules/@sutton-signwriting/core/core.mjs";
 import * as ttf from "../node_modules/@sutton-signwriting/font-ttf/index.mjs";
 import { fswSymbolSwapHands, fswSymbolSwapSides } from "../src/font-ttf/fsw/fsw-symbol-swap.js";
+import "../config/alphabet.js";
 
 window.addEventListener("load", windowLoaded);
 
@@ -12,6 +13,7 @@ async function windowLoaded() {
 	document.querySelector("#signFsw").addEventListener("change", showSign);
 	document.querySelectorAll("#signDemo .optionsArea button").forEach((button) => button.addEventListener("click", showSignInfo));
 	document.querySelectorAll("#signDemo .modifyArea button").forEach((button) => button.addEventListener("click", modifySign));
+	showMirrors();
 }
 
 function renderSymbol(fswSym) {
@@ -51,6 +53,7 @@ function modifySymbol(event) {
 	if (parsed.symbol) {
 		if (event.target.value == "hands") parsed.symbol = fswSymbolSwapHands(parsed.symbol);
 		if (event.target.value == "sides") parsed = fswSymbolSwapSides(parsed);
+		if (event.target.value == "mirror") parsed.symbol = ext.ttf.fsw.symbolMirror(parsed.symbol);
 		document.querySelector("#symbolFsw").value = core.fsw.compose.symbol(parsed);
 		document.querySelector("#symbolFsw").dispatchEvent(new Event("change"));
 	}
@@ -80,4 +83,24 @@ function modifySign(event) {
 		document.querySelector("#signFsw").value = ttf.fsw.signNormalize(core.fsw.compose.sign(parsed));
 		document.querySelector("#signFsw").dispatchEvent(new Event("change"));
 	}
+}
+
+function showMirrors() {
+	const mirrorArea = document.querySelector("#mirrorArea");
+	Object.values(window.alphabet).forEach((group) => {
+		group.forEach((sym) => {
+			sym = sym.slice(0, 4) + "01";
+			let fswSec = document.createElement("div");
+			let origSec = document.createElement("div");
+			let mirrorSec = document.createElement("div");
+			let handSec = document.createElement("div");
+
+			fswSec.textContent = sym;
+			origSec.innerHTML = ttf.fsw.symbolSvg(sym);
+			mirrorSec.innerHTML = ttf.fsw.symbolSvg(ext.ttf.fsw.symbolMirror(sym));
+			handSec.innerHTML = ttf.fsw.symbolSvg(ext.ttf.fsw.fswSymbolSwapHands(sym));
+
+			mirrorArea.append(fswSec, origSec, mirrorSec, handSec);
+		});
+	});
 }
