@@ -1,6 +1,7 @@
 import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
 import * as ttf from "../../../node_modules/@sutton-signwriting/font-ttf/index.mjs";
 import * as structure from "../../core/fsw/fsw-structure.js";
+import * as variant from "../../core/fsw/fsw-symbol-variant.js";
 
 /**
  * Swap between left-hand and right-hand symbol
@@ -11,13 +12,12 @@ export function fswSymbolSwapHands(fswSym) {
 	const parsed = core.fsw.parse.symbol(fswSym);
 
 	if (parsed.symbol) {
-		let sp = structure.symbolParts(parsed.symbol);
+		const sp = structure.symbolParts(parsed.symbol);
 		/*
 		if (structure.isVariant(sp.baseNum, "handGroup1")) {
 		}
 		*/
 		if (structure.isVariant(sp.baseNum, "handGroup2")) {
-			sp = structure.symbolParts(parsed.symbol);
 			let newFill = sp.fillNum;
 			if (sp.fillNum == 0) newFill = 1;
 			if (sp.fillNum == 1) newFill = 0;
@@ -26,7 +26,6 @@ export function fswSymbolSwapHands(fswSym) {
 			if (sp.baseNum == 0x2ef || sp.baseNum == 0x2f0) parsed.symbol = symbolMirror(parsed.symbol);
 		}
 		if (structure.isVariant(sp.baseNum, "handGroup3")) {
-			sp = structure.symbolParts(parsed.symbol);
 			let newFill = sp.fillNum;
 			if (sp.fillNum == 0) newFill = 1;
 			if (sp.fillNum == 1) newFill = 0;
@@ -45,27 +44,55 @@ export function fswSymbolSwapHands(fswSym) {
  * @returns {string} Updated symbol
  */
 export function fswSymbolSwapPerspective(fswSym) {
+	const parsed = core.fsw.parse.symbol(fswSym);
 
+	if (parsed.symbol) {
+		const sp = structure.symbolParts(parsed.symbol);
+
+		if (core.fsw.isType(parsed.symbol, "hand") && variant.isWallPlane(parsed.symbol)) {
+			let newFill = sp.fillNum;
+			if (sp.fillNum == 0) newFill = 2;
+			else if (sp.fillNum == 2) newFill = 0;
+			return sp.base + newFill.toString(16) + sp.rot;
+		}
+		else if (structure.isVariant(sp.baseNum, "planeFloor")) {
+			let sym = fswSym;
+			for (let i = 0; i < 4; i++) {
+				sym = ttf.fsw.symbolRotate(sym);
+			}
+			return sym;
+		}
+		else if (structure.isVariant(sp.baseNum, "planeDiagonalTowards")) {
+			const newBase = sp.baseNum - 4;
+			return "S" + newBase.toString(16) + sp.fill + sp.rot;
+		}
+		else if (structure.isVariant(sp.baseNum, "planeDiagonalAway")) {
+			const newBase = sp.baseNum - 4;
+			return "S" + newBase.toString(16) + sp.fill + sp.rot;
+		}
+	}
+	return fswSym;
 }
 
 
 /**
  * Swap horizontal position of symbol across centre
- * @param {SymbolObject} spatialSymbol Symbol with coordinates
- * @returns {SymbolObject} Updated symbol with coordinates
+ * @param {string} fswSym Symbol with coordinates
+ * @returns {string} Updated symbol with coordinates
  */
-export function fswSymbolSwapSides(symObj) {
-	if (!symObj.coord) return symObj;
+export function fswSymbolSwapSides(fswSym) {
+	const symObj = core.fsw.parse.symbol(fswSym);
+	if (!symObj.coord) return fswSym;
 	const symWidth = ttf.fsw.symbolSize(symObj.symbol)[0];
-	symObj.coord[0] = 749 - (symObj.coord[0] + symWidth);
-	return symObj;
+	symObj.coord[0] = 500 - ((symObj.coord[0] + symWidth) - 500);
+	return core.fsw.compose.symbol(symObj);
 }
 
 export function symbolMirror(fswSym) {
 	const parsed = core.fsw.parse.symbol(fswSym);
 
 	if (parsed.symbol) {
-		let sp = structure.symbolParts(parsed.symbol);
+		const sp = structure.symbolParts(parsed.symbol);
 
 		if (structure.isVariant(sp.baseNum, "mirrorGroup1")) {
 			let newFill = sp.fillNum;

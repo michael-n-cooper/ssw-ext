@@ -49,12 +49,13 @@ function showSymbolInfo(event) {
 
 function modifySymbol(event) {
 	event.preventDefault();
-	let parsed = core.fsw.parse.symbol(document.querySelector("#symbolFsw").value);
+	let fswSym = document.querySelector("#symbolFsw").value;
+	let parsed = core.fsw.parse.symbol(fswSym);
 	if (parsed.symbol) {
-		if (event.target.value == "hands") parsed.symbol = fswSymbolSwapHands(parsed.symbol);
-		if (event.target.value == "sides") parsed = fswSymbolSwapSides(parsed);
-		if (event.target.value == "mirror") parsed.symbol = ext.ttf.fsw.symbolMirror(parsed.symbol);
-		document.querySelector("#symbolFsw").value = core.fsw.compose.symbol(parsed);
+		if (event.target.value == "hands") fswSym = fswSymbolSwapHands(fswSym);
+		if (event.target.value == "sides") fswSym = fswSymbolSwapSides(fswSym);
+		if (event.target.value == "mirror") fswSym = ext.ttf.fsw.symbolMirror(fswSym);
+		document.querySelector("#symbolFsw").value = fswSym;
 		document.querySelector("#symbolFsw").dispatchEvent(new Event("change"));
 	}
 }
@@ -75,14 +76,17 @@ function showSignInfo(event) {
 
 function modifySign(event) {
 	event.preventDefault();
-	const signFsw = document.querySelector("#signFsw").value;
-	let parsed = core.fsw.parse.sign(signFsw);
-	if (parsed) {
-		if (event.target.value == "flipX") parsed = ext.ttf.fsw.fswSignFlipX(parsed);
-		if (event.target.value == "sequence") parsed.sequence = ext.ttf.fsw.generateTemporalIdx(parsed); 
-		document.querySelector("#signFsw").value = ttf.fsw.signNormalize(core.fsw.compose.sign(parsed));
-		document.querySelector("#signFsw").dispatchEvent(new Event("change"));
+	let fswSign = document.querySelector("#signFsw").value;
+	if (event.target.value == "flipX") fswSign = ext.ttf.fsw.fswSignFlipX(fswSign);
+	if (event.target.value == "flipZ") fswSign = ext.ttf.fsw.fswSignFlipZ(fswSign);
+	if (event.target.value == "flipXZ") fswSign = ext.ttf.fsw.fswSignFlipXZ(fswSign);
+	if (event.target.value == "sequence") {
+		let parsed = core.fsw.parse.sign(fswSign);
+		parsed.sequence = ext.ttf.fsw.generateTemporalIdx(fswSign);
+		fswSign = ttf.fsw.signNormalize(core.fsw.compose.sign(fswSign));
 	}
+	document.querySelector("#signFsw").value = fswSign;
+	document.querySelector("#signFsw").dispatchEvent(new Event("change"));
 }
 
 function showMirrors() {

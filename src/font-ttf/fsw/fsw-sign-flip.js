@@ -5,17 +5,22 @@ import * as ttf from "../../../node_modules/@sutton-signwriting/font-ttf/index.m
 /**
  * Change sign between left-handed and right-handed
  * Conceptually flips sign in the X direction
- * @param {SignObject} fswSign Sign to flip
- * @returns {SignObject} Updated sign
+ * @param {string} fswSign Sign to flip
+ * @returns {string} Updated sign
  */
-export function fswSignFlipX(signObj) {
-	signObj.spatials.map((sym) => {
-		sym.symbol = swap.symbolMirror(sym.symbol);
-		sym.symbol = swap.fswSymbolSwapHands(sym.symbol);
-		sym = swap.fswSymbolSwapSides(sym);
-		return sym;
-	});
-	return signObj;
+export function fswSignFlipX(fswSign) {
+	const signObj = core.fsw.parse.sign(fswSign);
+
+	if (signObj.spatials) {
+		signObj.spatials = signObj.spatials.map((sym) => {
+			sym.symbol = swap.symbolMirror(sym.symbol);
+			sym.symbol = swap.fswSymbolSwapHands(sym.symbol);
+			sym = core.fsw.parse.symbol(swap.fswSymbolSwapSides(core.fsw.compose.symbol(sym)));
+			return sym;
+		});
+		return ttf.fsw.signNormalize(core.fsw.compose.sign(signObj));
+	}
+	return fswSign;
 }
 
 /**
@@ -24,13 +29,20 @@ export function fswSignFlipX(signObj) {
  * @param {string} fswSign Sign to flip
  * @returns {string} Updated sign
  */
-export function fswSignFlipZ(fswSign) {
-	let sign = core.fsw.parse.sign(fswSign);
-	sign.spatials.map((sym) => {
-		let newSym = swap.fswSymbolSwapSides(sym);
-		newSym.symbol = swap.fswSymbolSwapPerspective(newSym.symbol);
-		return newSym;
-	})
+export function fswSignFlipXZ(fswSign) {
+	const signObj = core.fsw.parse.sign(fswSign);
+
+	if (signObj.spatials) {
+		signObj.spatials = signObj.spatials.map((sym) => {
+			sym.symbol = swap.symbolMirror(sym.symbol);
+			sym.symbol = swap.fswSymbolSwapPerspective(sym.symbol);
+			sym.symbol = swap.fswSymbolSwapHands(sym.symbol);
+			sym = core.fsw.parse.symbol(swap.fswSymbolSwapSides(core.fsw.compose.symbol(sym)));
+			return sym;
+		});
+		return ttf.fsw.signNormalize(core.fsw.compose.sign(signObj));
+	}
+	return fswSign;
 }
 
 /**
@@ -39,12 +51,15 @@ export function fswSignFlipZ(fswSign) {
  * @param {string} fswSign Sign to flip
  * @returns {string} Updated sign
  */
-export function fswSignFlipXZ(fswSign) {
-	let sign = core.fsw.parse.sign(fswSign);
-	sign.spatials.map((sym) => {
-		let newSym = sym;
-		newSym.symbol = swap.fswSymbolSwapPerspective(newSym.symbol);
-		newSym.symbol = swap.fswSymbolSwapHands(newSym.symbol);
-		return newSym;
-	})
+export function fswSignFlipZ(fswSign) {
+	const signObj = core.fsw.parse.sign(fswSign);
+
+	if (signObj.spatials) {
+		signObj.spatials = signObj.spatials.map((sym) => {
+			sym.symbol = swap.fswSymbolSwapPerspective(sym.symbol);
+			return sym;
+		});
+		return ttf.fsw.signNormalize(core.fsw.compose.sign(signObj));
+	}
+	return fswSign;
 }
