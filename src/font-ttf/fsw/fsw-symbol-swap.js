@@ -53,7 +53,10 @@ export function fswSymbolSwapPerspective(fswSym) {
 			let newFill = sp.fillNum;
 			if (sp.fillNum == 0) newFill = 2;
 			else if (sp.fillNum == 2) newFill = 0;
-			return sp.base + newFill.toString(16) + sp.rot;
+			let newRot = sp.rotNum;
+			if (sp.rotNum > 7) newRot = sp.rotNum - 8;
+			else newRot = sp.rotNum + 8;
+			return sp.base + newFill.toString(16) + newRot.toString(16);
 		}
 		else if (structure.isVariant(sp.baseNum, "planeFloor")) {
 			let sym = fswSym;
