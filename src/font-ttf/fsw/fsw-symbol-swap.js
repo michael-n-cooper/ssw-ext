@@ -56,23 +56,24 @@ export function fswSymbolSwapPerspective(fswSym) {
 			let newRot = sp.rotNum;
 			if (sp.rotNum > 7) newRot = sp.rotNum - 8;
 			else newRot = sp.rotNum + 8;
-			return sp.base + newFill.toString(16) + newRot.toString(16);
+			parsed.symbol = sp.base + newFill.toString(16) + newRot.toString(16);
 		}
 		else if (structure.isVariant(sp.baseNum, "planeFloor")) {
 			let sym = fswSym;
 			for (let i = 0; i < 4; i++) {
 				sym = ttf.fsw.symbolRotate(sym);
 			}
-			return sym;
+			parsed.symbol = sym;
 		}
 		else if (structure.isVariant(sp.baseNum, "planeDiagonalTowards")) {
 			const newBase = sp.baseNum - 4;
-			return "S" + newBase.toString(16) + sp.fill + sp.rot;
+			parsed.symbol = "S" + newBase.toString(16) + sp.fill + sp.rot;
 		}
 		else if (structure.isVariant(sp.baseNum, "planeDiagonalAway")) {
 			const newBase = sp.baseNum - 4;
-			return "S" + newBase.toString(16) + sp.fill + sp.rot;
+			parsed.symbol = "S" + newBase.toString(16) + sp.fill + sp.rot;
 		}
+		return core.fsw.compose.symbol(parsed);
 	}
 	return fswSym;
 }

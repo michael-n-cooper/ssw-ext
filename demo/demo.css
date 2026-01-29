@@ -1,0 +1,4 @@
+.demoArea {
+	display: flex;
+	column-gap: 1em;
+}

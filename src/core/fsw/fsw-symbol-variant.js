@@ -81,13 +81,34 @@ export function isWallPlane(fswSym) {
 	}
 	return false;
 }
-export function isDiagonalPlane(fswSym) {
+export function isDiagonalTowards(fswSym) {
 	const parsed = core.fsw.parse.symbol(fswSym);
 	if (parsed.symbol) {
 		let sp = structure.symbolParts(parsed.symbol);
 		if (structure.isVariant(sp.baseNum, "planeDiagonalTowards")) return true;
-		if (structure.isVariant(sp.baseNum, "planeDiagonalAway")) return true;
 	}
 	return false;
 }
 
+export function isDiagonalAway(fswSym) {
+	const parsed = core.fsw.parse.symbol(fswSym);
+	if (parsed.symbol) {
+		let sp = structure.symbolParts(parsed.symbol);
+		if (structure.isVariant(sp.baseNum, "planeDiagonalAway")) return true;
+	}
+	return false;
+}
+export function isDiagonalPlane(fswSym) {
+	return isDiagonalAway(fswSym) || isDiagonalTowards(fswSym);
+}
+
+export function getHandOrientation(fswSym) {
+	const parsed = core.fsw.parse.symbol(fswSym);
+	if (parsed.symbol && core.fsw.isType(fswSym, "hand")) {
+		let sp = structure.symbolParts(parsed.symbol);
+		if (sp.fillNum == 0 || sp.fillNum == 3) return "palm";
+		if (sp.fillNum == 1 || sp.fillNum == 4) return "side";
+		if (sp.fillNum == 2 || sp.fillNum == 5) return "back";
+	}
+	return "";
+}
