@@ -30,7 +30,9 @@ export function describeSymbol(fswSym) {
 		if (variants.isDiagonalTowards(parsed.symbol)) val.push("Diagonal towards");
 		if (variants.isDiagonalAway(parsed.symbol)) val.push("Diagonal away");
 
-		return val.join(" ");
+		const rotDesc = getSymbolRotationDescription(parsed.symbol);
+
+		return val.concat(rotDesc).join(" ");
 	}
 	return "";
 }
@@ -41,18 +43,60 @@ const rotNames = {
 	"diagonal": ["Up", "Up Left", "Down Left", "Down", "Down Right", "Up Right"],
 	"twists": ["Over Right", "Over Left", "Under Right", "Under Left"],
 }
-const symbolRotPatterns = {
-	"S22a - S230, S234 - S235, S24b - S254": [rotNames.wall[0]],
-	"S231 - S232": [rotNames.wall[4], rotNames.wall[0]],
-	"S233 - ": [rotNames.wall[2], rotNames.wall[0]],
-	"S236 - S237": [rotNames.wall[0], rotNames.wall[4], rotNames.wall[0]],
-	"S238 - S23a": [rotNames.wall[1], rotNames.wall[0]],
-	"S23b - S23d": [rotNames.wall[2], rotNames.wall[0]],
-	"S23e": [rotNames.wall[6], rotNames.wall[4]],
-	"S23f - S241": [rotNames.wall[3], rotNames.wall[0]],
-	"S242 - S244": [rotNames.wall[4], rotNames.wall[2], rotNames.wall[0]],
-	"S245 - S247": [rotNames.wall[0], rotNames.wall[3], rotNames.wall[0]],
-	"S248 - S24a": [rotNames.wall[7], rotNames.wall[1], rotNames.wall[7], rotNames.wall[1]],
+//const rotSeq = [0, 1, 2, 3, 4, 5, 6, 7, 0, 7, 6, 5, 4, 3, 2, 1];
+const symbolRotSequences = new Map([
+	//[[0x231, 0x232], [4, 5, 6, 7, 0, 1, 2, 3, 0, 7, 6, 5, 4, 3, 2, 1]],//not working
+	[[0x100, 0x500], [0, 1, 2, 3, 4, 5, 6, 7, 0, 7, 6, 5, 4, 3, 2, 1]]
+]);
+const symbolRotPatterns = new Map([
+	[[[0x100, 0x204], [0x22a, 0x230], [0x234, 0x235], [0x24b, 0x254]], [0]],
+	[[0x231, 0x232], [4, 0]],
+	[[0x233, 0x233], [2, 0]],
+	[[0x236, 0x237], [0, 4, 0]],
+	[[0x238, 0x23a], [1, 0]],
+	[[0x23b, 0x23d], [2, 0]],
+	[[0x23e, 0x23e], [6, 4]],
+	[[0x23f, 0x241], [3, 0]],
+	[[0x242, 0x244], [4, 2, 0]],
+	[[0x245, 0x247], [0, 3, 0]],
+	[[0x248, 0x24a], [7, 1, 7, 1]]
+]);
+function getRotPattern(baseNum) {
+	for (const pattern of symbolRotPatterns.entries()) {
+		if (structure.inRangeSet(baseNum, pattern[0])) {
+			return pattern[1];
+		}
+	}
+	return null;
+}
+function getRotSeq(baseNum) {
+	for (const seq of symbolRotSequences.entries()) {
+		if (structure.inRangeSet(baseNum, seq[0])) {
+			return seq[1];
+		}
+	}
+}
+function rotateSymbolPattern(pattern, rot) {
+	return pattern.map((pos) => {
+		let newPos = pos + rot;
+		if ((rot < 8 && newPos > 7) || newPos > 15) newPos = newPos - 8;
+		return newPos;
+	})
+}
+function getSymbolRotationDescription(fswSym) {
+	const parsed = core.fsw.parse.symbol(fswSym);
+	if (parsed.symbol) {
+		const sp = structure.symbolParts(fswSym);
+		let rotPattern = getRotPattern(sp.baseNum);
+		if (rotPattern != null) {
+			rotPattern = rotateSymbolPattern(rotPattern, sp.rotNum);
+			const rotSeq = getRotSeq(sp.baseNum);
+			return rotPattern.map((pos) => {
+				return rotNames.wall[rotSeq[pos]]
+			});
+		}
+	}
+	return [];
 }
 const symbolTwistPatterns = {
 	"S23e": [rotNames.twists[0]],
@@ -60,10 +104,6 @@ const symbolTwistPatterns = {
 	"S24c - S24d": [rotNames.twists[1], rotNames.twists[0]],
 	"S24e - S24f": [rotNames.twists[3]],
 	"S250": [rotNames.twists[3], rotNames.twists[2]]
-}
-const symbolRotSequences = {
-	"hand, S23e": [0, 1, 2, 3, 4, 5, 6, 7, 0, 7, 6, 5, 4, 3, 2, 1],
-	"S22a - ": [0, 1, 2, 3, 4, 5, 6, 7],
 }
 const symbolTwistSequences = {
 	"S23e": [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],

@@ -135,7 +135,7 @@ export const planeVariantGroups = ["planeGroup1", "planeGroup2"];
  * @param {number} val Value to test
  * @param {RangeSet} rangeSet Set of ranges to test
  */
-function inRangeSet(val, rangeSet) {
+export function inRangeSet(val, rangeSet) {
 	if (Array.isArray(rangeSet[0])) return rangeSet.some((range) => {
 		return (range[0] <= val && val <= range[1]);
 	});
