@@ -45,7 +45,7 @@ const rotNames = {
 }
 //const rotSeq = [0, 1, 2, 3, 4, 5, 6, 7, 0, 7, 6, 5, 4, 3, 2, 1];
 const symbolRotSequences = new Map([
-	//[[0x231, 0x232], [4, 5, 6, 7, 0, 1, 2, 3, 0, 7, 6, 5, 4, 3, 2, 1]],//not working
+	[[0x231, 0x232], [0, 1, 2, 3, 4, 5, 6, 7, 4, 3, 2, 1, 0, 7, 6, 5]],
 	[[0x100, 0x500], [0, 1, 2, 3, 4, 5, 6, 7, 0, 7, 6, 5, 4, 3, 2, 1]]
 ]);
 const symbolRotPatterns = new Map([
