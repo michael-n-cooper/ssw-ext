@@ -1,13 +1,14 @@
 import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
 import * as structure from "./fsw-structure.js";
+import "../../../node_modules/@sutton-signwriting/core/src/types";
 
 /**
  * Determine if a symbol applies to left hand
- * @param {string} fswSym Symbol to test
+ * @param {(string|SymbolObject)} fswSym Symbol to test
  * @returns {boolean} True if left hand, false if other hand or not handed
  */
 export function isLeftHand(fswSym) {
-	const parsed = core.fsw.parse.symbol(fswSym);
+	const parsed = (typeof fswSym == "object" ? fswSym : core.fsw.parse.symbol(fswSym));
 	if (parsed.symbol) {
 		let sp = structure.symbolParts(parsed.symbol);
 		if (structure.isVariant(sp.baseNum, "handGroup1")) {
@@ -24,11 +25,11 @@ export function isLeftHand(fswSym) {
 }
 /**
  * Determine if a symbol applies to right hand
- * @param {string} fswSym Symbol to test
+ * @param {(string|SymbolObject)} fswSym Symbol to test
  * @returns {boolean} True if right hand, false if other hand or not handed
  */
 export function isRightHand(fswSym) {
-	const parsed = core.fsw.parse.symbol(fswSym);
+	const parsed = (typeof fswSym == "object" ? fswSym : core.fsw.parse.symbol(fswSym));
 	if (parsed.symbol) {
 		let sp = structure.symbolParts(parsed.symbol);
 		if (structure.isVariant(sp.baseNum, "handGroup1")) {
@@ -46,11 +47,11 @@ export function isRightHand(fswSym) {
 
 /**
  * Determine if a symbol applies to both hands
- * @param {string} fswSym Symbol to test
+ * @param {(string|SymbolObject)} fswSym Symbol to test
  * @returns {boolean} True if both hands, false if other hand or not handed
  */
 export function isBothHand(fswSym) {
-	const parsed = core.fsw.parse.symbol(fswSym);
+	const parsed = (typeof fswSym == "object" ? fswSym : core.fsw.parse.symbol(fswSym));
 	if (parsed.symbol) {
 		let sp = structure.symbolParts(parsed.symbol);
 		if (structure.isVariant(sp.baseNum, "handGroup2")) {
@@ -63,8 +64,13 @@ export function isBothHand(fswSym) {
 	return false;
 }
 
+/**
+ * Determine if a symbol is on the floor plane
+ * @param {(string|SymbolObject)} fswSym Symbol to test
+ * @returns {boolean} True if floor plane, false if other or no plane
+ */
 export function isFloorPlane(fswSym) {
-	const parsed = core.fsw.parse.symbol(fswSym);
+	const parsed = (typeof fswSym == "object" ? fswSym : core.fsw.parse.symbol(fswSym));
 	if (parsed.symbol) {
 		let sp = structure.symbolParts(parsed.symbol);
 		if (core.fsw.isType(parsed.symbol, "hand") && sp.fillNum > 2) return true;
@@ -72,8 +78,13 @@ export function isFloorPlane(fswSym) {
 	}
 	return false;
 }
+/**
+ * Determine if a symbol is on the wall plane
+ * @param {(string|SymbolObject)} fswSym Symbol to test
+ * @returns {boolean} True if wall plane, false if other or no plane
+ */
 export function isWallPlane(fswSym) {
-	const parsed = core.fsw.parse.symbol(fswSym);
+	const parsed = (typeof fswSym == "object" ? fswSym : core.fsw.parse.symbol(fswSym));
 	if (parsed.symbol) {
 		let sp = structure.symbolParts(parsed.symbol);
 		if (core.fsw.isType(parsed.symbol, "hand") && sp.fillNum < 3) return true;
@@ -81,8 +92,13 @@ export function isWallPlane(fswSym) {
 	}
 	return false;
 }
+/**
+ * Determine if a symbol is on the diagonal towards plane
+ * @param {(string|SymbolObject)} fswSym Symbol to test
+ * @returns {boolean} True if diagonal towards, false if other or no plane
+ */
 export function isDiagonalTowards(fswSym) {
-	const parsed = core.fsw.parse.symbol(fswSym);
+	const parsed = (typeof fswSym == "object" ? fswSym : core.fsw.parse.symbol(fswSym));
 	if (parsed.symbol) {
 		let sp = structure.symbolParts(parsed.symbol);
 		if (structure.isVariant(sp.baseNum, "planeDiagonalTowards")) return true;
@@ -90,20 +106,35 @@ export function isDiagonalTowards(fswSym) {
 	return false;
 }
 
+/**
+ * Determine if a symbol is on the diagonal away plane
+ * @param {(string|SymbolObject)} fswSym Symbol to test
+ * @returns {boolean} True if diagonal away, false if other or no plane
+ */
 export function isDiagonalAway(fswSym) {
-	const parsed = core.fsw.parse.symbol(fswSym);
+	const parsed = (typeof fswSym == "object" ? fswSym : core.fsw.parse.symbol(fswSym));
 	if (parsed.symbol) {
 		let sp = structure.symbolParts(parsed.symbol);
 		if (structure.isVariant(sp.baseNum, "planeDiagonalAway")) return true;
 	}
 	return false;
 }
+/**
+ * Determine if a symbol is on either diagonal plane
+ * @param {(string|SymbolObject)} fswSym Symbol to test
+ * @returns {boolean} True if diagonal, false if other or no plane
+ */
 export function isDiagonalPlane(fswSym) {
 	return isDiagonalAway(fswSym) || isDiagonalTowards(fswSym);
 }
 
+/**
+ * Determine how the hand is oriented
+ * @param {(string|SymbolObject)} fswSym Symbol to test
+ * @returns {string} Orientation as "palm", "side", or "back"
+ */
 export function getHandOrientation(fswSym) {
-	const parsed = core.fsw.parse.symbol(fswSym);
+	const parsed = (typeof fswSym == "object" ? fswSym : core.fsw.parse.symbol(fswSym));
 	if (parsed.symbol && core.fsw.isType(fswSym, "hand")) {
 		let sp = structure.symbolParts(parsed.symbol);
 		if (sp.fillNum == 0 || sp.fillNum == 3) return "palm";

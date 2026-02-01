@@ -10,7 +10,6 @@ async function windowLoaded() {
 	document.querySelector("#symbolFsw").addEventListener("change", showSymbol);
 	document.querySelectorAll("#symbolDemo button").forEach((button) => button.addEventListener("click", modifySymbol));
 	document.querySelector("#signFsw").addEventListener("change", showSign);
-	document.querySelectorAll("#signDemo .optionsArea button").forEach((button) => button.addEventListener("click", showSignInfo));
 	document.querySelectorAll("#signDemo .modifyArea button").forEach((button) => button.addEventListener("click", modifySign));
 }
 
@@ -26,10 +25,11 @@ function renderSign(fswSign) {
 }
 
 function showSymbol(event) {
-	document.querySelector("#symbolDemo .renderArea").innerHTML = renderSymbol(event.target.value);
 	const fswSym = document.querySelector("#symbolFsw").value;
 	const parsed = core.fsw.parse.symbol(fswSym);
 	if (parsed.symbol) {
+		document.querySelector("#symbolDemo .renderArea").innerHTML = renderSymbol(event.target.value);
+
 		let info = "<ul>";
 		info += "<li>Left hand: " + ext.core.fsw.isLeftHand(parsed.symbol) + "</li>";
 		info += "<li>Right hand: " + ext.core.fsw.isRightHand(parsed.symbol) + "</li>";
@@ -74,16 +74,25 @@ function modifySymbol(event) {
 }
 
 function showSign(event) {
-	document.querySelector("#signDemo .renderArea").innerHTML = renderSign(event.target.value);
-}
-function showSignInfo(event) {
-	event.preventDefault();
-	const signFsw = document.querySelector("#signFsw").value;
-	let parsed = core.fsw.parse.sign(signFsw);
+	const fswSign = document.querySelector("#signFsw").value;
+	const parsed = core.fsw.parse.sign(fswSign);
 	if (parsed.spatials) {
-		let info = "";
-		if (event.target.value == "describe") info = ext.ttf.fsw.describeSign(signFsw);
-		document.querySelector("#signDemo .outputArea").innerText = info;
+		document.querySelector("#signDemo .renderArea").innerHTML = renderSign(event.target.value);
+
+		let info = "<ul>";
+		info += "<li>Description: "; 
+		info += ext.ttf.fsw.describeSign(parsed);
+		info += "</li> "
+		info += "</ul>";
+		document.querySelector("#signInfo .outputArea").innerHTML = info;
+
+		let newSign = ext.ttf.fsw.fswSignFlipX(parsed);
+		document.querySelector("#signMirror .renderArea").innerHTML = renderSign(core.fsw.compose.sign(newSign));
+		document.querySelector("#signMirror .outputArea").innerText = core.fsw.compose.sign(newSign);
+
+		newSign = ext.ttf.fsw.fswSignFlipXZ(parsed);
+		document.querySelector("#signPerspective .renderArea").innerHTML = renderSign(core.fsw.compose.sign(newSign));
+		document.querySelector("#signPerspective .outputArea").innerText = core.fsw.compose.sign(newSign);
 	}
 }
 
@@ -93,11 +102,7 @@ function modifySign(event) {
 	if (event.target.value == "flipX") fswSign = ext.ttf.fsw.fswSignFlipX(fswSign);
 	if (event.target.value == "flipZ") fswSign = ext.ttf.fsw.fswSignFlipZ(fswSign);
 	if (event.target.value == "flipXZ") fswSign = ext.ttf.fsw.fswSignFlipXZ(fswSign);
-	if (event.target.value == "sequence") {
-		let parsed = core.fsw.parse.sign(fswSign);
-		parsed.sequence = ext.ttf.fsw.generateTemporalIdx(fswSign);
-		fswSign = ttf.fsw.signNormalize(core.fsw.compose.sign(fswSign));
-	}
+	if (event.target.value == "sequence") fswSign = ext.ttf.fsw.generateTemporalIdx(fswSign);
 	document.querySelector("#signFsw").value = fswSign;
 	document.querySelector("#signFsw").dispatchEvent(new Event("change"));
 }

@@ -1,5 +1,6 @@
 // Additional ranges and types
 import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
+import "../../../node_modules/@sutton-signwriting/core/src/types";
 
 export function baseSymbol(fswSym) {
 	const baseRegEx = new RegExp("S" + core.fswquery.re.base);
@@ -7,12 +8,23 @@ export function baseSymbol(fswSym) {
 }
 
 /**
+ * Components of a symbol
+ * @typedef {Object} symbolParts 
+ * @property {string} base Base symbol
+ * @property {number} baseNum Numeric base symbol
+ * @property {string} fill Fill
+ * @property {number} fillNum Numeric fill
+ * @property {string} rot Rotation
+ * @property {number} rotNum Numeric rotation
+ */
+
+/**
  * Split a symbol into base, fill, and rotation
- * @param {*} fswSym 
- * @returns {string, string, string} base, fill, and rotation components of symbol
+ * @param {(string | SymbolObject)} fswSym 
+ * @returns {symbolParts} base, fill, and rotation components of symbol
  */
 export function symbolParts(fswSym) {
-	const parsed = core.fsw.parse.symbol(fswSym);
+	const parsed = (typeof fswSym == "object" ? fswSym : core.fsw.parse.symbol(fswSym));
 	if (parsed.symbol) {
 		const base = fswSym.slice(0, 4);
 		const baseNum = parseInt(base.slice(1), 16);
@@ -34,11 +46,11 @@ export function symbolParts(fswSym) {
 
 /**
  * Set of symbol ranges
- * @typedef {SymbolRange | SymbolRange[]} RangeSet 
+ * @typedef {(SymbolRange | SymbolRange[])} RangeSet 
  */
 
 /**
- * ranges for hand and plane variants of symbols
+ * Ranges for hand and plane variants of symbols
  */
 const variantRanges = {
 	"handGroup1": [
@@ -131,7 +143,7 @@ export const mirrorGroups = ["mirrorGroup1"];
 export const planeVariantGroups = ["planeGroup1", "planeGroup2"];
 
 /**
- * 
+ * Test if a symbol is in one of the ranges of a rangeset
  * @param {number} val Value to test
  * @param {RangeSet} rangeSet Set of ranges to test
  */

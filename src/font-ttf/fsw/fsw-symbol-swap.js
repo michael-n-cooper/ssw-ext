@@ -2,14 +2,16 @@ import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
 import * as ttf from "../../../node_modules/@sutton-signwriting/font-ttf/index.mjs";
 import * as structure from "../../core/fsw/fsw-structure.js";
 import * as variant from "../../core/fsw/fsw-symbol-variant.js";
+import "../../../node_modules/@sutton-signwriting/core/src/types";
 
 /**
  * Swap between left-hand and right-hand symbol
- * @param {string} fswSym Symbol to change
- * @returns {string} Updated symbol
+ * @param {(string|SymbolObject)} fswSym Symbol to change
+ * @returns {(string|SymbolObject)} Updated symbol
  */
 export function fswSymbolSwapHands(fswSym) {
-	const parsed = core.fsw.parse.symbol(fswSym);
+	const returnObj = (typeof fswSym == "object");
+	const parsed = (returnObj ? fswSym : core.fsw.parse.symbol(fswSym));
 
 	if (parsed.symbol) {
 		const sp = structure.symbolParts(parsed.symbol);
@@ -33,6 +35,7 @@ export function fswSymbolSwapHands(fswSym) {
 			if (sp.fillNum == 4) newFill = 3;
 			parsed.symbol = sp.base + newFill + sp.rot;
 		}
+		if (returnObj) return parsed;
 		return core.fsw.compose.symbol(parsed);
 	}
 	return fswSym;
@@ -40,8 +43,8 @@ export function fswSymbolSwapHands(fswSym) {
 
 /**
  * Swap symbol between heel and palm orientation
- * @param {string} fswSym Symbol to change
- * @returns {string} Updated symbol
+ * @param {(string|SymbolObject)} fswSym Symbol to change
+ * @returns {(string|SymbolObject)} Updated symbol
  */
 export function fswSymbolSwapPerspective(fswSym) {
 	const parsed = core.fsw.parse.symbol(fswSym);
@@ -80,9 +83,9 @@ export function fswSymbolSwapPerspective(fswSym) {
 
 
 /**
- * Swap horizontal position of symbol across centre
- * @param {string} fswSym Symbol with coordinates
- * @returns {string} Updated symbol with coordinates
+ * Swap horizontal position of symbol across centre of sign
+ * @param {(string|SymbolObject)} fswSym Symbol with coordinates
+ * @returns {(string|SymbolObject)} Updated symbol with coordinates
  */
 export function fswSymbolSwapSides(fswSym) {
 	const symObj = core.fsw.parse.symbol(fswSym);
@@ -92,6 +95,12 @@ export function fswSymbolSwapSides(fswSym) {
 	return core.fsw.compose.symbol(symObj);
 }
 
+/**
+ * Mirror a symbol
+ * Mirrors additional ranges from the base package, uses the base mirror if not in an additional range
+ * @param {(string|SymbolObject)} fswSym Symbol to change
+ * @returns {(string|SymbolObject)} Mirrored symbol
+ */
 export function symbolMirror(fswSym) {
 	const parsed = core.fsw.parse.symbol(fswSym);
 
