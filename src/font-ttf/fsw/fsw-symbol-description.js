@@ -9,7 +9,7 @@ export function describeSymbol(fswSym) {
 		let val = [];
 		if (variants.isLeftHand(parsed.symbol)) val.push("Left");
 		if (variants.isRightHand(parsed.symbol)) val.push("Right");
-		if (variants.isBothHand(parsed.symbol)) val.push("Both hands");
+		if (variants.isBothHand(parsed.symbol)) val.push("Both Hands");
 
 		val.push(defmessages["base_" + structure.baseSymbol(parsed.symbol)]);
 
@@ -25,14 +25,14 @@ export function describeSymbol(fswSym) {
 				break;
 		}
 
-		if (variants.isWallPlane(parsed.symbol)) val.push("Wall");
-		if (variants.isFloorPlane(parsed.symbol)) val.push("Floor");
-		if (variants.isDiagonalTowards(parsed.symbol)) val.push("Diagonal towards");
-		if (variants.isDiagonalAway(parsed.symbol)) val.push("Diagonal away");
+		if (core.fsw.isType(parsed.symbol, "hand")) {
+			if (variants.isWallPlane(parsed.symbol)) val.push("Wall Plane");
+			if (variants.isFloorPlane(parsed.symbol)) val.push("Floor Plane");
+		}
 
 		const rotDesc = getSymbolRotationDescription(parsed.symbol);
 
-		return val.concat(rotDesc).join(" ");
+		return val.join(" - ") + (rotDesc.length > 0 ? (" - " + rotDesc.join(", ")) : "");
 	}
 	return "";
 }
@@ -43,23 +43,23 @@ const rotNames = {
 	"diagonal": ["Up", "Up Left", "Down Left", "Down", "Down Right", "Up Right"],
 	"twists": ["Over Right", "Over Left", "Under Right", "Under Left"],
 }
-//const rotSeq = [0, 1, 2, 3, 4, 5, 6, 7, 0, 7, 6, 5, 4, 3, 2, 1];
 const symbolRotSequences = new Map([
 	[[0x231, 0x232], [0, 1, 2, 3, 4, 5, 6, 7, 4, 3, 2, 1, 0, 7, 6, 5]],
 	[[0x100, 0x500], [0, 1, 2, 3, 4, 5, 6, 7, 0, 7, 6, 5, 4, 3, 2, 1]]
 ]);
 const symbolRotPatterns = new Map([
-	[[[0x100, 0x204], [0x22a, 0x230], [0x234, 0x235], [0x24b, 0x254]], [0]],
-	[[0x231, 0x232], [4, 0]],
-	[[0x233, 0x233], [2, 0]],
-	[[0x236, 0x237], [0, 4, 0]],
-	[[0x238, 0x23a], [1, 0]],
-	[[0x23b, 0x23d], [2, 0]],
+	[[[0x100, 0x204], [0x22a, 0x230], [0x234, 0x235], [0x24b, 0x254], [0x265, 0x26b], [0x26f, 0x270], [0x281, 0x287]], [0]],
+	[[[0x231, 0x232], [0x26c, 0x26d]], [4, 0]],
+	[[[0x233, 0x233], [0x26e, 0x26e]], [2, 0]],
+	[[[0x236, 0x237], [0x271, 0x272]], [0, 4, 0]],
+	[[[0x238, 0x23a], [0x273, 0x273]], [1, 0]],
+	[[[0x23b, 0x23d], [0x274, 0x276]], [2, 0]],
 	[[0x23e, 0x23e], [6, 4]],
-	[[0x23f, 0x241], [3, 0]],
-	[[0x242, 0x244], [4, 2, 0]],
-	[[0x245, 0x247], [0, 3, 0]],
-	[[0x248, 0x24a], [7, 1, 7, 1]]
+	[[[0x23f, 0x241], [0x277, 0x277]], [3, 0]],
+	[[[0x242, 0x244], [0x278, 0x27a]], [4, 2, 0]],
+	[[[0x245, 0x247], [0x27b, 0x27d]], [0, 3, 0]],
+	[[[0x248, 0x24a], [0x2, 0x2]], [7, 1, 7, 1]],
+	[[0x27e, 0x280], [5, 0, 5, 0]]
 ]);
 function getRotPattern(baseNum) {
 	for (const pattern of symbolRotPatterns.entries()) {
@@ -91,8 +91,10 @@ function getSymbolRotationDescription(fswSym) {
 		if (rotPattern != null) {
 			rotPattern = rotateSymbolPattern(rotPattern, sp.rotNum);
 			const rotSeq = getRotSeq(sp.baseNum);
+			let nameList = rotNames.wall;
+			if (variants.isFloorPlane(fswSym)) nameList = rotNames.floor;
 			return rotPattern.map((pos) => {
-				return rotNames.wall[rotSeq[pos]]
+				return nameList[rotSeq[pos]]
 			});
 		}
 	}
