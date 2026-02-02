@@ -7,20 +7,21 @@ import "../../../node_modules/@sutton-signwriting/core/src/types";
 /**
  * Generate the temporal sequence for a sign
  * @param {(string|SignObject)} sign Sign
- * @param {SequenceOrder[]} order Order of symbols
+ * @param {string[]} [order] Order of symbols
  * @returns {string|SignObject} Sequence, or sign with sequence added
  */
-export function generateTemporalIdx(fswSign, order =["leftHand", "leftMovement", "rightHand", "rightMovement", "dynamic", "head", "trunk", "limb", "location", "punctuation"]) {
+export function generateTemporalIdx(fswSign, order) {
 	const returnObj = (typeof fswSign == "object");
 	const parsed = (returnObj ? fswSign : core.fsw.parse.sign(fswSign));
 	if (parsed.spatials) {
+		if (typeof order === "undefined") order = ["rightHand", "rightMovement", "leftHand", "leftMovement", "dynamic", "head", "trunk", "limb", "location", "punctuation"];
 
 		let sequence = parsed.spatials.map((item) => item.symbol);
 		sequence = sequence.sort((a, b) => {
-			let aOrder = getOrder(a, order);
-			let bOrder = getOrder(b, order);
+			let aOrder = getOrder(a);
+			let bOrder = getOrder(b);
 
-			if (aOrder == bOrder) return a - b;
+			if (aOrder == bOrder) return 0;
 			return aOrder - bOrder;
 		});
 		if (returnObj) {
@@ -31,21 +32,22 @@ export function generateTemporalIdx(fswSign, order =["leftHand", "leftMovement",
 	}
 	return fswSign;
 
-	function getOrder(symbol, order) {
-		let num = 0;
-		for (let type of order) {
-			num++;
-			if (type == "rightHand" && core.fsw.isType(symbol, "hand") && variants.isRightHand(symbol)) break;
-			if (order == "rightMovement" && core.fsw.isType(symbol, "movement") && variants.isRightHand(symbol)) break;
-			if (type == "leftHand" && core.fsw.isType(symbol, "hand") && variants.isLeftHand(symbol)) break;
-			if (type == "leftMovement" && core.fsw.isType(symbol, "movement") && variants.isLeftHand(symbol)) break;
-			if (type == "dynamic" && core.fsw.isType(symbol, "dynamic")) break;
-			if (type == "trunk" && core.fsw.isType(symbol, "trunk")) break;
-			if (type == "limb" && core.fsw.isType(symbol, "limb")) break;
-			if (type == "location" && core.fsw.isType(symbol, "location")) break;
-			if (type == "punctuation" && core.fsw.isType(symbol, "punctuation")) break;
-		}
-		return num;
+	/**
+	 * Determine sort order of a symbol
+	 * @param {string} symbol Symbol to position
+	 * @returns {number} Order
+	 */
+	function getOrder(symbol) {
+		if (core.fsw.isType(symbol, "hand") && variants.isRightHand(symbol)) return order.indexOf("rightHand");
+		if (core.fsw.isType(symbol, "movement") && variants.isRightHand(symbol)) return order.indexOf("rightMovement");
+		if (core.fsw.isType(symbol, "hand") && variants.isLeftHand(symbol)) return order.indexOf("leftHand");
+		if (core.fsw.isType(symbol, "movement") && variants.isLeftHand(symbol)) return order.indexOf("leftMovement");
+		if (core.fsw.isType(symbol, "dynamic")) return order.indexOf("dynamic");
+		if (core.fsw.isType(symbol, "trunk")) return order.indexOf("trunk");
+		if (core.fsw.isType(symbol, "limb")) return order.indexOf("limb");
+		if (core.fsw.isType(symbol, "location")) return order.indexOf("location");
+		if (core.fsw.isType(symbol, "punctuation")) return order.indexOf("punctuation");
+		return order.length;
 	}
 }
 

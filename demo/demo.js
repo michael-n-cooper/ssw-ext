@@ -10,7 +10,7 @@ async function windowLoaded() {
 	document.querySelector("#symbolFsw").addEventListener("change", showSymbol);
 	document.querySelectorAll("#symbolDemo button").forEach((button) => button.addEventListener("click", modifySymbol));
 	document.querySelector("#signFsw").addEventListener("change", showSign);
-	document.querySelectorAll("#signDemo .modifyArea button").forEach((button) => button.addEventListener("click", modifySign));
+	document.querySelectorAll("#signDemo button").forEach((button) => button.addEventListener("click", modifySign));
 }
 
 function renderSymbol(fswSym) {
@@ -86,6 +86,11 @@ function showSign(event) {
 		info += "</ul>";
 		document.querySelector("#signInfo .outputArea").innerHTML = info;
 
+		document.querySelector("#signSequence .renderArea").innerHTML = "";
+		if (parsed.sequence) {
+			parsed.sequence.forEach((symbol) => document.querySelector("#signSequence .renderArea").innerHTML += renderSymbol(symbol));
+		}
+
 		let newSign = ext.ttf.fsw.fswSignFlipX(parsed);
 		document.querySelector("#signMirror .renderArea").innerHTML = renderSign(core.fsw.compose.sign(newSign));
 		document.querySelector("#signMirror .outputArea").innerText = core.fsw.compose.sign(newSign);
@@ -102,7 +107,7 @@ function modifySign(event) {
 	if (event.target.value == "flipX") fswSign = ext.ttf.fsw.fswSignFlipX(fswSign);
 	if (event.target.value == "flipZ") fswSign = ext.ttf.fsw.fswSignFlipZ(fswSign);
 	if (event.target.value == "flipXZ") fswSign = ext.ttf.fsw.fswSignFlipXZ(fswSign);
-	if (event.target.value == "sequence") fswSign = ext.ttf.fsw.generateTemporalIdx(fswSign);
+	if (event.target.value == "sequence") fswSign = ext.ttf.fsw.generateTemporalIdx(fswSign) + fswSign;
 	document.querySelector("#signFsw").value = fswSign;
 	document.querySelector("#signFsw").dispatchEvent(new Event("change"));
 }
