@@ -4,6 +4,7 @@ import "../../../node_modules/@sutton-signwriting/core/src/types";
 
 /**
  * Determine if a symbol applies to left hand
+ * @memberof module:ext/core/fsw
  * @param {(string|SymbolObject)} fswSym Symbol to test
  * @returns {boolean} True if left hand, false if other hand or not handed
  */
@@ -25,6 +26,7 @@ export function isLeftHand(fswSym) {
 }
 /**
  * Determine if a symbol applies to right hand
+ * @memberof module:ext/core/fsw
  * @param {(string|SymbolObject)} fswSym Symbol to test
  * @returns {boolean} True if right hand, false if other hand or not handed
  */
@@ -47,6 +49,7 @@ export function isRightHand(fswSym) {
 
 /**
  * Determine if a symbol applies to both hands
+ * @memberof module:ext/core/fsw
  * @param {(string|SymbolObject)} fswSym Symbol to test
  * @returns {boolean} True if both hands, false if other hand or not handed
  */
@@ -66,6 +69,7 @@ export function isBothHand(fswSym) {
 
 /**
  * Determine if a symbol is on the floor plane
+ * @memberof module:ext/core/fsw
  * @param {(string|SymbolObject)} fswSym Symbol to test
  * @returns {boolean} True if floor plane, false if other or no plane
  */
@@ -80,6 +84,7 @@ export function isFloorPlane(fswSym) {
 }
 /**
  * Determine if a symbol is on the wall plane
+ * @memberof module:ext/core/fsw
  * @param {(string|SymbolObject)} fswSym Symbol to test
  * @returns {boolean} True if wall plane, false if other or no plane
  */
@@ -94,6 +99,7 @@ export function isWallPlane(fswSym) {
 }
 /**
  * Determine if a symbol is on the diagonal towards plane
+ * @memberof module:ext/core/fsw
  * @param {(string|SymbolObject)} fswSym Symbol to test
  * @returns {boolean} True if diagonal towards, false if other or no plane
  */
@@ -108,6 +114,7 @@ export function isDiagonalTowards(fswSym) {
 
 /**
  * Determine if a symbol is on the diagonal away plane
+ * @memberof module:ext/core/fsw
  * @param {(string|SymbolObject)} fswSym Symbol to test
  * @returns {boolean} True if diagonal away, false if other or no plane
  */
@@ -121,6 +128,7 @@ export function isDiagonalAway(fswSym) {
 }
 /**
  * Determine if a symbol is on either diagonal plane
+ * @memberof module:ext/core/fsw
  * @param {(string|SymbolObject)} fswSym Symbol to test
  * @returns {boolean} True if diagonal, false if other or no plane
  */
@@ -130,6 +138,7 @@ export function isDiagonalPlane(fswSym) {
 
 /**
  * Determine how the hand is oriented
+ * @memberof module:ext/core/fsw
  * @param {(string|SymbolObject)} fswSym Symbol to test
  * @returns {string} Orientation as "palm", "side", or "back"
  */

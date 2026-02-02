@@ -5,6 +5,7 @@ import "../../../node_modules/@sutton-signwriting/core/src/types";
 
 /**
  * Describe a sign 
+ * @memberof module:ext/ttf/fsw
  * @param {(string|SignObject)} fswSign Sign
  * @returns {string} Description
  */

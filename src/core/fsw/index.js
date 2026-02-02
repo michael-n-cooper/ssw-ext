@@ -1,6 +1,9 @@
 /**
- * @module fsw
+ * FSW
+ * @module ext/core/fsw
  */
 
-export * from "./fsw-structure.js";
-export * from "./fsw-symbol-variant.js";
+import { symbolParts, inRangeSet, isVariant } from "./fsw-structure.js";
+import { isLeftHand, isRightHand, isBothHand, isFloorPlane, isWallPlane, isDiagonalAway, isDiagonalPlane, isDiagonalTowards } from "./fsw-symbol-variant.js";
+
+export { symbolParts, inRangeSet, isVariant, isLeftHand, isRightHand, isBothHand, isFloorPlane, isWallPlane, isDiagonalAway, isDiagonalPlane, isDiagonalTowards };

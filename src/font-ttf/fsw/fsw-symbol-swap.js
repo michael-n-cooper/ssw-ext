@@ -6,6 +6,7 @@ import "../../../node_modules/@sutton-signwriting/core/src/types";
 
 /**
  * Swap between left-hand and right-hand symbol
+ * @memberof module:ext/ttf/fsw
  * @param {(string|SymbolObject)} fswSym Symbol to change
  * @returns {(string|SymbolObject)} Updated symbol
  */
@@ -43,6 +44,7 @@ export function fswSymbolSwapHands(fswSym) {
 
 /**
  * Swap symbol between heel and palm orientation
+ * @memberof module:ext/ttf/fsw
  * @param {(string|SymbolObject)} fswSym Symbol to change
  * @returns {(string|SymbolObject)} Updated symbol
  */
@@ -84,6 +86,7 @@ export function fswSymbolSwapPerspective(fswSym) {
 
 /**
  * Swap horizontal position of symbol across centre of sign
+ * @memberof module:ext/ttf/fsw
  * @param {(string|SymbolObject)} fswSym Symbol with coordinates
  * @returns {(string|SymbolObject)} Updated symbol with coordinates
  */
@@ -98,6 +101,7 @@ export function fswSymbolSwapSides(fswSym) {
 /**
  * Mirror a symbol
  * Mirrors additional ranges from the base package, uses the base mirror if not in an additional range
+ * @memberof module:ext/ttf/fsw
  * @param {(string|SymbolObject)} fswSym Symbol to change
  * @returns {(string|SymbolObject)} Mirrored symbol
  */

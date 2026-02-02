@@ -6,6 +6,7 @@ import "../../../node_modules/@sutton-signwriting/core/src/types";
 //type SequenceOrder = "rightHand" | "leftHand" | "rightMovement" | "leftMovement" | "dynamic" | "head" | "trunk" | "limb" | "location" | "punctuation";
 /**
  * Generate the temporal sequence for a sign
+ * @memberof module:ext/ttf/fsw
  * @param {(string|SignObject)} sign Sign
  * @param {string[]} [order] Order of symbols
  * @returns {string|SignObject} Sequence, or sign with sequence added

@@ -6,6 +6,7 @@ import "../../../node_modules/@sutton-signwriting/core/src/types";
 /**
  * Change sign between left-handed and right-handed
  * Conceptually flips sign in the X direction
+ * @memberof module:ext/ttf/fsw
  * @param {(string|SignObject)} fswSign Sign to flip
  * @returns {string|SignObject} Updated sign
  */
@@ -29,6 +30,7 @@ export function fswSignFlipX(fswSign) {
 /**
  * Change sign between signer perspective and viewer perspective
  * Conceptually flips sign in the Z direction
+ * @memberof module:ext/ttf/fsw
  * @param {(string|SignObject)} fswSign Sign to flip
  * @returns {(string|SignObject)} Updated sign
  */
@@ -53,6 +55,7 @@ export function fswSignFlipXZ(fswSign) {
 /**
  * Change sign between signer perspective and viewer perspective, and between left-handed and right-handed
  * Conceptually flips sign in the X and Z direction
+ * @memberof module:ext/ttf/fsw
  * @param {(string|SignObject)} fswSign Sign to flip
  * @returns {(string|SignObject)} Updated sign
  */

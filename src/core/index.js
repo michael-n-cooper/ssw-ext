@@ -1,5 +1,8 @@
 /**
- * @module core
+ * Core extensions
+ * @module ext/core
  */
 
-export * as fsw from "./fsw/index.js";
+import * as fsw from "./fsw/index.js";
+
+export { fsw };

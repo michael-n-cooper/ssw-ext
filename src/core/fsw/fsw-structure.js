@@ -20,6 +20,7 @@ export function baseSymbol(fswSym) {
 
 /**
  * Split a symbol into base, fill, and rotation
+ * @memberof module:ext/core/fsw
  * @param {(string | SymbolObject)} fswSym 
  * @returns {symbolParts} base, fill, and rotation components of symbol
  */
@@ -41,7 +42,7 @@ export function symbolParts(fswSym) {
 
 /**
  * Pair of FSW symbols that define a range
- * @typedef {[number, number]} SymbolRange 
+ * @typedef {number[]} SymbolRange 
  */
 
 /**
@@ -51,6 +52,7 @@ export function symbolParts(fswSym) {
 
 /**
  * Ranges for hand and plane variants of symbols
+ * @memberof module:ext/core/fsw
  */
 const variantRanges = {
 	"handGroup1": [
@@ -138,12 +140,15 @@ const variantRanges = {
 	]
 }
 
+/*
 export const handVariantGroups = ["handGroup1", "handGroup2", "handGroup3"];
 export const mirrorGroups = ["mirrorGroup1"];
 export const planeVariantGroups = ["planeGroup1", "planeGroup2"];
+/*
 
 /**
  * Test if a symbol is in one of the ranges of a rangeset
+ * @memberof module:ext/core/fsw
  * @param {number} val Value to test
  * @param {RangeSet} rangeSet Set of ranges to test
  */
@@ -156,6 +161,7 @@ export function inRangeSet(val, rangeSet) {
 
 /**
  * Determine if a symbol is in a hand or plane variant group
+ * @memberof module:ext/core/fsw
  * @param {number} key ID of a base symbol
  * @param {string} variant Variant group to test
  * @returns boolean

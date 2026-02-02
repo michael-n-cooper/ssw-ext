@@ -6,6 +6,7 @@ import "../../../node_modules/@sutton-signwriting/core/src/types";
 
 /**
  * Describe a symbol
+ * @memberof module:ext/ttf/fsw
  * @param {string | SymbolObject} fswSym Symbol to describe
  * @returns {string} Description
  */
@@ -45,6 +46,7 @@ export function describeSymbol(fswSym) {
 
 /**
  * Sets of names for symbol rotations
+ * @private
  */
 const rotNames = {
 	"wall": ["Up", "Up Left", "Left", "Down Left", "Down", "Down Right", "Right", "Up Right"],
@@ -54,6 +56,7 @@ const rotNames = {
 }
 /**
  * Pointers to the symbol rotation name for a give rotation value
+ * @private
  */
 const symbolRotSequences = new Map([
 	[[0x231, 0x232], [0, 1, 2, 3, 4, 5, 6, 7, 4, 3, 2, 1, 0, 7, 6, 5]],
@@ -61,6 +64,7 @@ const symbolRotSequences = new Map([
 ]);
 /**
  * Sequences of rotation names for symbol ranges
+ * @private
  */
 const symbolRotPatterns = new Map([
 	[[[0x100, 0x204], [0x22a, 0x230], [0x234, 0x235], [0x24b, 0x254], [0x265, 0x26b], [0x26f, 0x270], [0x281, 0x287]], [0]],
@@ -78,6 +82,7 @@ const symbolRotPatterns = new Map([
 ]);
 /**
  * Find the rotation pattern for a symbol
+ * @private
  * @param {number} baseNum Symbol base number
  * @returns {number[]} Pattern
  */
@@ -91,6 +96,7 @@ function getRotPattern(baseNum) {
 }
 /**
  * Find the rotation name sequence for a symbol
+ * @private
  * @param {number} baseNum Symbol base number
  * @returns {number[]} Sequence
  */
@@ -103,6 +109,7 @@ function getRotSeq(baseNum) {
 }
 /**
  * Adjust a rotation pattern to match the rotation of the symbol
+ * @private
  * @param {number[]} pattern Rotation pattern
  * @param {number} rot Symbol rotation
  * @returns {number[]} Rotated pattern
@@ -116,6 +123,7 @@ function rotateSymbolPattern(pattern, rot) {
 }
 /**
  * Get the description for the rotation component of a symbol
+ * @private
  * @param {string | SymbolObject} fswSym Symbol to describe
  * @returns {string} Description
  */

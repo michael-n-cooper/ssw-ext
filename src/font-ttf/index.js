@@ -1,5 +1,8 @@
 /**
- * @module ttf
+ * Font-ttf extensions
+ * @module ext/ttf
  */
 
-export * as fsw from "./fsw/index.js";
+import * as fsw from "./fsw/index.js";
+
+export { fsw };
