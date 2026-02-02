@@ -1,11 +1,5 @@
 .DS_Store
 node_modules
-/core.*
-/fsw
-/fswquery
-/swu
-/swuquery
-/style
-/convert
 *.d.ts
 test.html
+/docs
