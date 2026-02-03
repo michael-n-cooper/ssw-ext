@@ -52,7 +52,10 @@ const rotNames = {
 	"wall": ["Up", "Up Left", "Left", "Down Left", "Down", "Down Right", "Right", "Up Right"],
 	"floor": ["Forward", "Forward Left", "Left", "Back Left", "Back", "Back Right", "Right", "Forward Right"],
 	"diagonal": ["Up", "Up Left", "Down Left", "Down", "Down Right", "Up Right"],
-	"twists": ["Over Right", "Over Left", "Under Right", "Under Left"],
+	"curveWall": ["Up & Right", "Right Down Diagonal", "Right & Down", "Down Diagonal Left", "Down & Left", "Up Diagonal Left", "Left & Up", "Up Diagonal Left", "Up & Left", "Left Down Diagonal", "Left & Down", "Down Diagonal Right", "Down & Right", "Up Diagonal Right", "Right & Up", "Up Diagonal Right"],
+	"curveX": ["Right", "Left"],
+	"curveY": ["Forward", "Back"],
+	"curveZ": ["Over", "Under"]
 }
 /**
  * Pointers to the symbol rotation name for a give rotation value
