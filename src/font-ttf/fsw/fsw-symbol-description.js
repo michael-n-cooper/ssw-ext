@@ -147,6 +147,7 @@ function getSymbolRotationDescription(fswSym) {
 	}
 	return [];
 }
+/*
 const symbolTwistPatterns = {
 	"S23e": [rotNames.twists[0]],
 	"S24b": [rotNames.twists[1]],
@@ -159,3 +160,4 @@ const symbolTwistSequences = {
 	"S24b - S24d": [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
 	"S24e - ": [3,3,null,1,1,1,null,3,2,2,null,0,0,0,null,2]
 }
+	*/

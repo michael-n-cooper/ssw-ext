@@ -17,8 +17,8 @@ export function fswSignFlipX(fswSign) {
 	if (parsed.spatials) {
 		parsed.spatials = parsed.spatials.map((sym) => {
 			sym.symbol = swap.symbolMirror(sym.symbol);
-			sym.symbol = swap.fswSymbolSwapHands(sym.symbol);
-			sym = core.fsw.parse.symbol(swap.fswSymbolSwapSides(core.fsw.compose.symbol(sym)));
+			sym.symbol = swap.symbolSwapHands(sym.symbol);
+			sym = core.fsw.parse.symbol(swap.symbolSwapSides(core.fsw.compose.symbol(sym)));
 			return sym;
 		});
 		if (returnObj) return parsed;
@@ -41,9 +41,9 @@ export function fswSignFlipXZ(fswSign) {
 	if (parsed.spatials) {
 		parsed.spatials = parsed.spatials.map((sym) => {
 			sym.symbol = swap.symbolMirror(sym.symbol);
-			sym.symbol = swap.fswSymbolSwapPerspective(sym.symbol);
-			sym.symbol = swap.fswSymbolSwapHands(sym.symbol);
-			sym = core.fsw.parse.symbol(swap.fswSymbolSwapSides(core.fsw.compose.symbol(sym)));
+			sym.symbol = swap.symbolSwapPerspective(sym.symbol);
+			sym.symbol = swap.symbolSwapHands(sym.symbol);
+			sym = core.fsw.parse.symbol(swap.symbolSwapSides(core.fsw.compose.symbol(sym)));
 			return sym;
 		});
 		if (returnObj) return parsed;
@@ -65,7 +65,7 @@ export function fswSignFlipZ(fswSign) {
 
 	if (parsed.spatials) {
 		parsed.spatials = parsed.spatials.map((sym) => {
-			sym.symbol = swap.fswSymbolSwapPerspective(sym.symbol);
+			sym.symbol = swap.symbolSwapPerspective(sym.symbol);
 			return sym;
 		});
 		if (returnObj) return parsed;

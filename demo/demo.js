@@ -1,7 +1,7 @@
 import * as ext from "../src/index.js";
 import * as core from "../node_modules/@sutton-signwriting/core/core.mjs";
 import * as ttf from "../node_modules/@sutton-signwriting/font-ttf/index.mjs";
-import { fswSymbolSwapHands, fswSymbolSwapPerspective, fswSymbolSwapSides } from "../src/font-ttf/fsw/fsw-symbol-swap.js";
+import { symbolSwapHands, symbolSwapPerspective, symbolSwapSides } from "../src/font-ttf/fsw/fsw-symbol-swap.js";
 import "../config/alphabet.js";
 
 window.addEventListener("load", windowLoaded);
@@ -45,15 +45,15 @@ function showSymbol(event) {
 		document.querySelector("#symbolMirror .renderArea").innerHTML = renderSymbol(newSym);
 		document.querySelector("#symbolMirror .outputArea").innerText = newSym;
 			
-		newSym = fswSymbolSwapHands(fswSym);
+		newSym = symbolSwapHands(fswSym);
 		document.querySelector("#symbolHands .renderArea").innerHTML = renderSymbol(newSym);
 		document.querySelector("#symbolHands .outputArea").innerText = newSym;
 
-		newSym = fswSymbolSwapPerspective(fswSym);
+		newSym = symbolSwapPerspective(fswSym);
 		document.querySelector("#symbolPerspective .renderArea").innerHTML = renderSymbol(newSym);
 		document.querySelector("#symbolPerspective .outputArea").innerText = newSym;
 
-		newSym = fswSymbolSwapSides(fswSym);
+		newSym = symbolSwapSides(fswSym);
 		document.querySelector("#symbolSides .renderArea").innerHTML = renderSymbol(newSym);
 		document.querySelector("#symbolSides .outputArea").innerText = newSym;
 	}
@@ -64,10 +64,10 @@ function modifySymbol(event) {
 	let fswSym = document.querySelector("#symbolFsw").value;
 	let parsed = core.fsw.parse.symbol(fswSym);
 	if (parsed.symbol) {
-		if (event.target.value == "hands") fswSym = fswSymbolSwapHands(fswSym);
-		if (event.target.value == "sides") fswSym = fswSymbolSwapSides(fswSym);
+		if (event.target.value == "hands") fswSym = symbolSwapHands(fswSym);
+		if (event.target.value == "sides") fswSym = symbolSwapSides(fswSym);
 		if (event.target.value == "mirror") fswSym = ext.ttf.fsw.symbolMirror(fswSym);
-		if (event.target.value == "perspective") fswSym = fswSymbolSwapPerspective(fswSym);                
+		if (event.target.value == "perspective") fswSym = symbolSwapPerspective(fswSym);                
 		document.querySelector("#symbolFsw").value = fswSym;
 		document.querySelector("#symbolFsw").dispatchEvent(new Event("change"));
 	}
@@ -112,7 +112,7 @@ function modifySign(event) {
 	document.querySelector("#signFsw").dispatchEvent(new Event("change"));
 }
 
-function showMirrors() {
+/* function showMirrors() {
 	const mirrorArea = document.querySelector("#mirrorArea");
 	Object.values(window.alphabet).forEach((group) => {
 		group.forEach((sym) => {
@@ -125,9 +125,9 @@ function showMirrors() {
 			fswSec.textContent = sym;
 			origSec.innerHTML = ttf.fsw.symbolSvg(sym);
 			mirrorSec.innerHTML = ttf.fsw.symbolSvg(ext.ttf.fsw.symbolMirror(sym));
-			handSec.innerHTML = ttf.fsw.symbolSvg(ext.ttf.fsw.fswSymbolSwapHands(sym));
+			handSec.innerHTML = ttf.fsw.symbolSvg(ext.ttf.fsw.symbolSwapHands(sym));
 
 			mirrorArea.append(fswSec, origSec, mirrorSec, handSec);
 		});
 	});
-}
+} */

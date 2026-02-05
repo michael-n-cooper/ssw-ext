@@ -7,6 +7,6 @@ import { describeSign } from "./fsw-sign-description.js";
 import { fswSignFlipX, fswSignFlipZ, fswSignFlipXZ } from "./fsw-sign-flip.js";
 import { generateTemporalIdx } from "./fsw-sign-generate-sequence.js";
 import { describeSymbol } from "./fsw-symbol-description.js";
-import { fswSymbolSwapHands, fswSymbolSwapPerspective, fswSymbolSwapSides } from "./fsw-symbol-swap.js";
+import { symbolSwapHands, symbolSwapPerspective, symbolSwapSides, symbolMirror } from "./fsw-symbol-swap.js";
 
-export { describeSign, fswSignFlipX, fswSignFlipXZ, fswSignFlipZ, generateTemporalIdx, describeSymbol, fswSymbolSwapHands, fswSymbolSwapPerspective, fswSymbolSwapSides };
+export { describeSign, fswSignFlipX, fswSignFlipXZ, fswSignFlipZ, generateTemporalIdx, describeSymbol, symbolSwapHands as symbolSwapHands, symbolSwapPerspective as symbolSwapPerspective, symbolSwapSides as symbolSwapSides, symbolMirror };
