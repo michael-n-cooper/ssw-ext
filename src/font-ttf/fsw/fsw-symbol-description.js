@@ -80,7 +80,7 @@ const symbolRotPatterns = new Map([
 	[[[0x23f, 0x241], [0x277, 0x277]], [3, 0]],
 	[[[0x242, 0x244], [0x278, 0x27a]], [4, 2, 0]],
 	[[[0x245, 0x247], [0x27b, 0x27d]], [0, 3, 0]],
-	[[[0x248, 0x24a], [0x2, 0x2]], [7, 1, 7, 1]],
+	[[0x248, 0x24a], [7, 1, 7, 1]],
 	[[0x27e, 0x280], [5, 0, 5, 0]]
 ]);
 /**
@@ -89,8 +89,8 @@ const symbolRotPatterns = new Map([
  * @param {number} baseNum Symbol base number
  * @returns {number[]} Pattern
  */
-function getRotPattern(baseNum) {
-	for (const pattern of symbolRotPatterns.entries()) {
+function getRotPattern(baseNum, map) {
+	for (const pattern of map.entries()) {
 		if (structure.inRangeSet(baseNum, pattern[0])) {
 			return pattern[1];
 		}
@@ -103,8 +103,8 @@ function getRotPattern(baseNum) {
  * @param {number} baseNum Symbol base number
  * @returns {number[]} Sequence
  */
-function getRotSeq(baseNum) {
-	for (const seq of symbolRotSequences.entries()) {
+function getRotSeq(baseNum, map) {
+	for (const seq of map.entries()) {
 		if (structure.inRangeSet(baseNum, seq[0])) {
 			return seq[1];
 		}
@@ -134,15 +134,45 @@ function getSymbolRotationDescription(fswSym) {
 	const parsed = core.fsw.parse.symbol(fswSym);
 	if (parsed.symbol) {
 		const sp = structure.symbolParts(fswSym);
-		let rotPattern = getRotPattern(sp.baseNum);
-		if (rotPattern != null) {
-			rotPattern = rotateSymbolPattern(rotPattern, sp.rotNum);
-			const rotSeq = getRotSeq(sp.baseNum);
-			let nameList = rotNames.wall;
-			if (variants.isFloorPlane(fswSym)) nameList = rotNames.floor;
-			return rotPattern.map((pos) => {
-				return nameList[rotSeq[pos]]
-			});
+		const floorPlane = variants.isFloorPlane(parsed.symbol);
+		// circles
+		if (structure.inRangeSet(sp.baseNum, [0x2e3, 0x2ec])) {
+			let result = [];
+			let rotPattern = getRotPattern(sp.baseNum, symbolCircleTypePatterns);
+			if (rotPattern != null) {
+				const rotSeq = getRotSeq(sp.baseNum, symbolCircleTypeSequences);
+				rotPattern = rotateSymbolPattern(rotPattern, sp.rotNum);
+				const dirNames = floorPlane ? symbolCircleNames.circleTypeFloor : symbolCircleNames.circleTypeWall;
+				result.push(rotPattern.map((pos) => {
+					return dirNames[rotSeq[pos]]
+				}));
+			}
+			rotPattern = getRotPattern(sp.baseNum, symbolCirclePatterns);
+			if (rotPattern != null) {
+				const rotSeq = getRotSeq(sp.baseNum, symbolCircleSequences);
+				rotPattern = rotateSymbolPattern(rotPattern, sp.rotNum);
+				if (floorPlane) {
+					const startNames = symbolCircleNames.circleStartsFloor;
+					result.push("Start " + startNames[(sp.fillNum < 3 ? 0 : 1)])
+				} else {
+					const startNames = symbolCircleNames.circleStartsWall;
+					result.push("Start " + rotPattern.map((pos) => {
+						return startNames[rotSeq[pos]]
+					}));
+				}
+			}
+			return result;
+		} else {
+			// orientations and movement directions
+			let rotPattern = getRotPattern(sp.baseNum, symbolRotPatterns);
+			if (rotPattern != null) {
+				rotPattern = rotateSymbolPattern(rotPattern, sp.rotNum);
+				const rotSeq = getRotSeq(sp.baseNum, symbolRotSequences);
+				const nameList = floorPlane ? rotNames.floor : rotNames.wall;
+				return rotPattern.map((pos) => {
+					return nameList[rotSeq[pos]]
+				});
+			}
 		}
 	}
 	return [];
@@ -161,3 +191,22 @@ const symbolTwistSequences = {
 	"S24e - ": [3,3,null,1,1,1,null,3,2,2,null,0,0,0,null,2]
 }
 	*/
+const symbolCircleNames = {
+	"circleTypeWall": ["Anti-clockwise", "Clockwise"],
+	"circleTypeFloor": ["Forward-Back", "Back-Forward"],
+	"circleStartsWall": ["High", "High-Diagonal-Left", "Left Side", "Low-Diagonal-Left", "Low", "Low-Diagonal-Right", "Right Side", "High-Diagonal-Right"],
+	"circleStartsFloor": ["Near", "Away"],
+	"circleDirectionFloor": ["Parallel with Side Wall", "Left High Diagonal", "Parallel with Floor", "Left Low Diagonal", "Parallel with Side Wall", "Right Low Diagonal", "Parallel with Floor", "Right High Diagonal"]
+}
+const symbolCircleSequences = new Map([
+	[[0x100, 0x500], [0, 1, 2, 3, 4, 5, 6, 7, 0, 7, 6, 5, 4, 3, 2, 1]]
+]);
+const symbolCirclePatterns = new Map([
+	[[0x100, 0x500], [0]]
+]);
+const symbolCircleTypeSequences = new Map([
+	[[0x100, 0x500], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1]]
+]);
+const symbolCircleTypePatterns = new Map([
+	[[0x100, 0x500], [0]]
+]);
