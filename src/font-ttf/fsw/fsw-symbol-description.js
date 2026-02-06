@@ -137,45 +137,38 @@ function getSymbolRotationDescription(fswSym) {
 		const floorPlane = variants.isFloorPlane(parsed.symbol);
 		// circles
 		if (structure.inRangeSet(sp.baseNum, [0x2e3, 0x2ec])) {
-			let result = [];
+			// circle types (direction of motion)
 			let rotPattern = getRotPattern(sp.baseNum, symbolCircleTypePatterns);
-			if (rotPattern != null) {
-				const rotSeq = getRotSeq(sp.baseNum, symbolCircleTypeSequences);
-				rotPattern = rotateSymbolPattern(rotPattern, sp.rotNum);
-				const dirNames = floorPlane ? symbolCircleNames.circleTypeFloor : symbolCircleNames.circleTypeWall;
-				result.push(rotPattern.map((pos) => {
-					return dirNames[rotSeq[pos]]
-				}));
-			}
+			let rotSeq = getRotSeq(sp.baseNum, symbolCircleTypeSequences);
+			let startNames = floorPlane ? symbolCircleNames.circleTypeFloor : symbolCircleNames.circleTypeWall;
+			let result = processRotPattern(sp.rotNum, rotPattern, rotSeq, startNames);
+
+			// circle starts (location where motion starts)
 			rotPattern = getRotPattern(sp.baseNum, symbolCirclePatterns);
-			if (rotPattern != null) {
-				const rotSeq = getRotSeq(sp.baseNum, symbolCircleSequences);
-				rotPattern = rotateSymbolPattern(rotPattern, sp.rotNum);
-				if (floorPlane) {
-					const startNames = symbolCircleNames.circleStartsFloor;
-					result.push("Start " + startNames[(sp.fillNum < 3 ? 0 : 1)])
-				} else {
-					const startNames = symbolCircleNames.circleStartsWall;
-					result.push("Start " + rotPattern.map((pos) => {
-						return startNames[rotSeq[pos]]
-					}));
-				}
-			}
+			rotSeq = getRotSeq(sp.baseNum, symbolCircleSequences);
+			startNames = floorPlane ? symbolCircleNames.circleStartsFloor : symbolCircleNames.circleStartsWall;
+			result = result.concat(processRotPattern(sp.rotNum, rotPattern, rotSeq, startNames));
 			return result;
-		} else {
-			// orientations and movement directions
-			let rotPattern = getRotPattern(sp.baseNum, symbolRotPatterns);
-			if (rotPattern != null) {
-				rotPattern = rotateSymbolPattern(rotPattern, sp.rotNum);
-				const rotSeq = getRotSeq(sp.baseNum, symbolRotSequences);
-				const nameList = floorPlane ? rotNames.floor : rotNames.wall;
-				return rotPattern.map((pos) => {
-					return nameList[rotSeq[pos]]
-				});
-			}
+		}
+		// orientations and movement directions
+		else {
+			const rotPattern = getRotPattern(sp.baseNum, symbolRotPatterns);
+			const rotSeq = getRotSeq(sp.baseNum, symbolRotSequences);
+			const nameList = floorPlane ? rotNames.floor : rotNames.wall;
+			return processRotPattern(sp.rotNum, rotPattern, rotSeq, nameList);
 		}
 	}
 	return [];
+
+	function processRotPattern(rot, rotPattern, rotSequence, nameList) {
+		if (rotPattern != null) {
+			rotPattern = rotateSymbolPattern(rotPattern, rot);
+			return rotPattern.map((pos) => {
+				return nameList[rotSequence[pos]];
+			});
+		}
+		return [];
+	}
 }
 /*
 const symbolTwistPatterns = {
