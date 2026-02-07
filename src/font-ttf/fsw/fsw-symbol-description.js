@@ -38,11 +38,13 @@ export function describeSymbol(fswSym) {
 			if (variants.isFloorPlane(parsed.symbol)) val.push("Floor Plane");
 		}
 
-		const rotDesc = getSymbolRotationDescription(parsed.symbol);
+		const rotDesc = getRotDescComponent(parsed.symbol, rotData.orientations);
 		if (rotDesc.length > 0) val.push(rotDesc.join(", "));
-		const circleDir = getCircleDirection(parsed.symbol);
-		if (circleDir.length > 0) val.push(circleDir.join(", "));
-		const circleStart = getCircleStart(parsed.symbol);
+		const circleType = getRotDescComponent(parsed.symbol, rotData.circleTypes);
+		if (circleType.length > 0) val.push(circleType.join(", "));
+		//const circleDir = getRotDescComponent(parsed.symbol, rotData.circleDirections);
+		//if (circleDir.length > 0) val.push(circleDir.join(", "));
+		const circleStart = getRotDescComponent(parsed.symbol, rotData.circleStarts);
 		if (circleStart.length > 0) val.push(circleStart.join(", "));
 		const twistDesc = getTwistDescription(parsed.symbol);
 		if (twistDesc.length > 0) val.push(twistDesc.join(", "));
@@ -98,24 +100,24 @@ function rotateSymbolPattern(pattern, rot, short = false) {
 		return newPos;
 	})
 }
+
 /**
  * Get the description for the rotation component of a symbol
  * @private
  * @param {string | SymbolObject} fswSym Symbol to describe
  * @returns {string} Description
  */
-function getSymbolRotationDescription(fswSym) {
+function getRotDescComponent(fswSym, comp) {
 	const parsed = core.fsw.parse.symbol(fswSym);
 	if (parsed.symbol) {
 		const sp = structure.symbolParts(fswSym);
 		const floorPlane = variants.isFloorPlane(parsed.symbol);
-		let rotPattern, rotSeq, startNames, result = [];
 		// orientations and movement directions
-		rotPattern = getRotPattern(sp.baseNum, rotData.orientations.patterns);
-		rotSeq = getRotSeq(sp.baseNum, rotData.orientations.sequences);
-		startNames = floorPlane ? rotData.orientations.names.floor : rotData.orientations.names.wall;
-		result = result.concat(processRotPattern(sp.rotNum, rotPattern, rotSeq, startNames));
-		return result;
+		const rotPattern = getRotPattern(sp.baseNum, comp.patterns);
+		const rotSeq = getRotSeq(sp.baseNum, comp.sequences);
+		const startNames = floorPlane ? comp.names.floor : comp.names.wall;
+		return processRotPattern(sp.rotNum, rotPattern, rotSeq, startNames);
+
 	}
 	return [];
 }
@@ -144,43 +146,6 @@ function getTwistDescription(fswSym) {
 			if (0x24e <= sp.baseNum && sp.baseNum <= 0x250 && sp.fillNum < 3) startNames = rotData.twists.names.under;
 			else if (sp.fillNum > 2) startNames = rotData.twists.names.under;
 			result = processRotPattern(sp.rotNum, rotPattern, rotSeq, startNames);
-		}
-		return result;
-	}
-	return [];
-}
-function getCircleDirection(fswSym) {
-	const parsed = core.fsw.parse.symbol(fswSym);
-	if (parsed.symbol) {
-		const floorPlane = variants.isFloorPlane(parsed.symbol);
-		const sp = structure.symbolParts(fswSym);
-		let rotPattern, rotSeq, startNames, result = [];
-
-		// circles
-		if (structure.inRangeSet(sp.baseNum, [0x2e3, 0x2ec])) {
-			// circle types (direction of motion)
-			rotPattern = getRotPattern(sp.baseNum, rotData.circleTypes.patterns);
-			rotSeq = getRotSeq(sp.baseNum, rotData.circleTypes.sequences);
-			startNames = floorPlane ? rotData.circleTypes.names.floor : rotData.circleTypes.names.wall;
-			result = result.concat(processRotPattern(sp.rotNum, rotPattern, rotSeq, startNames));
-		}
-		return result;
-	}
-	return [];
-}
-function getCircleStart(fswSym) {
-	const parsed = core.fsw.parse.symbol(fswSym);
-	if (parsed.symbol) {
-		const floorPlane = variants.isFloorPlane(parsed.symbol);
-		const sp = structure.symbolParts(fswSym);
-		let rotPattern, rotSeq, startNames, result = [];
-
-		if (structure.inRangeSet(sp.baseNum, [0x2e3, 0x2ec])) {
-			// circle starts (location where motion starts)
-			rotPattern = getRotPattern(sp.baseNum, rotData.circleStarts.patterns);
-			rotSeq = getRotSeq(sp.baseNum, rotData.circleStarts.sequences);
-			startNames = floorPlane ? rotData.circleStarts.names.floor : rotData.circleStarts.names.wall;
-			result = result.concat(processRotPattern(sp.rotNum, rotPattern, rotSeq, startNames));
 		}
 		return result;
 	}
