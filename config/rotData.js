@@ -53,10 +53,10 @@ export const rotData = {
 			"floor": ["Forward-Back", "Back-Forward"]
 		},
 		"sequences": [
-			[[0x100, 0x500], [0, 1]]
+			[[0x2e3, 0x2ec], [0, 1]]
 		],
 		"patterns": [
-			[[0x100, 0x500], [0]]
+			[[0x2e3, 0x2ec], [0]]
 		]
 	},
 	"circleStarts": {
@@ -65,10 +65,10 @@ export const rotData = {
 			"floor": ["Near", "Away"]
 		},
 		"sequences": [
-			[[0x100, 0x500], [0, 1, 2, 3, 4, 5, 6, 7, 0, 7, 6, 5, 4, 3, 2, 1]]
+			[[0x2e3, 0x2ec], [0, 1, 2, 3, 4, 5, 6, 7, 0, 7, 6, 5, 4, 3, 2, 1]]
 		],
 		"patterns": [
-			[[0x100, 0x500], [0]]
+			[[0x2e3, 0x2ec], [0]]
 		]
 	},
 	"circleDirections": {
@@ -77,10 +77,10 @@ export const rotData = {
 			"floor": ["Parallel with Side Wall", "Left High Diagonal", "Parallel with Floor", "Left Low Diagonal", "Parallel with Side Wall", "Right Low Diagonal", "Parallel with Floor", "Right High Diagonal"]
 		},
 		"sequences": [
-			[[0x100, 0x500], [0, 1, 2, 3, 4, 5, 6, 7, 0, 7, 6, 5, 4, 3, 2, 1]]
+			[[0x2e3, 0x2ec], [0, 1, 2, 3, 4, 5, 6, 7, 0, 7, 6, 5, 4, 3, 2, 1]]
 		],
 		"patterns": [
-			[[0x100, 0x500], [0]]
+			[[0x2e3, 0x2ec], [0]]
 		]
 	}
 }
