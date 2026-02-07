@@ -117,10 +117,13 @@ function getRotSeq(baseNum, map) {
  * @param {number} rot Symbol rotation
  * @returns {number[]} Rotated pattern
  */
-function rotateSymbolPattern(pattern, rot) {
+function rotateSymbolPattern(pattern, rot, short=false) {
 	return pattern.map((pos) => {
 		let newPos = pos + rot;
-		if ((rot < 8 && newPos > 7) || newPos > 15) newPos = newPos - 8;
+		if (short) {
+			newPos = (rot > 7 ? (pos ^ 1) : pos);
+		}
+		else if ((rot < 8 && newPos > 7) || newPos > 15) newPos = newPos - 8;
 		return newPos;
 	})
 }
@@ -135,34 +138,45 @@ function getSymbolRotationDescription(fswSym) {
 	if (parsed.symbol) {
 		const sp = structure.symbolParts(fswSym);
 		const floorPlane = variants.isFloorPlane(parsed.symbol);
+		let rotPattern, rotSeq, startNames, result = [];
 		// circles
 		if (structure.inRangeSet(sp.baseNum, [0x2e3, 0x2ec])) {
 			// circle types (direction of motion)
-			let rotPattern = getRotPattern(sp.baseNum, symbolCircleTypePatterns);
-			let rotSeq = getRotSeq(sp.baseNum, symbolCircleTypeSequences);
-			let startNames = floorPlane ? symbolCircleNames.circleTypeFloor : symbolCircleNames.circleTypeWall;
-			let result = processRotPattern(sp.rotNum, rotPattern, rotSeq, startNames);
+			rotPattern = getRotPattern(sp.baseNum, symbolCircleTypePatterns);
+			rotSeq = getRotSeq(sp.baseNum, symbolCircleTypeSequences);
+			startNames = floorPlane ? symbolCircleNames.circleTypeFloor : symbolCircleNames.circleTypeWall;
+			result = result.concat(processRotPattern(sp.rotNum, rotPattern, rotSeq, startNames));
 
 			// circle starts (location where motion starts)
 			rotPattern = getRotPattern(sp.baseNum, symbolCirclePatterns);
 			rotSeq = getRotSeq(sp.baseNum, symbolCircleSequences);
 			startNames = floorPlane ? symbolCircleNames.circleStartsFloor : symbolCircleNames.circleStartsWall;
 			result = result.concat(processRotPattern(sp.rotNum, rotPattern, rotSeq, startNames));
-			return result;
 		}
 		// orientations and movement directions
 		else {
-			const rotPattern = getRotPattern(sp.baseNum, symbolRotPatterns);
-			const rotSeq = getRotSeq(sp.baseNum, symbolRotSequences);
-			const nameList = floorPlane ? rotNames.floor : rotNames.wall;
-			return processRotPattern(sp.rotNum, rotPattern, rotSeq, nameList);
+			rotPattern = getRotPattern(sp.baseNum, symbolRotPatterns);
+			rotSeq = getRotSeq(sp.baseNum, symbolRotSequences);
+			startNames = floorPlane ? rotNames.floor : rotNames.wall;
+			result = result.concat(processRotPattern(sp.rotNum, rotPattern, rotSeq, startNames));
+			
+			// twists
+			if (structure.inRangeSet(sp.baseNum, [[0x23e, 0x23e], [0x24b, 0x24c], [0x24e, 0x24f], [0x281, 0x285], [0x24d, 0x24d], [0x250, 0x250], [0x286, 0x286]])) {
+				rotPattern = getRotPattern(sp.baseNum, symbolTwistPatterns);
+				rotSeq = getRotSeq(sp.baseNum, symbolTwistSequences);
+				startNames = symbolTwistNames.twistsOver;
+				if (0x24e <= sp.baseNum && sp.baseNum <= 0x250 && sp.fillNum < 3) startNames = symbolTwistNames.twistsUnder;
+				else if (sp.fillNum > 2) startNames = symbolTwistNames.twistsUnder;
+				result = result.concat(processRotPattern(sp.rotNum, rotPattern, rotSeq, startNames));
+			}
 		}
+		return result;
 	}
 	return [];
 
 	function processRotPattern(rot, rotPattern, rotSequence, nameList) {
 		if (rotPattern != null) {
-			rotPattern = rotateSymbolPattern(rotPattern, rot);
+			rotPattern = rotateSymbolPattern(rotPattern, rot, (rotSequence.length == 2));
 			return rotPattern.map((pos) => {
 				return nameList[rotSequence[pos]];
 			});
@@ -170,20 +184,18 @@ function getSymbolRotationDescription(fswSym) {
 		return [];
 	}
 }
-/*
-const symbolTwistPatterns = {
-	"S23e": [rotNames.twists[0]],
-	"S24b": [rotNames.twists[1]],
-	"S24c - S24d": [rotNames.twists[1], rotNames.twists[0]],
-	"S24e - S24f": [rotNames.twists[3]],
-	"S250": [rotNames.twists[3], rotNames.twists[2]]
+const symbolTwistNames = {
+	"twistsOver": ["Over Left", "Over Right"],
+	"twistsUnder": ["Under Left", "Under Right"]
 }
-const symbolTwistSequences = {
-	"S23e": [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
-	"S24b - S24d": [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-	"S24e - ": [3,3,null,1,1,1,null,3,2,2,null,0,0,0,null,2]
-}
-	*/
+const symbolTwistPatterns = new Map([
+	[[[0x23e, 0x23e], [0x24b, 0x24c], [0x24e, 0x24f], [0x281, 0x282], [0x284, 0x285]], [0]],
+	[[[0x24d, 0x24d], [0x250, 0x250], [0x283, 0x283], [0x286, 0x286]], [0, 1]],
+]);
+const symbolTwistSequences = new Map([
+	[[0x23e, 0x286], [0, 1]],
+]);
+
 const symbolCircleNames = {
 	"circleTypeWall": ["Anti-clockwise", "Clockwise"],
 	"circleTypeFloor": ["Forward-Back", "Back-Forward"],
@@ -198,7 +210,7 @@ const symbolCirclePatterns = new Map([
 	[[0x100, 0x500], [0]]
 ]);
 const symbolCircleTypeSequences = new Map([
-	[[0x100, 0x500], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1]]
+	[[0x100, 0x500], [0, 1]]
 ]);
 const symbolCircleTypePatterns = new Map([
 	[[0x100, 0x500], [0]]
