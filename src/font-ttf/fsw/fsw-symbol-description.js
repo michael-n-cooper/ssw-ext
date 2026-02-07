@@ -38,8 +38,15 @@ export function describeSymbol(fswSym) {
 		}
 
 		const rotDesc = getSymbolRotationDescription(parsed.symbol);
+		if (rotDesc.length > 0) val.push(rotDesc.join(", "));
+		const circleDir = getCircleDirection(parsed.symbol);
+		if (circleDir.length > 0) val.push(circleDir.join(", "));
+		const circleStart = getCircleStart(parsed.symbol);
+		if (circleStart.length > 0) val.push(circleStart.join(", "));
+		const twistDesc = getTwistDescription(parsed.symbol);
+		if (twistDesc.length > 0) val.push(twistDesc.join(", "));
 
-		return val.join(" - ") + (rotDesc.length > 0 ? (" - " + rotDesc.join(", ")) : "");
+		return val.join(" - ");
 	}
 	return "";
 }
@@ -139,6 +146,51 @@ function getSymbolRotationDescription(fswSym) {
 		const sp = structure.symbolParts(fswSym);
 		const floorPlane = variants.isFloorPlane(parsed.symbol);
 		let rotPattern, rotSeq, startNames, result = [];
+		// orientations and movement directions
+			rotPattern = getRotPattern(sp.baseNum, symbolRotPatterns);
+			rotSeq = getRotSeq(sp.baseNum, symbolRotSequences);
+			startNames = floorPlane ? rotNames.floor : rotNames.wall;
+			result = result.concat(processRotPattern(sp.rotNum, rotPattern, rotSeq, startNames));
+		return result;
+	}
+	return [];
+}
+function processRotPattern(rot, rotPattern, rotSequence, nameList) {
+	if (rotPattern != null) {
+		rotPattern = rotateSymbolPattern(rotPattern, rot, (rotSequence.length == 2));
+		return rotPattern.map((pos) => {
+			return nameList[rotSequence[pos]];
+		});
+	}
+	return [];
+}
+
+function getTwistDescription(fswSym) {
+	const parsed = core.fsw.parse.symbol(fswSym);
+	if (parsed.symbol) {
+		const sp = structure.symbolParts(fswSym);
+		let rotPattern, rotSeq, startNames, result = [];
+	
+		// twists
+		if (structure.inRangeSet(sp.baseNum, [[0x23e, 0x23e], [0x24b, 0x24c], [0x24e, 0x24f], [0x281, 0x285], [0x24d, 0x24d], [0x250, 0x250], [0x286, 0x286]])) {
+			rotPattern = getRotPattern(sp.baseNum, symbolTwistPatterns);
+			rotSeq = getRotSeq(sp.baseNum, symbolTwistSequences);
+			startNames = symbolTwistNames.twistsOver;
+			if (0x24e <= sp.baseNum && sp.baseNum <= 0x250 && sp.fillNum < 3) startNames = symbolTwistNames.twistsUnder;
+			else if (sp.fillNum > 2) startNames = symbolTwistNames.twistsUnder;
+			result = processRotPattern(sp.rotNum, rotPattern, rotSeq, startNames);
+		}
+		return result;
+	}
+	return [];
+}
+function getCircleDirection(fswSym) {
+	const parsed = core.fsw.parse.symbol(fswSym);
+	if (parsed.symbol) {
+		const floorPlane = variants.isFloorPlane(parsed.symbol);
+		const sp = structure.symbolParts(fswSym);
+		let rotPattern, rotSeq, startNames, result = [];
+
 		// circles
 		if (structure.inRangeSet(sp.baseNum, [0x2e3, 0x2ec])) {
 			// circle types (direction of motion)
@@ -146,43 +198,28 @@ function getSymbolRotationDescription(fswSym) {
 			rotSeq = getRotSeq(sp.baseNum, symbolCircleTypeSequences);
 			startNames = floorPlane ? symbolCircleNames.circleTypeFloor : symbolCircleNames.circleTypeWall;
 			result = result.concat(processRotPattern(sp.rotNum, rotPattern, rotSeq, startNames));
+		}
+		return result;
+	}
+	return [];
+}
+function getCircleStart(fswSym) {
+	const parsed = core.fsw.parse.symbol(fswSym);
+	if (parsed.symbol) {
+		const floorPlane = variants.isFloorPlane(parsed.symbol);
+		const sp = structure.symbolParts(fswSym);
+		let rotPattern, rotSeq, startNames, result = [];
 
+		if (structure.inRangeSet(sp.baseNum, [0x2e3, 0x2ec])) {
 			// circle starts (location where motion starts)
 			rotPattern = getRotPattern(sp.baseNum, symbolCirclePatterns);
 			rotSeq = getRotSeq(sp.baseNum, symbolCircleSequences);
 			startNames = floorPlane ? symbolCircleNames.circleStartsFloor : symbolCircleNames.circleStartsWall;
 			result = result.concat(processRotPattern(sp.rotNum, rotPattern, rotSeq, startNames));
 		}
-		// orientations and movement directions
-		else {
-			rotPattern = getRotPattern(sp.baseNum, symbolRotPatterns);
-			rotSeq = getRotSeq(sp.baseNum, symbolRotSequences);
-			startNames = floorPlane ? rotNames.floor : rotNames.wall;
-			result = result.concat(processRotPattern(sp.rotNum, rotPattern, rotSeq, startNames));
-			
-			// twists
-			if (structure.inRangeSet(sp.baseNum, [[0x23e, 0x23e], [0x24b, 0x24c], [0x24e, 0x24f], [0x281, 0x285], [0x24d, 0x24d], [0x250, 0x250], [0x286, 0x286]])) {
-				rotPattern = getRotPattern(sp.baseNum, symbolTwistPatterns);
-				rotSeq = getRotSeq(sp.baseNum, symbolTwistSequences);
-				startNames = symbolTwistNames.twistsOver;
-				if (0x24e <= sp.baseNum && sp.baseNum <= 0x250 && sp.fillNum < 3) startNames = symbolTwistNames.twistsUnder;
-				else if (sp.fillNum > 2) startNames = symbolTwistNames.twistsUnder;
-				result = result.concat(processRotPattern(sp.rotNum, rotPattern, rotSeq, startNames));
-			}
-		}
 		return result;
 	}
 	return [];
-
-	function processRotPattern(rot, rotPattern, rotSequence, nameList) {
-		if (rotPattern != null) {
-			rotPattern = rotateSymbolPattern(rotPattern, rot, (rotSequence.length == 2));
-			return rotPattern.map((pos) => {
-				return nameList[rotSequence[pos]];
-			});
-		}
-		return [];
-	}
 }
 const symbolTwistNames = {
 	"twistsOver": ["Over Left", "Over Right"],
