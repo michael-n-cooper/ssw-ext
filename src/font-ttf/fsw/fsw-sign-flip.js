@@ -21,7 +21,7 @@ export function fswSignFlipX(fswSign) {
 			sym = core.fsw.parse.symbol(swap.symbolSwapSides(core.fsw.compose.symbol(sym)));
 			return sym;
 		});
-		if (returnObj) return parsed;
+		if (returnObj) return core.fsw.parse.sign(ttf.fsw.signNormalize(core.fsw.compose.sign(parsed)));
 		return ttf.fsw.signNormalize(core.fsw.compose.sign(parsed));
 	}
 	return fswSign;
@@ -46,7 +46,7 @@ export function fswSignFlipXZ(fswSign) {
 			sym = core.fsw.parse.symbol(swap.symbolSwapSides(core.fsw.compose.symbol(sym)));
 			return sym;
 		});
-		if (returnObj) return parsed;
+		if (returnObj) return core.fsw.parse.sign(ttf.fsw.signNormalize(core.fsw.compose.sign(parsed)));
 		return ttf.fsw.signNormalize(core.fsw.compose.sign(parsed));
 	}
 	return fswSign;
@@ -68,7 +68,7 @@ export function fswSignFlipZ(fswSign) {
 			sym.symbol = swap.symbolSwapPerspective(sym.symbol);
 			return sym;
 		});
-		if (returnObj) return parsed;
+		if (returnObj) return core.fsw.parse.sign(ttf.fsw.signNormalize(core.fsw.compose.sign(parsed)));
 		return ttf.fsw.signNormalize(core.fsw.compose.sign(parsed));
 	}
 	return fswSign;
