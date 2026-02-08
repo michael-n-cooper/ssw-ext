@@ -2,3 +2,16 @@
 	display: flex;
 	column-gap: 1em;
 }
+.demoArea div {
+	width: 10em;
+	overflow-wrap: break-word;
+}
+.demoArea ul {
+	padding: 0;
+}
+.demoArea li {
+	list-style-position: inside;
+}
+#signSequence svg {
+	scale: 75%;
+}

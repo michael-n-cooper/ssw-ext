@@ -37,9 +37,10 @@ function showSymbol(event) {
 		info += "<li>Floor plane: " + ext.core.fsw.isFloorPlane(parsed.symbol) + "</li>";
 		info += "<li>Wall plane: " + ext.core.fsw.isWallPlane(parsed.symbol) + "</li>";
 		info += "<li>Diagonal plane: " + ext.core.fsw.isDiagonalPlane(parsed.symbol) + "</li>";
-		info += "<li>Description: " + ext.ttf.fsw.describeSymbol(parsed.symbol) + "</li>";
 		info += "</ul>";
 		document.querySelector("#symbolInfo .outputArea").innerHTML = info;
+
+		document.querySelector("#symbolDesc .outputArea").textContent = ext.ttf.fsw.describeSymbol(parsed.symbol);
 
 		let newSym = ext.ttf.fsw.symbolMirror(fswSym);
 		document.querySelector("#symbolMirror .renderArea").innerHTML = renderSymbol(newSym);
@@ -80,11 +81,10 @@ function showSign(event) {
 		document.querySelector("#signDemo .renderArea").innerHTML = renderSign(event.target.value);
 
 		let info = "<ul>";
-		info += "<li>Description: "; 
-		info += ext.ttf.fsw.describeSign(parsed);
-		info += "</li> "
 		info += "</ul>";
 		document.querySelector("#signInfo .outputArea").innerHTML = info;
+
+		document.querySelector("#signDesc .outputArea").textContent = ext.ttf.fsw.describeSign(parsed);
 
 		document.querySelector("#signSequence .renderArea").innerHTML = "";
 		if (parsed.sequence) {
