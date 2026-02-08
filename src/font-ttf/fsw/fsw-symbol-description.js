@@ -2,7 +2,8 @@ import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
 import * as structure from "../../core/fsw/fsw-structure.js";
 import * as variants from "../../core/fsw/fsw-symbol-variant.js";
 import { defmessages } from "../../../config/messages.js";
-import { rotData } from "../../../config/rotData.js";
+import { rotData } from "./rotData.js";
+import labels from "../../../config/descMessages.json" with { type: "json" };
 import "../../../node_modules/@sutton-signwriting/core/src/types";
 
 /**
@@ -15,27 +16,27 @@ export function describeSymbol(fswSym) {
 	const parsed = (typeof fswSym == "object" ? fswSym : core.fsw.parse.symbol(fswSym));
 	if (parsed.symbol) {
 		let val = [];
-		if (variants.isLeftHand(parsed.symbol)) val.push("Left");
-		if (variants.isRightHand(parsed.symbol)) val.push("Right");
-		if (variants.isBothHand(parsed.symbol)) val.push("Both Hands");
+		if (variants.isLeftHand(parsed.symbol)) val.push(labels.hand.left);
+		if (variants.isRightHand(parsed.symbol)) val.push(labels.hand.right);
+		if (variants.isBothHand(parsed.symbol)) val.push(labels.hand.both);
 
 		val.push(defmessages["base_" + structure.baseSymbol(parsed.symbol)]);
 
 		switch (variants.getHandOrientation(parsed.symbol)) {
 			case "back":
-				val.push("Back");
+				val.push(labels.palm.back);
 				break;
 			case "palm":
-				val.push("Palm");
+				val.push(labels.palm.palm);
 				break;
 			case "side":
-				val.push("Side")
+				val.push(labels.palm.side)
 				break;
 		}
 
 		if (core.fsw.isType(parsed.symbol, "hand")) {
-			if (variants.isWallPlane(parsed.symbol)) val.push("Wall Plane");
-			if (variants.isFloorPlane(parsed.symbol)) val.push("Floor Plane");
+			if (variants.isWallPlane(parsed.symbol)) val.push(labels.plane.wall);
+			if (variants.isFloorPlane(parsed.symbol)) val.push(labels.plane.floor);
 		}
 
 		const rotDesc = getRotDescComponent(parsed.symbol, rotData.orientations);
