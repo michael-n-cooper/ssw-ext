@@ -2,7 +2,7 @@ import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
 import * as util from "./util.js";
 import * as variants from "./fsw-symbol-variant.js";
 import { defmessages } from "../../../config/messages.js";
-import { rotData } from "./rotData.js";
+import { rotData } from "./rot-data.js";
 import labels from "../../../config/descMessages.json" with { type: "json" };
 import "../../../node_modules/@sutton-signwriting/core/src/types";
 import "../../types.js";
