@@ -1,6 +1,7 @@
 /**
  * Ranges for hand and plane variants of symbols
  * @memberof module:ext/ttf/fsw
+ * @private
  */
 export const variantRanges = {
 	"handGroup1": [

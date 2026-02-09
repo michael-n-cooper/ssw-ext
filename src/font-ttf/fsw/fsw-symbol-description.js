@@ -60,7 +60,7 @@ export function describeSymbol(fswSym) {
  * Find the rotation pattern for a symbol
  * @private
  * @param {number} baseNum Symbol base number
- * @param {[]} map Array of symbol ranges and patterns
+ * @param {Object[]} map Array of symbol ranges and patterns
  * @returns {number[]} Pattern
  */
 function getRotPattern(baseNum, map) {
@@ -75,7 +75,7 @@ function getRotPattern(baseNum, map) {
  * Find the rotation name sequence for a symbol
  * @private
  * @param {number} baseNum Symbol base number
- * @param {[]} map Array of symbol ranges and names
+ * @param {Object[]} map Array of symbol ranges and names
  * @returns {number[]} Sequence
  */
 function getRotSeq(baseNum, map) {

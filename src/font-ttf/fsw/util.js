@@ -2,6 +2,13 @@ import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
 import { variantRanges } from "./variant-ranges";
 import "../../types.js";
 
+/**
+ * Get just the base component of a FSW symbol
+ * @memberof module:ext/core/fsw
+ * @param {string} fswSym Symbol
+ * @returns {string} Base
+ * @private
+ */
 export function baseSymbol(fswSym) {
 	const baseRegEx = new RegExp("S" + core.fswquery.re.base);
 	return baseRegEx.exec(fswSym);
@@ -12,6 +19,7 @@ export function baseSymbol(fswSym) {
  * @memberof module:ext/core/fsw
  * @param {(string | SymbolObject)} fswSym 
  * @returns {symbolParts} base, fill, and rotation components of symbol
+ * @private
  */
 export function symbolParts(fswSym) {
 	const parsed = (typeof fswSym == "object" ? fswSym : core.fsw.parse.symbol(fswSym));
@@ -34,6 +42,7 @@ export function symbolParts(fswSym) {
  * @memberof module:ext/core/fsw
  * @param {number} val Value to test
  * @param {RangeSet} rangeSet Set of ranges to test
+ * @private
  */
 export function inRangeSet(val, rangeSet) {
 	if (Array.isArray(rangeSet[0])) return rangeSet.some((range) => {
@@ -48,6 +57,7 @@ export function inRangeSet(val, rangeSet) {
  * @param {number} key ID of a base symbol
  * @param {string} variant Variant group to test
  * @returns boolean
+ * @private
  */
 export function isVariant(key, variant) {
 	const rangeSet = variantRanges[variant];
