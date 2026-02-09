@@ -1,8 +1,8 @@
 import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
 import * as ttf from "../../../node_modules/@sutton-signwriting/font-ttf/index.mjs";
-import * as structure from "../../core/fsw/fsw-structure.js";
-import * as variant from "../../core/fsw/fsw-symbol-variant.js";
-import "../../../node_modules/@sutton-signwriting/core/src/types";
+import * as util from "./util.js";
+import * as variant from "./fsw-symbol-variant.js";
+import "../../../node_modules/@sutton-signwriting/core/src/types.js";
 
 /**
  * Swap between left-hand and right-hand symbol
@@ -15,13 +15,13 @@ export function symbolSwapHands(fswSym) {
 	const parsed = (returnObj ? fswSym : core.fsw.parse.symbol(fswSym));
 
 	if (parsed.symbol) {
-		const sp = structure.symbolParts(parsed.symbol);
+		const sp = util.symbolParts(parsed.symbol);
 		/*
-		if (structure.isVariant(sp.baseNum, "handGroup1")) {
+		if (util.isVariant(sp.baseNum, "handGroup1")) {
 		}
 		*/
 		// swap fill 0,1
-		if (structure.isVariant(sp.baseNum, "handGroup2")) {
+		if (util.isVariant(sp.baseNum, "handGroup2")) {
 			let newFill = sp.fillNum;
 			if (sp.fillNum == 0) newFill = 1;
 			if (sp.fillNum == 1) newFill = 0;
@@ -30,7 +30,7 @@ export function symbolSwapHands(fswSym) {
 			if (sp.baseNum == 0x2ef || sp.baseNum == 0x2f0) parsed.symbol = symbolMirror(parsed.symbol);
 		}
 		// ignore fill 2 and swap fill 0,1; 3,4
-		else if (structure.isVariant(sp.baseNum, "handGroup3")) {
+		else if (util.isVariant(sp.baseNum, "handGroup3")) {
 			let newFill = sp.fillNum;
 			if (sp.fillNum == 0) newFill = 1;
 			if (sp.fillNum == 1) newFill = 0;
@@ -55,10 +55,10 @@ export function symbolSwapPerspective(fswSym) {
 	const parsed = (returnObj ? fswSym : core.fsw.parse.symbol(fswSym));
 
 	if (parsed.symbol) {
-		const sp = structure.symbolParts(parsed.symbol);
+		const sp = util.symbolParts(parsed.symbol);
 
 		// swap fill between 0 - 2 and 3 - 5
-		if (structure.inRangeSet(sp.baseNum, [0x2e7, 0x2ec])) {
+		if (util.inRangeSet(sp.baseNum, [0x2e7, 0x2ec])) {
 			let newFill = sp.fillNum < 3 ? sp.fillNum + 3 : sp.fillNum - 3;
 			parsed.symbol = sp.base + newFill.toString(16) + sp.rot;
 		}
@@ -73,18 +73,18 @@ export function symbolSwapPerspective(fswSym) {
 			parsed.symbol = sp.base + newFill.toString(16) + newRot.toString(16);
 		}
 		// swap rot between 0 - 3 and 4 - 7
-		else if (structure.isVariant(sp.baseNum, "planeFloor")) {
+		else if (util.isVariant(sp.baseNum, "planeFloor")) {
 			let newRot = sp.rotNum + 4;
 			if (newRot > 7) newRot = newRot - 8;
 			parsed.symbol = sp.base + sp.fill + newRot.toString(16);
 		}
 		// add 4 to base
-		else if (structure.isVariant(sp.baseNum, "planeDiagonalTowards")) {
+		else if (util.isVariant(sp.baseNum, "planeDiagonalTowards")) {
 			const newBase = sp.baseNum - 4;
 			parsed.symbol = "S" + newBase.toString(16) + sp.fill + sp.rot;
 		}
 		// subtract 4 from base
-		else if (structure.isVariant(sp.baseNum, "planeDiagonalAway")) {
+		else if (util.isVariant(sp.baseNum, "planeDiagonalAway")) {
 			const newBase = sp.baseNum - 4;
 			parsed.symbol = "S" + newBase.toString(16) + sp.fill + sp.rot;
 		}
@@ -126,20 +126,20 @@ export function symbolMirror(fswSym) {
 	const parsed = (returnObj ? fswSym : core.fsw.parse.symbol(fswSym));
 
 	if (parsed.symbol) {
-		const sp = structure.symbolParts(parsed.symbol);
+		const sp = util.symbolParts(parsed.symbol);
 
 		// swap rot between 0 - 3 and 4 - 7
-		if (structure.isVariant(sp.baseNum, "mirrorGroup6")) {
+		if (util.isVariant(sp.baseNum, "mirrorGroup6")) {
 			const newRot = (sp.rotNum > 3) ? (sp.rotNum - 4) : (sp.rotNum + 4);
 			parsed.symbol = sp.base + sp.fill + newRot.toString(16);
 		}
 		// swap rot between 0 - 7 and 8 - f
-		else if (structure.isVariant(sp.baseNum, "mirrorGroup2")) {
+		else if (util.isVariant(sp.baseNum, "mirrorGroup2")) {
 			const newRot = (sp.rotNum > 7) ? (sp.rotNum - 8) : (sp.rotNum + 8);
 			parsed.symbol = sp.base + sp.fill + newRot.toString(16);
 		}
 		// swap rot 0,1; 2,7; 3,6; 4,5
-		else if (structure.isVariant(sp.baseNum, "mirrorGroup3")) {
+		else if (util.isVariant(sp.baseNum, "mirrorGroup3")) {
 			const rotMap = new Map([
 				[0, 1],
 				[1, 0],
@@ -153,7 +153,7 @@ export function symbolMirror(fswSym) {
 			parsed.symbol = sp.base + sp.fill + rotMap.get(sp.rotNum).toString(16);
 		}
 		// swap rot 0,2; 1,3; 4,5; 6,7
-		else if (structure.isVariant(sp.baseNum, "mirrorGroup9")) {
+		else if (util.isVariant(sp.baseNum, "mirrorGroup9")) {
 			const rotMap = new Map([
 				[0, 2],
 				[2, 0],
@@ -167,7 +167,7 @@ export function symbolMirror(fswSym) {
 			parsed.symbol = sp.base + sp.fill + rotMap.get(sp.rotNum).toString(16);
 		}
 		// ignore rot 2 and if rot < 5 swap rot 0,4; 1,3 and if rot > 4 swap fill 0,1
-		else if (structure.isVariant(sp.baseNum, "mirrorGroup8")) {
+		else if (util.isVariant(sp.baseNum, "mirrorGroup8")) {
 			if (sp.rotNum < 5) {
 				const rotMap = new Map([
 					[2, 2],
@@ -183,31 +183,31 @@ export function symbolMirror(fswSym) {
 			}
 		}
 		// increase even rot, decrease odd rot
-		else if (structure.isVariant(sp.baseNum, "mirrorGroup5")) {
+		else if (util.isVariant(sp.baseNum, "mirrorGroup5")) {
 			const newRot = (sp.rotNum % 2 == 0) ? (sp.rotNum + 1) : (sp.rotNum - 1);
 			parsed.symbol = sp.base + sp.fill + newRot.toString(16);
 		}
 		// increase even rot, decrease odd rot, except rot 0
-		else if (structure.isVariant(sp.baseNum, "mirrorGroup7")) {
+		else if (util.isVariant(sp.baseNum, "mirrorGroup7")) {
 			if (sp.rotNum > 0) {
 				const newRot = (sp.rotNum % 2 == 0) ? (sp.rotNum - 1) : (sp.rotNum + 1);
 				parsed.symbol = sp.base + sp.fill + newRot.toString(16);
 			}
 		}
 		// swap fill 1 and 2
-		else if (structure.isVariant(sp.baseNum, "mirrorGroup1")) {
+		else if (util.isVariant(sp.baseNum, "mirrorGroup1")) {
 			let newFill = sp.fillNum;
 			if (sp.fillNum == 1) newFill = 2;
 			if (sp.fillNum == 2) newFill = 1;
 			parsed.symbol = sp.base + newFill.toString(16) + sp.rot;
 		}
 		// increase even fill, decrease odd fill
-		else if (structure.isVariant(sp.baseNum, "mirrorGroup4")) { 
+		else if (util.isVariant(sp.baseNum, "mirrorGroup4")) { 
 			const newFill = (sp.fillNum % 2 == 0) ? (sp.fillNum + 1) : (sp.fillNum - 1);
 			parsed.symbol = sp.base + newFill.toString(16) + sp.rot;
 		}
 		// don't mirror
-		else if (structure.isVariant(sp.baseNum, "mirrorGroup10")) {
+		else if (util.isVariant(sp.baseNum, "mirrorGroup10")) {
 			parsed.symbol = fswSym;
 		}
 		// default mirror

@@ -1,7 +1,7 @@
 import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
-//import * as structure from "../../core/fsw/fsw-structure.js";
-import * as variants from "../../core/fsw/fsw-symbol-variant.js";
+import * as variants from "./fsw-symbol-variant.js";
 import "../../../node_modules/@sutton-signwriting/core/src/types";
+import "../../types.js";
 
 //type SequenceOrder = "rightHand" | "leftHand" | "rightMovement" | "leftMovement" | "dynamic" | "head" | "trunk" | "limb" | "location" | "punctuation";
 /**

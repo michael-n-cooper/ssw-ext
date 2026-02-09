@@ -1,10 +1,11 @@
 import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
-import * as structure from "../../core/fsw/fsw-structure.js";
-import * as variants from "../../core/fsw/fsw-symbol-variant.js";
+import * as util from "./util.js";
+import * as variants from "./fsw-symbol-variant.js";
 import { defmessages } from "../../../config/messages.js";
 import { rotData } from "./rotData.js";
 import labels from "../../../config/descMessages.json" with { type: "json" };
 import "../../../node_modules/@sutton-signwriting/core/src/types";
+import "../../types.js";
 
 /**
  * Describe a symbol
@@ -20,7 +21,7 @@ export function describeSymbol(fswSym) {
 		if (variants.isRightHand(parsed.symbol)) val.push(labels.hand.right);
 		if (variants.isBothHand(parsed.symbol)) val.push(labels.hand.both);
 
-		val.push(defmessages["base_" + structure.baseSymbol(parsed.symbol)]);
+		val.push(defmessages["base_" + util.baseSymbol(parsed.symbol)]);
 
 		switch (variants.getHandOrientation(parsed.symbol)) {
 			case "back":
@@ -64,7 +65,7 @@ export function describeSymbol(fswSym) {
  */
 function getRotPattern(baseNum, map) {
 	for (const pattern of map) {
-		if (structure.inRangeSet(baseNum, pattern[0])) {
+		if (util.inRangeSet(baseNum, pattern[0])) {
 			return pattern[1];
 		}
 	};
@@ -79,7 +80,7 @@ function getRotPattern(baseNum, map) {
  */
 function getRotSeq(baseNum, map) {
 	for (const seq of map) {
-		if (structure.inRangeSet(baseNum, seq[0])) {
+		if (util.inRangeSet(baseNum, seq[0])) {
 			return seq[1];
 		}
 	}
@@ -111,7 +112,7 @@ function rotateSymbolPattern(pattern, rot, short = false) {
 function getRotDescComponent(fswSym, comp) {
 	const parsed = core.fsw.parse.symbol(fswSym);
 	if (parsed.symbol) {
-		const sp = structure.symbolParts(fswSym);
+		const sp = util.symbolParts(fswSym);
 		const floorPlane = variants.isFloorPlane(parsed.symbol);
 		// orientations and movement directions
 		const rotPattern = getRotPattern(sp.baseNum, comp.patterns);
@@ -136,11 +137,11 @@ function processRotPattern(rot, rotPattern, rotSequence, nameList) {
 function getTwistDescription(fswSym) {
 	const parsed = core.fsw.parse.symbol(fswSym);
 	if (parsed.symbol) {
-		const sp = structure.symbolParts(fswSym);
+		const sp = util.symbolParts(fswSym);
 		let rotPattern, rotSeq, startNames, result = [];
 
 		// twists
-		if (structure.inRangeSet(sp.baseNum, ...new Map(rotData.twists.sequences).keys())) {
+		if (util.inRangeSet(sp.baseNum, ...new Map(rotData.twists.sequences).keys())) {
 			rotPattern = getRotPattern(sp.baseNum, rotData.twists.patterns);
 			rotSeq = getRotSeq(sp.baseNum, rotData.twists.sequences);
 			startNames = rotData.twists.names.over;

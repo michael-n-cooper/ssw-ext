@@ -31,12 +31,12 @@ function showSymbol(event) {
 		document.querySelector("#symbolDemo .renderArea").innerHTML = renderSymbol(event.target.value);
 
 		let info = "<ul>";
-		info += "<li>Left hand: " + ext.core.fsw.isLeftHand(parsed.symbol) + "</li>";
-		info += "<li>Right hand: " + ext.core.fsw.isRightHand(parsed.symbol) + "</li>";
-		info += "<li>Both hands: " + ext.core.fsw.isBothHand(parsed.symbol) + "</li>";
-		info += "<li>Floor plane: " + ext.core.fsw.isFloorPlane(parsed.symbol) + "</li>";
-		info += "<li>Wall plane: " + ext.core.fsw.isWallPlane(parsed.symbol) + "</li>";
-		info += "<li>Diagonal plane: " + ext.core.fsw.isDiagonalPlane(parsed.symbol) + "</li>";
+		info += "<li>Left hand: " + ext.ttf.fsw.isLeftHand(parsed.symbol) + "</li>";
+		info += "<li>Right hand: " + ext.ttf.fsw.isRightHand(parsed.symbol) + "</li>";
+		info += "<li>Both hands: " + ext.ttf.fsw.isBothHand(parsed.symbol) + "</li>";
+		info += "<li>Floor plane: " + ext.ttf.fsw.isFloorPlane(parsed.symbol) + "</li>";
+		info += "<li>Wall plane: " + ext.ttf.fsw.isWallPlane(parsed.symbol) + "</li>";
+		info += "<li>Diagonal plane: " + ext.ttf.fsw.isDiagonalPlane(parsed.symbol) + "</li>";
 		info += "</ul>";
 		document.querySelector("#symbolInfo .outputArea").innerHTML = info;
 
