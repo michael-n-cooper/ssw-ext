@@ -9,12 +9,22 @@
  */
 
 /**
- * Components of a symbol
- * @typedef {Object} symbolParts
- * @property {string} base Base symbol
- * @property {number} baseNum Numeric base symbol
+ * Numeric components of a symbol
+ * @typedef {object} symbolPartsNum
+ * @property {number} base Base
+ * @property {number} fill Fill
+ * @property {number} rot Rotation
+ */
+/**
+ * String components of a symbol
+ * @typedef {object} symbolPartsStr
+ * @property {string} base Base
  * @property {string} fill Fill
- * @property {number} fillNum Numeric fill
  * @property {string} rot Rotation
- * @property {number} rotNum Numeric rotation
+ */
+/**
+ * Symbol components as string and number
+ * @typedef symbolParts
+ * @property {symbolPartsStr} str Components as strings
+ * @property {symbolPartsNum} num Components as numbers
  */

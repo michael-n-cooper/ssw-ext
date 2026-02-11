@@ -12,14 +12,14 @@ export function isLeftHand(fswSym) {
 	const parsed = (typeof fswSym == "object" ? fswSym : core.fsw.parse.symbol(fswSym));
 	if (parsed.symbol) {
 		let sp = util.symbolParts(parsed.symbol);
-		if (util.isVariant(sp.baseNum, "handGroup1")) {
-			return (sp.rotNum > 7);
+		if (util.isVariant(sp.num.base, "handGroup1")) {
+			return (sp.num.rot > 7);
 		}
-		if (util.isVariant(sp.baseNum, "handGroup2")) {
-			return (sp.fillNum == 1);
+		if (util.isVariant(sp.num.base, "handGroup2")) {
+			return (sp.num.fill == 1);
 		}
-		if (util.isVariant(sp.baseNum, "handGroup3")) {
-			return (sp.fillNum == 1 || sp.fillNum == 4);
+		if (util.isVariant(sp.num.base, "handGroup3")) {
+			return (sp.num.fill == 1 || sp.num.fill == 4);
 		}
 	}
 	return false;
@@ -34,14 +34,14 @@ export function isRightHand(fswSym) {
 	const parsed = (typeof fswSym == "object" ? fswSym : core.fsw.parse.symbol(fswSym));
 	if (parsed.symbol) {
 		let sp = util.symbolParts(parsed.symbol);
-		if (util.isVariant(sp.baseNum, "handGroup1")) {
-			return (sp.rotNum < 8);
+		if (util.isVariant(sp.num.base, "handGroup1")) {
+			return (sp.num.rot < 8);
 		}
-		if (util.isVariant(sp.baseNum, "handGroup2")) {
-			return (sp.fillNum == 0);
+		if (util.isVariant(sp.num.base, "handGroup2")) {
+			return (sp.num.fill == 0);
 		}
-		if (util.isVariant(sp.baseNum, "handGroup3")) {
-			return (sp.fillNum == 0 || sp.fillNum == 3);
+		if (util.isVariant(sp.num.base, "handGroup3")) {
+			return (sp.num.fill == 0 || sp.num.fill == 3);
 		}
 	}
 	return false;
@@ -57,11 +57,11 @@ export function isBothHand(fswSym) {
 	const parsed = (typeof fswSym == "object" ? fswSym : core.fsw.parse.symbol(fswSym));
 	if (parsed.symbol) {
 		let sp = util.symbolParts(parsed.symbol);
-		if (util.isVariant(sp.baseNum, "handGroup2")) {
-			return (sp.fillNum == 2);
+		if (util.isVariant(sp.num.base, "handGroup2")) {
+			return (sp.num.fill == 2);
 		}
-		if (util.isVariant(sp.baseNum, "handGroup3")) {
-			return (sp.fillNum == 2 || sp.fillNum == 5);
+		if (util.isVariant(sp.num.base, "handGroup3")) {
+			return (sp.num.fill == 2 || sp.num.fill == 5);
 		}
 	}
 	return false;
@@ -77,8 +77,8 @@ export function isFloorPlane(fswSym) {
 	const parsed = (typeof fswSym == "object" ? fswSym : core.fsw.parse.symbol(fswSym));
 	if (parsed.symbol) {
 		let sp = util.symbolParts(parsed.symbol);
-		if (core.fsw.isType(parsed.symbol, "hand") && sp.fillNum > 2) return true;
-		return util.isVariant(sp.baseNum, "planeFloor");
+		if (core.fsw.isType(parsed.symbol, "hand") && sp.num.fill > 2) return true;
+		return util.isVariant(sp.num.base, "planeFloor");
 	}
 	return false;
 }
@@ -92,8 +92,8 @@ export function isWallPlane(fswSym) {
 	const parsed = (typeof fswSym == "object" ? fswSym : core.fsw.parse.symbol(fswSym));
 	if (parsed.symbol) {
 		let sp = util.symbolParts(parsed.symbol);
-		if (core.fsw.isType(parsed.symbol, "hand") && sp.fillNum < 3) return true;
-		return util.isVariant(sp.baseNum, "planeWall");
+		if (core.fsw.isType(parsed.symbol, "hand") && sp.num.fill < 3) return true;
+		return util.isVariant(sp.num.base, "planeWall");
 	}
 	return false;
 }
@@ -107,7 +107,7 @@ export function isDiagonalTowards(fswSym) {
 	const parsed = (typeof fswSym == "object" ? fswSym : core.fsw.parse.symbol(fswSym));
 	if (parsed.symbol) {
 		let sp = util.symbolParts(parsed.symbol);
-		if (util.isVariant(sp.baseNum, "planeDiagonalTowards")) return true;
+		if (util.isVariant(sp.num.base, "planeDiagonalTowards")) return true;
 	}
 	return false;
 }
@@ -122,7 +122,7 @@ export function isDiagonalAway(fswSym) {
 	const parsed = (typeof fswSym == "object" ? fswSym : core.fsw.parse.symbol(fswSym));
 	if (parsed.symbol) {
 		let sp = util.symbolParts(parsed.symbol);
-		if (util.isVariant(sp.baseNum, "planeDiagonalAway")) return true;
+		if (util.isVariant(sp.num.base, "planeDiagonalAway")) return true;
 	}
 	return false;
 }
@@ -146,9 +146,9 @@ export function getHandOrientation(fswSym) {
 	const parsed = (typeof fswSym == "object" ? fswSym : core.fsw.parse.symbol(fswSym));
 	if (parsed.symbol && core.fsw.isType(fswSym, "hand")) {
 		let sp = util.symbolParts(parsed.symbol);
-		if (sp.fillNum == 0 || sp.fillNum == 3) return "palm";
-		if (sp.fillNum == 1 || sp.fillNum == 4) return "side";
-		if (sp.fillNum == 2 || sp.fillNum == 5) return "back";
+		if (sp.num.fill == 0 || sp.num.fill == 3) return "palm";
+		if (sp.num.fill == 1 || sp.num.fill == 4) return "side";
+		if (sp.num.fill == 2 || sp.num.fill == 5) return "back";
 	}
 	return "";
 }

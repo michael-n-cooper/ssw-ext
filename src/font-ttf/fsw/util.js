@@ -31,7 +31,8 @@ export function symbolParts(fswSym) {
 		const rot = fswSym.slice(5, 6);
 		const rotNum = parseInt(rot, 16);
 		return {
-			"base": base, "fill": fill, "rot": rot, "baseNum": baseNum, "fillNum": fillNum, "rotNum": rotNum
+			"str": { "base": base, "fill": fill, "rot": rot }, "num": { "base": baseNum, "fill": fillNum, "rot": rotNum }
+			
 		};
 	}
 	return undefined;

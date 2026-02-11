@@ -115,10 +115,10 @@ function getRotDescComponent(fswSym, comp) {
 		const sp = util.symbolParts(fswSym);
 		const floorPlane = variants.isFloorPlane(parsed.symbol);
 		// orientations and movement directions
-		const rotPattern = getRotPattern(sp.baseNum, comp.patterns);
-		const rotSeq = getRotSeq(sp.baseNum, comp.sequences);
+		const rotPattern = getRotPattern(sp.num.base, comp.patterns);
+		const rotSeq = getRotSeq(sp.num.base, comp.sequences);
 		const startNames = floorPlane ? comp.names.floor : comp.names.wall;
-		return processRotPattern(sp.rotNum, rotPattern, rotSeq, startNames);
+		return processRotPattern(sp.num.rot, rotPattern, rotSeq, startNames);
 
 	}
 	return [];
@@ -141,13 +141,13 @@ function getTwistDescription(fswSym) {
 		let rotPattern, rotSeq, startNames, result = [];
 
 		// twists
-		if (util.inRangeSet(sp.baseNum, ...new Map(rotData.twists.sequences).keys())) {
-			rotPattern = getRotPattern(sp.baseNum, rotData.twists.patterns);
-			rotSeq = getRotSeq(sp.baseNum, rotData.twists.sequences);
+		if (util.inRangeSet(sp.num.base, ...new Map(rotData.twists.sequences).keys())) {
+			rotPattern = getRotPattern(sp.num.base, rotData.twists.patterns);
+			rotSeq = getRotSeq(sp.num.base, rotData.twists.sequences);
 			startNames = rotData.twists.names.over;
-			if (0x24e <= sp.baseNum && sp.baseNum <= 0x250 && sp.fillNum < 3) startNames = rotData.twists.names.under;
-			else if (sp.fillNum > 2) startNames = rotData.twists.names.under;
-			result = processRotPattern(sp.rotNum, rotPattern, rotSeq, startNames);
+			if (0x24e <= sp.num.base && sp.num.base <= 0x250 && sp.num.fill < 3) startNames = rotData.twists.names.under;
+			else if (sp.num.fill > 2) startNames = rotData.twists.names.under;
+			result = processRotPattern(sp.num.rot, rotPattern, rotSeq, startNames);
 		}
 		return result;
 	}
