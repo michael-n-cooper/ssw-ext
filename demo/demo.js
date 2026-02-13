@@ -74,13 +74,46 @@ function modifySymbol(event) {
 	}
 }
 
+function generateSignInfo(signObj) {
+	const result = { "rightHand": 0, "leftHand": 0, "leftMovement": 0, "rightMovement": 0, "bothMovement": 0, "dynamic": 0, "head": 0, "trunk": 0, "limb": 0, "location": 0, "punctuation": 0 };
+	signObj.spatials.forEach((symbol) => {
+		if (core.fsw.isType(symbol.symbol, "hand")) {
+			if (ext.ttf.fsw.isRightHand(symbol.symbol)) result.rightHand++;
+			if (ext.ttf.fsw.isLeftHand(symbol.symbol)) result.leftHand++;
+		}
+		if (core.fsw.isType(symbol.symbol, "movement")) {
+			if (ext.ttf.fsw.isRightHand(symbol.symbol)) result.rightMovement++;
+			if (ext.ttf.fsw.isLeftHand(symbol.symbol)) result.leftMovement++;
+			if (ext.ttf.fsw.isBothHand(symbol.symbol)) result.bothMovement++;
+		}
+		if (core.fsw.isType(symbol.symbol, "dynamic")) result.dynamic++;
+		if (core.fsw.isType(symbol.symbol, "head")) result.head++;
+		if (core.fsw.isType(symbol.symbol, "trunk")) result.trunk++;
+		if (core.fsw.isType(symbol.symbol, "limb")) result.limb++;
+		if (core.fsw.isType(symbol.symbol, "location")) result.location++;
+		if (core.fsw.isType(symbol.symbol, "punctuation")) result.punctuation++;
+	});
+	return result;
+}
 function showSign(event) {
 	const fswSign = document.querySelector("#signFsw").value;
 	const parsed = core.fsw.parse.sign(fswSign);
 	if (parsed.spatials) {
 		document.querySelector("#signDemo .renderArea").innerHTML = renderSign(event.target.value);
-
+		//"dynamic", "head", "trunk", "limb", "location", "punctuation"
+		const signInfo = generateSignInfo(parsed);
 		let info = "<ul>";
+		info += "<li>Right Hand: " + signInfo.rightHand + "</li>";
+		info += "<li>Left Hand: " + signInfo.leftHand + "</li>";
+		info += "<li>Right Movement: " + signInfo.rightMovement + "</li>";
+		info += "<li>Left Movement: " + signInfo.leftMovement + "</li>";
+		info += "<li>Both Movement: " + signInfo.bothMovement + "</li>";
+		info += "<li>Dynamic: " + signInfo.dynamic + "</li>";
+		info += "<li>Head: " + signInfo.head + "</li>";
+		info += "<li>Trunk: " + signInfo.trunk + "</li>";
+		info += "<li>Limb: " + signInfo.limb + "</li>";
+		info += "<li>Location: " + signInfo.location + "</li>";
+		info += "<li>Punctuation: " + signInfo.punctuation + "</li>";
 		info += "</ul>";
 		document.querySelector("#signInfo .outputArea").innerHTML = info;
 
