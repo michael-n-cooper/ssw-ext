@@ -13,7 +13,7 @@ import "../../../node_modules/@sutton-signwriting/core/src/types";
  * // return "AS12d40S22112S33e00M518x540S33e00482x483S10009472x510S20f00458x504"
  * fswSignFlipX(AS12d40S22112S33e00M542x540S33e00482x483S10001507x510S20f00516x504)
  */
-export function fswSignFlipX(fswSign) {
+export function signFlipX(fswSign) {
 	const returnObj = (typeof fswSign == "object");
 	let parsed = (returnObj ? fswSign : core.fsw.parse.sign(fswSign));
 
@@ -40,7 +40,7 @@ export function fswSignFlipX(fswSign) {
  * // returns ""
  * fswSignFlipX(AS12d40S22112S33e00M542x540S33e00482x483S10001507x510S20f00516x504)
  */
-export function fswSignFlipXZ(fswSign) {
+export function signFlipXZ(fswSign) {
 	const returnObj = (typeof fswSign == "object");
 	let parsed = (returnObj ? fswSign : core.fsw.parse.sign(fswSign));
 
@@ -68,7 +68,7 @@ export function fswSignFlipXZ(fswSign) {
  * // returns ""
  * fswSignFlipX(AS12d40S22112S33e00M542x540S33e00482x483S10001507x510S20f00516x504)
  */
-export function fswSignFlipZ(fswSign) {
+export function signFlipZ(fswSign) {
 	const returnObj = (typeof fswSign == "object");
 	let parsed = (returnObj ? fswSign : core.fsw.parse.sign(fswSign));
 

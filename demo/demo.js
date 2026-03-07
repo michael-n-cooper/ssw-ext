@@ -74,11 +74,11 @@ function showSign(event) {
 			parsed.sequence.forEach((symbol) => document.querySelector("#signSequence .renderArea").innerHTML += renderSymbol(symbol));
 		}
 
-		let newSign = ext.ttf.fsw.fswSignFlipX(parsed);
+		let newSign = ext.ttf.fsw.signFlipX(parsed);
 		document.querySelector("#signMirror .renderArea").innerHTML = renderSign(core.fsw.compose.sign(newSign));
 		document.querySelector("#signMirror .outputArea").innerText = core.fsw.compose.sign(newSign);
 
-		newSign = ext.ttf.fsw.fswSignFlipXZ(parsed);
+		newSign = ext.ttf.fsw.signFlipXZ(parsed);
 		document.querySelector("#signPerspective .renderArea").innerHTML = renderSign(core.fsw.compose.sign(newSign));
 		document.querySelector("#signPerspective .outputArea").innerText = core.fsw.compose.sign(newSign);
 	}
@@ -87,9 +87,9 @@ function showSign(event) {
 function modifySign(event) {
 	event.preventDefault();
 	let fswSign = document.querySelector("#signFsw").value;
-	if (event.target.value == "flipX") fswSign = ext.ttf.fsw.fswSignFlipX(fswSign);
-	if (event.target.value == "flipZ") fswSign = ext.ttf.fsw.fswSignFlipZ(fswSign);
-	if (event.target.value == "flipXZ") fswSign = ext.ttf.fsw.fswSignFlipXZ(fswSign);
+	if (event.target.value == "flipX") fswSign = ext.ttf.fsw.signFlipX(fswSign);
+	if (event.target.value == "flipZ") fswSign = ext.ttf.fsw.signFlipZ(fswSign);
+	if (event.target.value == "flipXZ") fswSign = ext.ttf.fsw.signFlipXZ(fswSign);
 	if (event.target.value == "sequence") fswSign = ext.ttf.fsw.generateTemporalIdx(fswSign) + fswSign;
 	document.querySelector("#signFsw").value = fswSign;
 	document.querySelector("#signFsw").dispatchEvent(new Event("change"));
