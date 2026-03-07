@@ -2,7 +2,8 @@
 	"opts": {
 		"encoding": "utf8",
 		"destination": "./docs/",
-		"recurse": true
+		"recurse": true,
+		"template": "./node_modules/@alphanull/jsdoc-vision-theme"
 	},
 	"plugins": [],
 	"recurseDepth": 10,
