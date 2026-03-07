@@ -22,14 +22,28 @@ In working with this and its application to a sign description, I have a questio
 
 From what I have seen, sign dictionaries generally provide right-handed signs. Left-handed users either must mentally flip them, or add a left-handed version to the dictionary (differentiated in the gloss). The function to flip a sign could simply do this as needed on individual signs or entire documents. 
 
-This function swaps the horizontal position of symbols across the sign centre, mirrors symbols, and changes their "handedness" if applicable.
+The `flipSignX` function uses symbol functions described below to swap the horizontal position of symbols across the sign centre, mirror symbols, and change between left- and right-"handedness" if applicable.
 
 ## Switch between signer perspective and viewer perspective
 
+More of an experiment "because it was there", the `flipSignXZ` function changes a sign to the viewer perspective. I'm not sure if this is useful or a bad idea, but I thought seeing it in action would help people provide input on that question. Since the signer perspective and viewer perspective swap left and right, many of the changes are the same as in the `flipSignX` function, but also the palm orientation of hand symbols is reversed, and towards and away movement are reversed.
+
+There is also a `flipSignZ` function that changes palm orientation and towards / away movement, but not left / right aspects. This is for "completeness" but no other functions depend on it, and in experimentation I did not find this useful. I left it in the set in case anyone thinks it might be.
+
 # Symbol features
 
-## Determine and swap hand and plane of symbols
+## Determine hand and plane of symbols
+
+Hand and movement symbols reference either the right hand, the left hand, or combined movement (both hands). Like the "isType" function, the "isLeftHand", "isRightHand", and "isBothHand" functions indicate if a symbol has the checked handedness. This information is used in modifying symbols, generating symbol descriptions, and in sorting symbols for the temporal sequence.
+
+Hand and movement symbols also indicate the wall plane, floor plane, or diagonal plane. The `isWallPlane`, `isFloorPlane`, `isDiagonalTowards`, and `isDiagonalAway` indicates if a symbol is on one of those planes. This information is used in modifying symbols and generating symbol descriptions
+
+## Swap hand and perspective
+
+
 
 ## Swap horizontal position of symbol
+
+
 
 ## Additional symbol mirrors

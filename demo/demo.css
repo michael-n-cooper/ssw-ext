@@ -1,10 +1,8 @@
-.demoArea {
-	display: flex;
-	column-gap: 1em;
+.inactive {
+	display: none;
 }
-.demoArea div {
-	width: 10em;
-	overflow-wrap: break-word;
+.active {
+	display: block;
 }
 .demoArea ul {
 	padding: 0;
@@ -12,6 +10,41 @@
 .demoArea li {
 	list-style-position: inside;
 }
+.outputArea, .renderArea {
+	height: 5em;
+}
 #signSequence svg {
 	scale: 75%;
+}
+
+.tabList {
+	display: block;
+	padding: 0;
+}
+
+.tabList li {
+	display: inline-block;
+	margin: 0;
+}
+#signDemo, #symbolDemo {
+	display: grid;
+	grid-template-columns: 15em 1fr;
+}
+#signDemo h2, #symbolDemo h2 {
+	grid-row: 1;
+}
+#signOrig, #symOrig {
+	grid-row: 2;
+	grid-column: 1;
+}
+.demoArea {
+	grid-row: 2;
+	grid-column: 2;
+}
+#signDemo ul, #symbolDemo ul {
+	grid-row: 1;
+	grid-column: 2;
+}
+.inputArea * {
+	display: block;
 }
