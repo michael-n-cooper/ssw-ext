@@ -9,6 +9,9 @@ import "../../../node_modules/@sutton-signwriting/core/src/types";
  * @memberof module:ext/ttf/fsw
  * @param {(string|SignObject)} fswSign Sign to flip
  * @returns {string|SignObject} Updated sign
+ * @example
+ * // return "AS12d40S22112S33e00M518x540S33e00482x483S10009472x510S20f00458x504"
+ * fswSignFlipX(AS12d40S22112S33e00M542x540S33e00482x483S10001507x510S20f00516x504)
  */
 export function fswSignFlipX(fswSign) {
 	const returnObj = (typeof fswSign == "object");
@@ -33,6 +36,9 @@ export function fswSignFlipX(fswSign) {
  * @memberof module:ext/ttf/fsw
  * @param {(string|SignObject)} fswSign Sign to flip
  * @returns {(string|SignObject)} Updated sign
+ * @example
+ * // returns ""
+ * fswSignFlipX(AS12d40S22112S33e00M542x540S33e00482x483S10001507x510S20f00516x504)
  */
 export function fswSignFlipXZ(fswSign) {
 	const returnObj = (typeof fswSign == "object");
@@ -58,6 +64,9 @@ export function fswSignFlipXZ(fswSign) {
  * @memberof module:ext/ttf/fsw
  * @param {(string|SignObject)} fswSign Sign to flip
  * @returns {(string|SignObject)} Updated sign
+ * @example
+ * // returns ""
+ * fswSignFlipX(AS12d40S22112S33e00M542x540S33e00482x483S10001507x510S20f00516x504)
  */
 export function fswSignFlipZ(fswSign) {
 	const returnObj = (typeof fswSign == "object");

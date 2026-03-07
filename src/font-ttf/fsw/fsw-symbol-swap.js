@@ -45,7 +45,7 @@ export function symbolSwapHands(fswSym) {
 }
 
 /**
- * Swap symbol between heel and palm orientation
+ * Swap symbol between heel and palm orientation.
  * @memberof module:ext/ttf/fsw
  * @param {(string|SymbolObject)} fswSym Symbol to change
  * @returns {(string|SymbolObject)} Updated symbol
@@ -96,10 +96,13 @@ export function symbolSwapPerspective(fswSym) {
 
 
 /**
- * Swap horizontal position of symbol across centre of sign
+ * Swap horizontal position of symbol across centre of sign.
  * @memberof module:ext/ttf/fsw
  * @param {(string|SymbolObject)} fswSym Symbol with coordinates
  * @returns {(string|SymbolObject)} Updated symbol with coordinates
+ * @example
+ * // returns "S10001472x510"
+ * symbolSwapSides("S10001507x510")
  */
 export function symbolSwapSides(fswSym) {
 	const returnObj = (typeof fswSym == "object");
@@ -115,11 +118,14 @@ export function symbolSwapSides(fswSym) {
 }
 
 /**
- * Mirror a symbol
- * Mirrors additional ranges from the base package, uses the base mirror if not in an additional range
+ * Mirror a symbol.
+ * Mirrors additional ranges from the base package, uses the base mirror if not in an additional range.
  * @memberof module:ext/ttf/fsw
  * @param {(string|SymbolObject)} fswSym Symbol to change
  * @returns {(string|SymbolObject)} Mirrored symbol
+ * @example
+ * // returns "S10009"
+ * symbolMirror("S10001")
  */
 export function symbolMirror(fswSym) {
 	const returnObj = (typeof fswSym == "object");

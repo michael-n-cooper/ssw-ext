@@ -5,11 +5,14 @@ import "../../types.js";
 
 //type SequenceOrder = "rightHand" | "leftHand" | "rightMovement" | "leftMovement" | "dynamic" | "head" | "trunk" | "limb" | "location" | "punctuation";
 /**
- * Generate the temporal sequence for a sign
+ * Generate the temporal sequence for a sign. Classifies symbols and groups them in a defined order.
  * @memberof module:ext/ttf/fsw
  * @param {(string|SignObject)} sign Sign
- * @param {string[]} [order] Order of symbols
+ * @param {string[]} [order] Order of symbols, by default right hand, left hand, right movement, left movement, dynamic, head, trunk, limb, location, punctuation
  * @returns {string|SignObject} Sequence, or sign with sequence added
+ * @example
+ * // returns ""
+ * fswSignFlipX(M542x540S33e00482x483S10001507x510S20f00516x504)
  */
 export function generateTemporalIdx(fswSign, order) {
 	const returnObj = (typeof fswSign == "object");

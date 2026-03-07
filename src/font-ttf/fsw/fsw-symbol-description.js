@@ -8,10 +8,13 @@ import "../../../node_modules/@sutton-signwriting/core/src/types";
 import "../../types.js";
 
 /**
- * Describe a symbol
+ * Describe a symbol. This starts with the label of the base symbol, then examines range, fill, and rotation to work out information about orientation in space, movement direction, etc. The final text uses strings from /config/descMessages.json.
  * @memberof module:ext/ttf/fsw
  * @param {string | SymbolObject} fswSym Symbol to describe
  * @returns {string} Description
+ * @example
+ * // returns "Right - Index - Palm - Wall Plane - Up Left"
+ * describeSymbol("S10001")
  */
 export function describeSymbol(fswSym) {
 	const parsed = (typeof fswSym == "object" ? fswSym : core.fsw.parse.symbol(fswSym));
@@ -58,10 +61,12 @@ export function describeSymbol(fswSym) {
 
 /**
  * Find the rotation pattern for a symbol
+ * @memberof module:ext/ttf/fsw
  * @private
  * @param {number} baseNum Symbol base number
  * @param {Object[]} map Array of symbol ranges and patterns
  * @returns {number[]} Pattern
+ * @see rotData
  */
 function getRotPattern(baseNum, map) {
 	for (const pattern of map) {
@@ -73,10 +78,12 @@ function getRotPattern(baseNum, map) {
 }
 /**
  * Find the rotation name sequence for a symbol
+ * @memberof module:ext/ttf/fsw
  * @private
  * @param {number} baseNum Symbol base number
  * @param {Object[]} map Array of symbol ranges and names
  * @returns {number[]} Sequence
+ * @see rotData
  */
 function getRotSeq(baseNum, map) {
 	for (const seq of map) {
@@ -87,6 +94,7 @@ function getRotSeq(baseNum, map) {
 }
 /**
  * Adjust a rotation pattern to match the rotation of the symbol
+ * @memberof module:ext/ttf/fsw
  * @private
  * @param {number[]} pattern Rotation pattern
  * @param {number} rot Symbol rotation
@@ -105,6 +113,7 @@ function rotateSymbolPattern(pattern, rot, short = false) {
 
 /**
  * Get the description for the rotation component of a symbol
+ * @memberof module:ext/ttf/fsw
  * @private
  * @param {string | SymbolObject} fswSym Symbol to describe
  * @returns {string} Description
@@ -123,6 +132,17 @@ function getRotDescComponent(fswSym, comp) {
 	}
 	return [];
 }
+
+/**
+ * Generate information about the rotation of a symbol.
+ * @memberof module:ext/ttf/fsw
+ * @private
+ * @param {number} rot Symbol rotation
+ * @param {number[]} rotPattern Rotation pattern for the symbol
+ * @param {number[]} rotSequence Sequence for name list
+ * @param {string[]} nameList List of rotation descriptions
+ * @returns {string[]} Array of rotation descriptions
+ */
 function processRotPattern(rot, rotPattern, rotSequence, nameList) {
 	//console.log(rot, rotPattern, rotSequence, nameList)
 	if (rotPattern != null) {
@@ -134,6 +154,7 @@ function processRotPattern(rot, rotPattern, rotSequence, nameList) {
 	return [];
 }
 
+// Special case of processRotPattern for twists, until I work out how / whether to combine
 function getTwistDescription(fswSym) {
 	const parsed = core.fsw.parse.symbol(fswSym);
 	if (parsed.symbol) {
