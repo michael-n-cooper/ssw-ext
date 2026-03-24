@@ -22,6 +22,7 @@
   "dependencies": {
     "@sutton-signwriting/core": "^2.0.1",
     "@sutton-signwriting/font-ttf": "^1.6.0",
-    "@sutton-signwriting/signmaker": "^1.2.0"
+    "@sutton-signwriting/signmaker": "^1.2.0",
+    "van11y-accessible-tab-panel-aria": "^2.0.4"
   }
 }
