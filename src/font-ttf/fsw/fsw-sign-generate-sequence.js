@@ -3,18 +3,21 @@ import * as variants from "./fsw-symbol-variant.js";
 import "../../../node_modules/@sutton-signwriting/core/src/types";
 import "../../types.js";
 
-//type SequenceOrder = "rightHand" | "leftHand" | "rightMovement" | "leftMovement" | "dynamic" | "head" | "trunk" | "limb" | "location" | "punctuation";
 /**
- * Generate the temporal sequence for a sign. Classifies symbols and groups them in a defined order.
+ * Generate the temporal sequence for a sign. 
+ * Classifies symbols and groups them in a defined order.
+ * The order can be provided as an arry of tokens "rightHand" | "leftHand" | "rightMovement" | "leftMovement" | "dynamic" | "head" | "trunk" | "limb" | "location" | "punctuation".
+ * The default order groups hand and movement into left- and right- groups of hand and movement symbol, and starts with the right hand.
+ * This is different from the SignSpelling guidelines which group all hand symbols before movement symbols, to explore if it's a useful approach, made possible by handedness detection.
  * @memberof module:ext/ttf/fsw
  * @param {(string|SignObject)} sign Sign
- * @param {string[]} [order] Order of symbols, by default right hand, left hand, right movement, left movement, dynamic, head, trunk, limb, location, punctuation
+ * @param {string[]} [order=["rightHand", "rightMovement", "leftHand", "leftMovement", "dynamic", "head", "trunk", "limb", "location", "punctuation"]] Order of symbols, by default right hand, left hand, right movement, left movement, dynamic, head, trunk, limb, location, punctuation
  * @returns {string|SignObject} Sequence, or sign with sequence added
  * @example
- * // returns ""
- * fswSignFlipX(M542x540S33e00482x483S10001507x510S20f00516x504)
+ * // returns "AS10001S33e00S20f00"
+ * signGenerateTemporalIdx("M542x540S33e00482x483S10001507x510S20f00516x504")
  */
-export function generateTemporalIdx(fswSign, order) {
+export function signGenerateTemporalIdx(fswSign, order) {
 	const returnObj = (typeof fswSign == "object");
 	const parsed = (returnObj ? fswSign : core.fsw.parse.sign(fswSign));
 	if (parsed.spatials) {
@@ -38,6 +41,7 @@ export function generateTemporalIdx(fswSign, order) {
 
 	/**
 	 * Determine sort order of a symbol
+	 * @private
 	 * @param {string} symbol Symbol to position
 	 * @returns {number} Order
 	 */

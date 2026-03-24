@@ -16,7 +16,7 @@ import "../../types.js";
  * // returns "Right - Index - Palm - Wall Plane - Up Left"
  * describeSymbol("S10001")
  */
-export function describeSymbol(fswSym) {
+export function symbolDescribe(fswSym) {
 	const parsed = (typeof fswSym == "object" ? fswSym : core.fsw.parse.symbol(fswSym));
 	if (parsed.symbol) {
 		let val = [];

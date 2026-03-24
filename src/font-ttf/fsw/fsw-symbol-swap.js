@@ -5,10 +5,17 @@ import * as variant from "./fsw-symbol-variant.js";
 import "../../../node_modules/@sutton-signwriting/core/src/types.js";
 
 /**
- * Swap between left-hand and right-hand symbol
+ * Swap between left-hand and right-hand symbol.
+ * Supports changing signs between left- and right-handed expression.
+ * Only applies to symbols with "handedness", and does not alter both-hand symbols.
+ * Does not mirror the symbol, which is normally also desired but should be handled separately.
+ * Does not alter hand symbols, as their "handedness" is changed by mirroring. This is to avoid "double-mirroring".
  * @memberof module:ext/ttf/fsw
  * @param {(string|SymbolObject)} fswSym Symbol to change
  * @returns {(string|SymbolObject)} Updated symbol
+ * @example
+ * // returns "S22a10"
+ * symbolSwapHands("S22a00")
  */
 export function symbolSwapHands(fswSym) {
 	const returnObj = (typeof fswSym == "object");
@@ -46,9 +53,15 @@ export function symbolSwapHands(fswSym) {
 
 /**
  * Swap symbol between heel and palm orientation.
+ * Supports changing sign between signer and viewer perspective.
+ * Only applies to wall plane symbols with empty or solid fill.
+ * Does not mirror the symbol, which is normally also desired but should be handled separately.
  * @memberof module:ext/ttf/fsw
  * @param {(string|SymbolObject)} fswSym Symbol to change
  * @returns {(string|SymbolObject)} Updated symbol
+ * @example
+ * // returns "S10028"
+ * symbolSwapPerspective("S10000")
  */
 export function symbolSwapPerspective(fswSym) {
 	const returnObj = (typeof fswSym == "object");
@@ -62,15 +75,12 @@ export function symbolSwapPerspective(fswSym) {
 			let newFill = sp.num.fill < 3 ? sp.num.fill + 3 : sp.num.fill - 3;
 			parsed.symbol = sp.str.base + newFill.toString(16) + sp.str.rot;
 		}
-		// swap fill 0,2 and swap rot between 0 - 7 and 8 - f
+		// swap fill 0,2
 		else if (core.fsw.isType(parsed.symbol, "hand") && variant.isWallPlane(parsed.symbol)) {
 			let newFill = sp.num.fill;
 			if (sp.num.fill == 0) newFill = 2;
 			else if (sp.num.fill == 2) newFill = 0;
-			let newRot = sp.num.rot;
-			if (sp.num.rot > 7) newRot = sp.num.rot - 8;
-			else newRot = sp.num.rot + 8;
-			parsed.symbol = sp.str.base + newFill.toString(16) + newRot.toString(16);
+			parsed.symbol = sp.str.base + newFill.toString(16) + sp.str.rot;
 		}
 		// swap rot between 0 - 3 and 4 - 7
 		else if (util.isVariant(sp.num.base, "planeFloor")) {
@@ -97,6 +107,8 @@ export function symbolSwapPerspective(fswSym) {
 
 /**
  * Swap horizontal position of symbol across centre of sign.
+ * Supports changing sign between signer and viewer perspective.
+ * Does not mirror the symbol, which is normally also desired but should be handled separately.
  * @memberof module:ext/ttf/fsw
  * @param {(string|SymbolObject)} fswSym Symbol with coordinates
  * @returns {(string|SymbolObject)} Updated symbol with coordinates
@@ -118,8 +130,9 @@ export function symbolSwapSides(fswSym) {
 }
 
 /**
- * Mirror a symbol.
- * Mirrors additional ranges from the base package, uses the base mirror if not in an additional range.
+ * Mirror a symbol, i.e., reverse left-right aspects while not changing up-down aspects.
+ * Mirrors additional ranges from the base package, using a variety of patterns for range sets.
+ * Symbols in ranges not covered by this extension return the base mirror result.
  * @memberof module:ext/ttf/fsw
  * @param {(string|SymbolObject)} fswSym Symbol to change
  * @returns {(string|SymbolObject)} Mirrored symbol
