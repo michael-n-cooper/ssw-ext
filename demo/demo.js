@@ -70,17 +70,17 @@ function showSign(event) {
 		document.querySelector("#signDesc .outputArea").textContent = ext.ttf.fsw.describeSign(parsed);
 
 		document.querySelector("#signSequence .renderArea").innerHTML = "";
-		if (parsed.sequence) {
-			parsed.sequence.forEach((symbol) => document.querySelector("#signSequence .renderArea").innerHTML += renderSymbol(symbol));
-		}
+		let newSign = ext.ttf.fsw.generateTemporalIdx(parsed);
+		newSign.sequence.forEach((symbol) => document.querySelector("#signSequence .renderArea").innerHTML += renderSymbol(symbol));
+		document.querySelector("#signSequence .outputArea").innerHTML = ext.ttf.fsw.generateTemporalIdx(fswSign);
 
-		let newSign = ext.ttf.fsw.signFlipX(parsed);
-		document.querySelector("#signMirror .renderArea").innerHTML = renderSign(core.fsw.compose.sign(newSign));
-		document.querySelector("#signMirror .outputArea").innerText = core.fsw.compose.sign(newSign);
+		let newerSign = ext.ttf.fsw.signFlipX(parsed);
+		document.querySelector("#signMirror .renderArea").innerHTML = renderSign(core.fsw.compose.sign(newerSign));
+		document.querySelector("#signMirror .outputArea").innerText = core.fsw.compose.sign(newerSign);
 
-		newSign = ext.ttf.fsw.signFlipXZ(parsed);
-		document.querySelector("#signPerspective .renderArea").innerHTML = renderSign(core.fsw.compose.sign(newSign));
-		document.querySelector("#signPerspective .outputArea").innerText = core.fsw.compose.sign(newSign);
+		let newestSign = ext.ttf.fsw.signFlipXZ(fswSign);
+		document.querySelector("#signPerspective .renderArea").innerHTML = renderSign(newestSign);
+		document.querySelector("#signPerspective .outputArea").innerText = newestSign;
 	}
 }
 
