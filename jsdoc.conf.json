@@ -5,7 +5,12 @@
 		"recurse": true,
 		"template": "./node_modules/@alphanull/jsdoc-vision-theme"
 	},
-	"plugins": [],
+	"plugins": [
+		"plugins/markdown"
+	],
+	"markdown": {
+		"idInHeadings": true
+	},
 	"recurseDepth": 10,
 	"source": {
 		"includePattern": ".+\\.js(doc|x)?$",
