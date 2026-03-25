@@ -5,7 +5,7 @@
 	<title>SignWriting extensions demo</title>
 	<script src="demo.js" type="module"></script>
 	<script>
-		var ext; 
+		var ext;
 		window.onload = (async () => ext = await import("../src/font-ttf/fsw/index.js"));
 	</script>
 	<link rel="stylesheet" href="demo.css" />
@@ -13,72 +13,67 @@
 
 <body>
 	<h1>SignWriting extensions demo</h1>
-	<ul class="tabList">
+	<div>
+		<ul>
 			<li><a href="#signDemo">Signs</a></li>
-		<li><a href="#symbolDemo">Symbols</a></li>
-	</ul>
-	<section id="signDemo">
-		<h2>Sign</h2>
-		<div id="signOrig">
-			<form class="optionsArea">
-				<div class="inputArea">
-					<label for="signFsw">Sign FSW:</label>
-					<textarea id="signFsw" wrap="hard" rows="3" cols="25"></textarea>
-				</div>
-			</form>
-			<div class="renderArea"></div>
-		</div>
-			<ul class="tabList">
-				<li><a href="#signDesc" class="tab">Description</a></li>
-				<li><a href="#signSequence" class="tab">Generate sequence</a></li>
-				<li><a href="#signMirror" class="tab">Mirror</a></li>
-				<li><a href="#signPerspective" class="tab">Swap perspective</a></li>
-			</ul>
-		<div class="demoArea">
-			<div id="signDesc" class="active">
-				<h3>Sign description</h3>
-				<div class="outputArea"></div>
-				<div class="explanation">
-					<p>The initial motivation to generate a sign description was as a QA tool - the description could expose details about the symbols that have semantic relevance but might not be visually distinguished, for instance by indicating that a right-hand or left-hand symbol has been used.</p>
-					<p>Having a description like this also seemed like a new answer to the question "What is the alt text of a sign?". As a web accessibility professional, the question of a text alternative for non-text content always comes up. We can argue that the FSW or SWU of the sign is text, but I don't know of a processor that can make meaningful non-visual representation of that text. The visual representation of that text still needs a text alternative, which is most likely to wind up being either "sign" or the gloss. Both are unsatisfactory as the first is a label not conveying content, and the second is more of a translation than a text alternative and not helpful in understanding the sign itself.</p>
-					<p>My approach to a description starts with the name of the base symbol. Rotation and fill provides information about the symbol's plane, handedness, orientation, and movement direction (not all characteristics apply to all symbols). Written labels of these characteristics are composited into a description of the symbol.</p>
-					<p>A sign description is an ordered set of symbol descriptions. The order is, I think, important for understanding the sign description. Therefore the order is defined by the temporal sequence of the sign.</p>
-				</div>
-			</div>
-			<div id="signSequence" class="inactive">
-				<h3>Generate temporal sequence</h3>
+			<li><a href="#symbolDemo">Symbols</a></li>
+		</ul>
+		<section id="signDemo">
+			<div id="signOrig" class="optionsArea">
+				<form>
+					<div class="inputArea">
+						<label for="signFsw">Sign FSW:</label>
+						<textarea id="signFsw" wrap="hard" rows="3" cols="25"></textarea>
+					</div>
+				</form>
 				<div class="renderArea"></div>
-				<div class="outputArea"></div>
-				<div class="explanation">
-					<p>I created the ability to generate a temporal sequence because not all signs in the wild have it, but it is needed for sorted and for the description algorithm. A preferred <a href="https://www.signwriting.org/archive/docs6/sw0534-SignSpellingGuidelines-2008.pdf">temporal sequence is already described</a>, and this algorithm follows that along with awareness of left- and right-hand symbols.</p>
-					<p>Algorithmic generation of the temporal sequence might be considered less ideal than manual creation, so it is intended for situations where the sequence hasn't been provided. But I think the algorithm mostly produces desired results, and could at least be used to get users started on adding the sequence to the sign.</p>
-					<p>In working with this and its application to a sign description, I have a question about the optimal temporal sequence. I have seen that these tend to start with two patterns: "Dominant hand, subdominant hand, dominant movement, subdominant movement", and "Dominant hand, dominant movement, subdominant hand, subdominant movement". For the sign description this might impact understanding. I'm not sure which pattern is preferable when seen in this context, but this might be a new way of looking at that question.</p>
+			</div>
+			<div class="js-tabs">
+				<ul class="js-tablist" data-hx="h3">
+					<li class="js-tablist__item"><a href="#signDesc" class="js-tablist__link">Description</a></li>
+					<li class="js-tablist__item"><a href="#signSequence" class="js-tablist__link">Temporal sequence</a></li>
+					<li class="js-tablist__item"><a href="#signMirror" class="js-tablist__link">Flip left / right</a></li>
+					<li class="js-tablist__item"><a href="#signPerspective" class="js-tablist__link">Flip front / back</a></li>
+				</ul>
+				<div id="signDesc" class="js-tabcontent">
+					<div class="outputArea"></div>
+					<div class="explanation">
+						<p>The initial motivation to generate a sign description was as a QA tool - the description could expose details about the symbols that have semantic relevance but might not be visually distinguished, for instance by indicating that a right-hand or left-hand symbol has been used.</p>
+						<p>Having a description like this also seemed like a new answer to the question "What is the alt text of a sign?". As a web accessibility professional, the question of a text alternative for non-text content always comes up. We can argue that the FSW or SWU of the sign is text, but I don't know of a processor that can make meaningful non-visual representation of that text. The visual representation of that text still needs a text alternative, which is most likely to wind up being either "sign" or the gloss. Both are unsatisfactory as the first is a label not conveying content, and the second is more of a translation than a text alternative and not helpful in understanding the sign itself.</p>
+						<p>My approach to a description starts with the name of the base symbol. Rotation and fill provides information about the symbol's plane, handedness, orientation, and movement direction (not all characteristics apply to all symbols). Written labels of these characteristics are composited into a description of the symbol.</p>
+						<p>A sign description is an ordered set of symbol descriptions. The order is, I think, important for understanding the sign description. Therefore the order is defined by the temporal sequence of the sign.</p>
+					</div>
+				</div>
+				<div id="signSequence" class="js-tabcontent">
+					<div class="renderArea"></div>
+					<div class="outputArea"></div>
+					<div class="explanation">
+						<p>I created the ability to generate a temporal sequence because not all signs in the wild have it, but it is needed for sorted and for the description algorithm. A preferred <a href="https://www.signwriting.org/archive/docs6/sw0534-SignSpellingGuidelines-2008.pdf">temporal sequence is already described</a>, and this algorithm follows that along with awareness of left- and right-hand symbols.</p>
+						<p>Algorithmic generation of the temporal sequence might be considered less ideal than manual creation, so it is intended for situations where the sequence hasn't been provided. But I think the algorithm mostly produces desired results, and could at least be used to get users started on adding the sequence to the sign.</p>
+						<p>In working with this and its application to a sign description, I have a question about the optimal temporal sequence. I have seen that these tend to start with two patterns: "Dominant hand, subdominant hand, dominant movement, subdominant movement", and "Dominant hand, dominant movement, subdominant hand, subdominant movement". For the sign description this might impact understanding. I'm not sure which pattern is preferable when seen in this context, but this might be a new way of looking at that question.</p>
+					</div>
+				</div>
+				<div id="signMirror" class="js-tabcontent">
+					<div class="renderArea"></div>
+					<div class="outputArea"></div>
+					<div class="explanation">
+						<p>From what I have seen, sign dictionaries generally provide right-handed signs. Left-handed users either must mentally flip them, or add a left-handed version to the dictionary (differentiated in the gloss). The function to flip a sign could simply do this as needed on individual signs or entire documents.</p>
+						<p>The <code>flipSignX</code> function uses symbol functions described below to swap the horizontal position of symbols across the sign centre, mirror symbols, and change between left- and right-"handedness" if applicable.</p>
+					</div>
+				</div>
+				<div id="signPerspective" class="js-tabcontent">
+					<div class="renderArea"></div>
+					<div class="outputArea"></div>
+					<div class="explanation">
+						<p>More of an experiment "because it was there", the <code>flipSignXZ</code> function changes a sign to the viewer perspective. I'm not sure if this is useful or a bad idea, but I thought seeing it in action would help people provide input on that question. Since the signer perspective and viewer perspective swap left and right, many of the changes are the same as in the <code>flipSignX</code> function, but also the palm orientation of hand symbols is reversed, and towards and away movement are reversed.</p>
+						<p>There is also a <code>flipSignZ</code> function that changes palm orientation and towards / away movement, but not left / right aspects. This is for "completeness" but no other functions depend on it, and in experimentation I did not find this useful. I left it in the set in case anyone thinks it might be.</p>
+					</div>
 				</div>
 			</div>
-			<div id="signMirror" class="inactive">
-				<h3>Switch between right- and left-handed sign</h3>
-				<div class="renderArea"></div>
-				<div class="outputArea"></div>
-				<div class="explanation"><p>From what I have seen, sign dictionaries generally provide right-handed signs. Left-handed users either must mentally flip them, or add a left-handed version to the dictionary (differentiated in the gloss). The function to flip a sign could simply do this as needed on individual signs or entire documents.</p>
-				<p>The <code>flipSignX</code> function uses symbol functions described below to swap the horizontal position of symbols across the sign centre, mirror symbols, and change between left- and right-"handedness" if applicable.</p>
-			</div>
-			</div>
-			<div id="signPerspective" class="inactive">
-				<h3>Switch between signer perspective and viewer perspective</h3>
-				<div class="renderArea"></div>
-				<div class="outputArea"></div>
-				<div class="explanation">
-					<p>More of an experiment "because it was there", the <code>flipSignXZ</code> function changes a sign to the viewer perspective. I'm not sure if this is useful or a bad idea, but I thought seeing it in action would help people provide input on that question. Since the signer perspective and viewer perspective swap left and right, many of the changes are the same as in the <code>flipSignX</code> function, but also the palm orientation of hand symbols is reversed, and towards and away movement are reversed.</p>
-					<p>There is also a <code>flipSignZ</code> function that changes palm orientation and towards / away movement, but not left / right aspects. This is for "completeness" but no other functions depend on it, and in experimentation I did not find this useful. I left it in the set in case anyone thinks it might be.</p>
-				</div>
-			</div>
-		</div>
-	</section>
-	<section id="symbolDemo">
-		<h2>Symbol</h2>
-			<div id="symOrig">
-				<h3>Original</h3>
-				<form class="optionsArea">
+		</section>
+		<section id="symbolDemo">
+			<div id="symOrig" class="optionsArea">
+				<form>
 					<div class="inputArea">
 						<label for="symbolFsw">Symbol FSW:</label>
 						<input type="text" id="symbolFsw" />
@@ -86,38 +81,44 @@
 				</form>
 				<div class="renderArea"></div>
 			</div>
-		<ul class="tabList">
-			<li><a href="#symbolDesc" class="tab">Description</a></li>
-			<li><a href="#symbolHands" class="tab">Swap hands</a></li>
-			<li><a href="#symbolMirror" class="tab">Mirror</a></li>
-			<li><a href="#symbolPerspective" class="tab">Swap perspective</a></li>
-		</ul>
-		<div class="demoArea">
-			<div id="symbolDesc" class="active">
-				<h3>Description</h3>
-				<div class="outputArea"></div>
-				<div class="explanation"></div>
+			<div class="js-tabs">
+				<ul class="js-tablist" data-hx="h3">
+					<li class="js-tablist__item"><a href="#symbolDesc" class="js-tablist__link">Description</a></li>
+					<li class="js-tablist__item"><a href="#symbolHands" class="js-tablist__link">Swap hands</a></li>
+					<li class="js-tablist__item"><a href="#symbolMirror" class="js-tablist__link">Mirror</a></li>
+					<li class="js-tablist__item"><a href="#symbolPerspective" class="js-tablist__link">Swap perspective</a></li>
+				</ul>
+				<div id="symbolDesc" class="js-tabcontent">
+					<div class="outputArea"></div>
+					<div class="explanation">
+						<p>Test</p>
+					</div>
+				</div>
+				<div id="symbolHands" class="js-tabcontent">
+					<div class="renderArea"></div>
+					<div class="outputArea"></div>
+					<div class="explanation">
+						<p>Test</p>
+					</div>
+				</div>
+				<div id="symbolMirror" class="js-tabcontent">
+					<div class="renderArea"></div>
+					<div class="outputArea"></div>
+					<div class="explanation">
+						<p>Test</p>
+					</div>
+				</div>
+				<div id="symbolPerspective" class="js-tabcontent">
+					<div class="renderArea"></div>
+					<div class="outputArea"></div>
+					<div class="explanation">
+						<p>Test</p>
+					</div>
+				</div>
 			</div>
-			<div id="symbolHands" class="inactive">
-				<h3>Change hands</h3>
-				<div class="renderArea"></div>
-				<div class="outputArea"></div>
-				<div class="explanation"></div>
-			</div>
-			<div id="symbolMirror" class="inactive">
-				<h3>Mirror</h3>
-				<div class="renderArea"></div>
-				<div class="outputArea"></div>
-				<div class="explanation"></div>
-			</div>
-			<div id="symbolPerspective" class="inactive">
-				<h3>Change perspective</h3>
-				<div class="renderArea"></div>
-				<div class="outputArea"></div>
-				<div class="explanation"></div>
-			</div>
-		</div>
-	</section>
+		</section>
+	</div>
+	<script src="../node_modules/van11y-accessible-tab-panel-aria/dist/van11y-accessible-tab-panel-aria.js"></script>
 </body>
 
 </html>

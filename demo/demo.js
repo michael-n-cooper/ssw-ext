@@ -7,7 +7,6 @@ import "../config/alphabet.js";
 window.addEventListener("load", windowLoaded);
 
 async function windowLoaded() {
-	initializeTabs();
 	document.querySelector("#symbolFsw").addEventListener("keydown", showSymbol);
 	document.querySelectorAll("#symbolDemo button").forEach((button) => button.addEventListener("click", modifySymbol));
 	document.querySelector("#signFsw").addEventListener("keydown", showSign);
@@ -93,18 +92,4 @@ function modifySign(event) {
 	if (event.target.value == "sequence") fswSign = ext.ttf.fsw.generateTemporalIdx(fswSign) + fswSign;
 	document.querySelector("#signFsw").value = fswSign;
 	document.querySelector("#signFsw").dispatchEvent(new Event("change"));
-}
-
-function initializeTabs() {
-	const tabLinks = document.querySelectorAll("a.tab");
-	tabLinks.forEach((tabLink) => {
-		tabLink.addEventListener("click", showTab);
-	});
-}
-function showTab(event) {
-	event.preventDefault();
-	let container = event.target.closest("div,body");
-	container.querySelector(".active").className = "inactive";
-	const newTab = event.target.getAttribute("href");
-	container.querySelector(newTab).className = "active";
 }
