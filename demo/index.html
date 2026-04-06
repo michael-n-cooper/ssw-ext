@@ -4,16 +4,12 @@
 <head>
 	<title>SignWriting extensions demo</title>
 	<script src="demo.js" type="module"></script>
-	<script>
-		var ext;
-		window.onload = (async () => ext = await import("../src/index.js"));
-	</script>
 	<link rel="stylesheet" href="demo.css" />
 </head>
 
 <body>
-	<h1>SignWriting extensions demo</h1>
-	<div>
+	<main>
+		<h1>SignWriting extensions demo</h1>
 		<ul>
 			<li><a href="#signDemo">Signs</a></li>
 			<li><a href="#symbolDemo">Symbols</a></li>
@@ -97,7 +93,10 @@
 				</div>
 			</div>
 		</section>
-	</div>
+	</main>
+	<footer>
+		<p><a href="https://github.com/michael-n-cooper/sw-ext/">Source</a> | <a href="docs/">Docs</a></p>
+	</footer>
 	<script src="../node_modules/van11y-accessible-tab-panel-aria/dist/van11y-accessible-tab-panel-aria.min.js"></script>
 </body>
 
