@@ -1,7 +1,7 @@
 {
 	"opts": {
 		"encoding": "utf8",
-		"destination": "./docs/",
+		"destination": "./build/docs/",
 		"recurse": true,
 		"template": "./node_modules/@alphanull/jsdoc-vision-theme"
 	},
