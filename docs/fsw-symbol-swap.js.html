@@ -1,0 +1,463 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" data-version="1.2.2"  data-font="fira"   data-skin="default"  class=" has-skin-selector has-font-selector has-no-sidebar">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta content="Source file fsw-symbol-swap.js – contains module:ssw-ext.exports.symbolSwapHands, module:ssw-ext.exports.symbolSwapPerspective and 2 more…" name="description">
+    
+    <title> Source: fsw-symbol-swap.js</title>
+    <link type="text/css" rel="stylesheet" href="styles/main.1.2.2.css">
+    
+    
+    
+</head>
+
+<body>
+
+<a href="#content-wrapper-inner" class="skip-content">Skip to content</a>
+
+<script>
+
+    const doc = document.documentElement;
+
+    // execute as soon as possible to prevent FOUC
+    if (window.localStorage) {
+        const darkMode = window.localStorage.getItem('darkmode');
+        if (darkMode === 'dark') doc.classList.add('is-dark-mode');
+        else if (!darkMode && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+             doc.classList.add('is-dark-mode')
+        }
+
+        const showPrivates = window.localStorage.getItem('showPrivates');
+        if (showPrivates === 'false') doc.classList.add('no-privates');
+
+        const showSidebar = window.localStorage.getItem('showSidebar');
+        if (showSidebar === 'false') doc.classList.add('no-sidebar');
+
+        const hasSkinSelector = doc.classList.contains('has-skin-selector');
+        if (hasSkinSelector) {
+            const skin = window.localStorage.getItem('skin');
+            if (skin) doc.dataset.skin = skin;
+        }
+
+        const collapseOnLoad = window.localStorage.getItem('collapseOnLoad');
+        if (collapseOnLoad === 'true') doc.classList.add('is-folded');
+        if (collapseOnLoad === 'false') doc.classList.remove('is-folded');
+
+        const uiScale = window.localStorage.getItem('uiScale');
+        if (uiScale) doc.style.setProperty('--font-size-base', `${parseInt(uiScale, 10)}px`);
+
+        const font = window.localStorage.getItem('fontFamily') || doc.dataset.font || 'ubuntu';
+        doc.dataset.font = font;
+    }
+
+    const scrollbarWidth = Math.max(0, window.innerWidth - doc.clientWidth);
+    if (scrollbarWidth > 0) doc.classList.add("has-scrollbar"); else doc.classList.add("has-no-scrollbar");
+
+</script>
+
+<div id="wrapper-global">
+
+    <header id="header-main">
+        <div id="header-main-inner">
+            <a id="logo" class="logo-link" href="index.html">
+                
+                
+                <div class="logo-text">Documentation</div>
+            </a>
+            <nav id="nav-main-wrapper">
+                <button id="menu-mobile-close" class="icon close" title="Close Mobile Menu"></button>
+                <menu id="nav-main"><li><a href="index.html">Home</a></li>
+            <li class="has-submenu">
+                <span>Modules</span>
+                <button aria-expanded="false" aria-haspopup="true" class="nav-submenu-toggle"></button>
+                <div class="menu-wrapper" data-lenis-prevent>
+                    <menu aria-hidden="true">
+                        <li><a href="module_ssw-ext.html">ssw-ext</a></li>
+                    </menu>
+                </div>
+            </li><li><a href="global.html">Global</a></li></menu>
+            </nav>
+            <button id="search-button" class="icon search" aria-label="Search" title="Search" />
+            <button id="settings-button" class="icon settings" aria-label="Settings" title="Settings" />
+            <button id="menu-mobile-button" class="icon" aria-label="Mobile Menu" title="Mobile Menu"></button>
+        </div>
+    </header>
+
+    <div id="content-wrapper" tabindex="-1">
+        <div id="content-wrapper-inner">
+
+            <main>
+                <h1 class="page-title">Source: fsw-symbol-swap.js</h1>
+                
+
+
+
+    
+
+
+    <section>
+        <article>
+            <pre class="prettyprint source source-page linenums"><code class="language-javascript">import * as core from "../node_modules/@sutton-signwriting/core/core.mjs";
+import * as ttf from "../node_modules/@sutton-signwriting/font-ttf/index.mjs";
+import * as util from "./util.js";
+import * as variant from "./fsw-symbol-variant.js";
+import "../node_modules/@sutton-signwriting/core/src/types.js";
+
+/**
+ * Swap between left-hand and right-hand symbol.
+ * Supports changing signs between left- and right-handed expression.
+ * Only applies to symbols with "handedness", and does not alter both-hand symbols.
+ * Does not mirror the symbol, which is normally also desired but should be handled separately.
+ * Does not alter hand symbols, as their "handedness" is changed by mirroring. This is to avoid "double-mirroring".
+ * @memberof module:ssw-ext
+ * @param {(string|SymbolObject)} fswSym Symbol to change
+ * @returns {(string|SymbolObject)} Updated symbol
+ * @example
+ * // returns "S22a10"
+ * symbolSwapHands("S22a00")
+ */
+export function symbolSwapHands(fswSym) {
+	const returnObj = (typeof fswSym == "object");
+	const parsed = (returnObj ? fswSym : core.fsw.parse.symbol(fswSym));
+
+	if (parsed.symbol) {
+		const sp = util.symbolParts(parsed.symbol);
+		/*
+		if (util.isVariant(sp.num.base, "handGroup1")) {
+		}
+		*/
+		// swap fill 0,1
+		if (util.isVariant(sp.num.base, "handGroup2")) {
+			let newFill = sp.num.fill;
+			if (sp.num.fill == 0) newFill = 1;
+			if (sp.num.fill == 1) newFill = 0;
+			parsed.symbol = sp.str.base + newFill + sp.str.rot;
+			//special case to "undo" a built-in mirror
+			if (sp.num.base == 0x2ef || sp.num.base == 0x2f0) parsed.symbol = symbolMirror(parsed.symbol);
+		}
+		// ignore fill 2 and swap fill 0,1; 3,4
+		else if (util.isVariant(sp.num.base, "handGroup3")) {
+			let newFill = sp.num.fill;
+			if (sp.num.fill == 0) newFill = 1;
+			if (sp.num.fill == 1) newFill = 0;
+			if (sp.num.fill == 3) newFill = 4;
+			if (sp.num.fill == 4) newFill = 3;
+			parsed.symbol = sp.str.base + newFill + sp.str.rot;
+		}
+		if (returnObj) return parsed;
+		return core.fsw.compose.symbol(parsed);
+	}
+	return fswSym;
+}
+
+/**
+ * Swap symbol between heel and palm orientation.
+ * Supports changing sign between signer and viewer perspective.
+ * Only applies to wall plane symbols with empty or solid fill.
+ * Does not mirror the symbol, which is normally also desired but should be handled separately.
+ * @memberof module:ssw-ext
+ * @param {(string|SymbolObject)} fswSym Symbol to change
+ * @returns {(string|SymbolObject)} Updated symbol
+ * @example
+ * // returns "S10028"
+ * symbolSwapPerspective("S10000")
+ */
+export function symbolSwapPerspective(fswSym) {
+	const returnObj = (typeof fswSym == "object");
+	const parsed = (returnObj ? fswSym : core.fsw.parse.symbol(fswSym));
+
+	if (parsed.symbol) {
+		const sp = util.symbolParts(parsed.symbol);
+
+		// swap fill between 0 - 2 and 3 - 5
+		if (util.inRangeSet(sp.num.base, [0x2e7, 0x2ec])) {
+			let newFill = sp.num.fill &lt; 3 ? sp.num.fill + 3 : sp.num.fill - 3;
+			parsed.symbol = sp.str.base + newFill.toString(16) + sp.str.rot;
+		}
+		// swap fill 0,2
+		else if (core.fsw.isType(parsed.symbol, "hand") &amp;&amp; variant.isWallPlane(parsed.symbol)) {
+			let newFill = sp.num.fill;
+			if (sp.num.fill == 0) newFill = 2;
+			else if (sp.num.fill == 2) newFill = 0;
+			parsed.symbol = sp.str.base + newFill.toString(16) + sp.str.rot;
+		}
+		// swap rot between 0 - 3 and 4 - 7
+		else if (util.isVariant(sp.num.base, "planeFloor")) {
+			let newRot = sp.num.rot + 4;
+			if (newRot > 7) newRot = newRot - 8;
+			parsed.symbol = sp.str.base + sp.str.fill + newRot.toString(16);
+		}
+		// add 4 to base
+		else if (util.isVariant(sp.num.base, "planeDiagonalTowards")) {
+			const newBase = sp.num.base - 4;
+			parsed.symbol = "S" + newBase.toString(16) + sp.str.fill + sp.str.rot;
+		}
+		// subtract 4 from base
+		else if (util.isVariant(sp.num.base, "planeDiagonalAway")) {
+			const newBase = sp.num.base - 4;
+			parsed.symbol = "S" + newBase.toString(16) + sp.str.fill + sp.str.rot;
+		}
+		if (returnObj) return parsed;
+		return core.fsw.compose.symbol(parsed);
+	}
+	return fswSym;
+}
+
+
+/**
+ * Swap horizontal position of symbol across centre of sign.
+ * Supports changing sign between signer and viewer perspective.
+ * Does not mirror the symbol, which is normally also desired but should be handled separately.
+ * @memberof module:ssw-ext
+ * @param {(string|SymbolObject)} fswSym Symbol with coordinates
+ * @returns {(string|SymbolObject)} Updated symbol with coordinates
+ * @example
+ * // returns "S10001472x510"
+ * symbolSwapSides("S10001507x510")
+ */
+export function symbolSwapSides(fswSym) {
+	const returnObj = (typeof fswSym == "object");
+	const parsed = (returnObj ? fswSym : core.fsw.parse.symbol(fswSym));
+
+	if (parsed.coord) {
+	const symWidth = ttf.fsw.symbolSize(parsed.symbol)[0];
+	parsed.coord[0] = 500 - ((parsed.coord[0] + symWidth) - 500);
+		if (returnObj) return parsed;
+		return core.fsw.compose.symbol(parsed);
+	}
+	return fswSym;
+}
+
+/**
+ * Mirror a symbol, i.e., reverse left-right aspects while not changing up-down aspects.
+ * Mirrors additional ranges from the base package, using a variety of patterns for range sets.
+ * Symbols in ranges not covered by this extension return the base mirror result.
+ * @memberof module:ssw-ext
+ * @param {(string|SymbolObject)} fswSym Symbol to change
+ * @returns {(string|SymbolObject)} Mirrored symbol
+ * @example
+ * // returns "S10009"
+ * symbolMirror("S10001")
+ */
+export function symbolMirror(fswSym) {
+	const returnObj = (typeof fswSym == "object");
+	const parsed = (returnObj ? fswSym : core.fsw.parse.symbol(fswSym));
+
+	if (parsed.symbol) {
+		const sp = util.symbolParts(parsed.symbol);
+
+		// swap rot between 0 - 3 and 4 - 7
+		if (util.isVariant(sp.num.base, "mirrorGroup6")) {
+			const newRot = (sp.num.rot > 3) ? (sp.num.rot - 4) : (sp.num.rot + 4);
+			parsed.symbol = sp.str.base + sp.str.fill + newRot.toString(16);
+		}
+		// swap rot between 0 - 7 and 8 - f
+		else if (util.isVariant(sp.num.base, "mirrorGroup2")) {
+			const newRot = (sp.num.rot > 7) ? (sp.num.rot - 8) : (sp.num.rot + 8);
+			parsed.symbol = sp.str.base + sp.str.fill + newRot.toString(16);
+		}
+		// swap rot 0,1; 2,7; 3,6; 4,5
+		else if (util.isVariant(sp.num.base, "mirrorGroup3")) {
+			const rotMap = new Map([
+				[0, 1],
+				[1, 0],
+				[2, 7],
+				[7, 2],
+				[3, 6],
+				[6, 3],
+				[4, 5],
+				[5, 4]
+			]);
+			parsed.symbol = sp.str.base + sp.str.fill + rotMap.get(sp.num.rot).toString(16);
+		}
+		// swap rot 0,2; 1,3; 4,5; 6,7
+		else if (util.isVariant(sp.num.base, "mirrorGroup9")) {
+			const rotMap = new Map([
+				[0, 2],
+				[2, 0],
+				[1, 3],
+				[3, 1],
+				[4, 5],
+				[5, 4],
+				[6, 7],
+				[7, 6]
+			]);
+			parsed.symbol = sp.str.base + sp.str.fill + rotMap.get(sp.num.rot).toString(16);
+		}
+		// ignore rot 2 and if rot &lt; 5 swap rot 0,4; 1,3 and if rot > 4 swap fill 0,1
+		else if (util.isVariant(sp.num.base, "mirrorGroup8")) {
+			if (sp.num.rot &lt; 5) {
+				const rotMap = new Map([
+					[2, 2],
+					[0, 4],
+					[4, 0],
+					[1, 3],
+					[3, 1]
+				]);
+				parsed.symbol = sp.str.base + sp.str.fill + rotMap.get(sp.num.rot).toString(16);
+			} else {
+				const newFill = sp.num.fill ^ 1;
+				parsed.symbol = sp.str.base + newFill.toString(16) + sp.str.rot;
+			}
+		}
+		// increase even rot, decrease odd rot
+		else if (util.isVariant(sp.num.base, "mirrorGroup5")) {
+			const newRot = (sp.num.rot % 2 == 0) ? (sp.num.rot + 1) : (sp.num.rot - 1);
+			parsed.symbol = sp.str.base + sp.str.fill + newRot.toString(16);
+		}
+		// increase even rot, decrease odd rot, except rot 0
+		else if (util.isVariant(sp.num.base, "mirrorGroup7")) {
+			if (sp.num.rot > 0) {
+				const newRot = (sp.num.rot % 2 == 0) ? (sp.num.rot - 1) : (sp.num.rot + 1);
+				parsed.symbol = sp.str.base + sp.str.fill + newRot.toString(16);
+			}
+		}
+		// swap fill 1 and 2
+		else if (util.isVariant(sp.num.base, "mirrorGroup1")) {
+			let newFill = sp.num.fill;
+			if (sp.num.fill == 1) newFill = 2;
+			if (sp.num.fill == 2) newFill = 1;
+			parsed.symbol = sp.str.base + newFill.toString(16) + sp.str.rot;
+		}
+		// increase even fill, decrease odd fill
+		else if (util.isVariant(sp.num.base, "mirrorGroup4")) { 
+			const newFill = (sp.num.fill % 2 == 0) ? (sp.num.fill + 1) : (sp.num.fill - 1);
+			parsed.symbol = sp.str.base + newFill.toString(16) + sp.str.rot;
+		}
+		// don't mirror
+		else if (util.isVariant(sp.num.base, "mirrorGroup10")) {
+			parsed.symbol = fswSym;
+		}
+		// default mirror
+		else parsed.symbol = ttf.fsw.symbolMirror(fswSym);
+
+		if (returnObj) return parsed;
+		else return core.fsw.compose.symbol(parsed);
+	}
+	return fswSym;
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+            </main>
+
+            <aside id="sidebar"></aside>
+
+        </div>
+    </div>
+
+    <footer>
+
+        <div id="footer-content">
+            
+            <p>Documentation generated
+                
+                on 4/6/2026, 5:19:20 PM
+                by <a href="https://github.com/jsdoc/jsdoc" target=_blank>JSDoc 4.0.5</a>
+                &amp; <a href="https://github.com/alphanull/jsdoc-vision-theme" target=_blank>Vision Theme</a>.</p>
+        </div>
+
+    </footer>
+
+</div>
+
+<div id="settings" style="display: none;">
+
+    <h3>Settings</h3>
+
+    <menu class="is-grouped is-radio is-stretched" role="menu">
+        <li role="none"><button id="collapse-button" role="menuitem" onclick="collapseAllSections()">Collapse All</button></li>
+        <li role="none"><button id="expand-button" role="menuitem" onclick="expandAllSections()">Expand All</button></li>
+    </menu>
+
+    
+    <select id="skin-select">
+    
+        <option value="default">Default Skin</option>
+    
+        <option value="nordic">Nordic Skin</option>
+    
+        <option value="ocean">Ocean Skin</option>
+    
+        <option value="earth">Earth Skin</option>
+    
+        <option value="forest">Forest Skin</option>
+    
+        <option value="desert">Desert Skin</option>
+    
+        <option value="fire">Fire Skin</option>
+    
+        <option value="lavender">Lavender Skin</option>
+    
+        <option value="candy">Candy Skin</option>
+    
+        <option value="grayscale">Grayscale Skin</option>
+    
+    </select>
+    
+
+    
+    <select id="font-select">
+    
+        <option value="fira" >Fira Font Pack</option>
+    
+        <option value="recursive" >Recursive Font Pack</option>
+    
+        <option value="ubuntu" >Ubuntu Font Pack</option>
+    
+        <option value="source" >Source Font Pack</option>
+    
+        <option value="noto" >Noto Font Pack</option>
+    
+    </select>
+    
+
+    <label for="uiscale-settings">
+        <span class="form-label-text">UI Scale</span>
+        <input type="range" step="1" min="9" max="19" value="14" id="uiscale-settings" name="uiscale-settings" class="has-center-line">
+    </label>
+
+    <label for="darkmode-settings">
+        <span class="form-label-text">Darkmode</span>
+        <input type="checkbox" checked id="darkmode-settings" name="darkmode-settings" class="is-toggle">
+    </label>
+
+    <label for="collapse-settings">
+        <span class="form-label-text">Collapse on Load</span>
+        <input type="checkbox" checked id="collapse-settings" name="collapse-settings" class="is-toggle">
+    </label>
+
+    <label for="sidebar-settings">
+        <span class="form-label-text">Show Sidebar</span>
+        <input type="checkbox" checked id="sidebar-settings" name="sidebar-settings" class="is-toggle">
+    </label>
+
+    
+
+</div>
+
+<div id="search" style="display: none;">
+
+    <div class="search-input">
+        <input type="text" id="search-input" placeholder="Search docs" autocomplete="off">
+    </div>
+
+    <ul id="search-results"></ul>
+
+</div>
+
+<script defer src="static/index.js"></script>
+<script defer src="scripts/main.1.2.2.min.js"></script>
+
+</body>
+</html>

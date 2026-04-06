@@ -1,0 +1,122 @@
+[
+  {
+    "title": "module:ssw-ext.exports.signDescribe",
+    "link": "module_ssw-ext.html#.exports.signDescribe",
+    "description": "Describe a sign by assembling symbol descriptions in order of the temporal sequence, which is generated if absent."
+  },
+  {
+    "title": "module:ssw-ext.exports.signFlipX",
+    "link": "module_ssw-ext.html#.exports.signFlipX",
+    "description": "Change sign between left-handed and right-handed\nConceptually flips sign in the X direction"
+  },
+  {
+    "title": "module:ssw-ext.exports.signFlipZ",
+    "link": "module_ssw-ext.html#.exports.signFlipZ",
+    "description": "Change sign between signer perspective and viewer perspective, and between left-handed and right-handed.\nConceptually flips sign in the Z direction."
+  },
+  {
+    "title": "module:ssw-ext.exports.signGenerateTemporalIdx",
+    "link": "module_ssw-ext.html#.exports.signGenerateTemporalIdx",
+    "description": "Generate the temporal sequence for a sign.\nClassifies symbols and groups them in a defined order.\nThe order can be provided as an arry of tokens &quot;rightHand&quot; | &quot;leftHand&quot; | &quot;rightMovement&quot; | &quot;leftMovement&quot; | &quot;dynamic&quot; | &quot;head&quot; | &quot;trunk&quot; | &quot;limb&quot; | &quot;location&quot; | &quot;punctuation&quot;.\nThe default order groups hand and movement into left- and right- groups of hand and movement symbol, and starts with the right hand.\nThis is different from the SignSpelling guidelines which group all hand symbols before movement symbols, to explore if it's a useful approach, made possible by handedness detection."
+  },
+  {
+    "title": "module:ssw-ext.exports.symbolDescribe",
+    "link": "module_ssw-ext.html#.exports.symbolDescribe",
+    "description": "Describe a symbol. This starts with the label of the base symbol, then examines range, fill, and rotation to work out information about orientation in space, movement direction, etc. The final text uses strings from /config/descMessages.json."
+  },
+  {
+    "title": "module:ssw-ext.exports.symbolSwapHands",
+    "link": "module_ssw-ext.html#.exports.symbolSwapHands",
+    "description": "Swap between left-hand and right-hand symbol.\nSupports changing signs between left- and right-handed expression.\nOnly applies to symbols with &quot;handedness&quot;, and does not alter both-hand symbols.\nDoes not mirror the symbol, which is normally also desired but should be handled separately.\nDoes not alter hand symbols, as their &quot;handedness&quot; is changed by mirroring. This is to avoid &quot;double-mirroring&quot;."
+  },
+  {
+    "title": "module:ssw-ext.exports.symbolSwapPerspective",
+    "link": "module_ssw-ext.html#.exports.symbolSwapPerspective",
+    "description": "Swap symbol between heel and palm orientation.\nSupports changing sign between signer and viewer perspective.\nOnly applies to wall plane symbols with empty or solid fill.\nDoes not mirror the symbol, which is normally also desired but should be handled separately."
+  },
+  {
+    "title": "module:ssw-ext.exports.symbolSwapSides",
+    "link": "module_ssw-ext.html#.exports.symbolSwapSides",
+    "description": "Swap horizontal position of symbol across centre of sign.\nSupports changing sign between signer and viewer perspective.\nDoes not mirror the symbol, which is normally also desired but should be handled separately."
+  },
+  {
+    "title": "module:ssw-ext.exports.symbolMirror",
+    "link": "module_ssw-ext.html#.exports.symbolMirror",
+    "description": "Mirror a symbol, i.e., reverse left-right aspects while not changing up-down aspects.\nMirrors additional ranges from the base package, using a variety of patterns for range sets.\nSymbols in ranges not covered by this extension return the base mirror result."
+  },
+  {
+    "title": "module:ssw-ext.exports.isLeftHand",
+    "link": "module_ssw-ext.html#.exports.isLeftHand",
+    "description": "Determine if a symbol applies to left hand.\nFor hand symbols this is based on rotation, for others fill.\nOccasionally a &quot;left&quot; symbol is used for the right hand in an unusual orientation.\nThis does not test for that, but it could be heuristically corrected with position information."
+  },
+  {
+    "title": "module:ssw-ext.exports.isRightHand",
+    "link": "module_ssw-ext.html#.exports.isRightHand",
+    "description": "Determine if a symbol applies to right hand.\nFor hand symbols this is based on rotation, for others fill.\nOccasionally a &quot;right&quot; symbol is used for the left hand in an unusual orientation.\nThis does not test for that, but it could be heuristically corrected with position information."
+  },
+  {
+    "title": "module:ssw-ext.exports.isBothHand",
+    "link": "module_ssw-ext.html#.exports.isBothHand",
+    "description": "Determine if a symbol applies to both hands.\nFor movement symbols only and is based on fill.\nIt always returns false for hand symbols."
+  },
+  {
+    "title": "module:ssw-ext.exports.isFloorPlane",
+    "link": "module_ssw-ext.html#.exports.isFloorPlane",
+    "description": "Determine if a symbol is on the floor plane.\nFor hand symbols this is determined by fill, for others by range."
+  },
+  {
+    "title": "module:ssw-ext.exports.isWallPlane",
+    "link": "module_ssw-ext.html#.exports.isWallPlane",
+    "description": "Determine if a symbol is on the wall plane.\nFor hand symbols this is determined by fill, for others by range."
+  },
+  {
+    "title": "module:ssw-ext.exports.isDiagonalTowards",
+    "link": "module_ssw-ext.html#.exports.isDiagonalTowards",
+    "description": "Determine if a symbol is on the diagonal towards plane.\nDetermined by range."
+  },
+  {
+    "title": "module:ssw-ext.exports.isDiagonalAway",
+    "link": "module_ssw-ext.html#.exports.isDiagonalAway",
+    "description": "Determine if a symbol is on the diagonal away plane.\nDetermined by range."
+  },
+  {
+    "title": "module:ssw-ext.exports.isDiagonalPlane",
+    "link": "module_ssw-ext.html#.exports.isDiagonalPlane",
+    "description": "Determine if a symbol is on either diagonal plane.\nUnion of {@link isDiagonalAway} and {@link isDiagonalTowards}."
+  },
+  {
+    "title": "module:ssw-ext.exports.getHandOrientation",
+    "link": "module_ssw-ext.html#.exports.getHandOrientation",
+    "description": "Determine palm, side, and back orientation of hand.\nBased on fill."
+  },
+  {
+    "title": "module:ssw-ext",
+    "link": "module_ssw-ext.html",
+    "description": "This is a set of proposed additional features for the {@link https://www.sutton-signwriting.io/font-ttf/ Sutton Signwriting Javascript library}. For prototyping and demo purposes this is implemented only in the font-ttf module, and if accepted would need porting to the other modules. Some of the functions might be more appropriate for the core module but are here for now to keep it simple.\nTypes of features:\n\nSymbol state functions to determine handedness, plane, and palm orientation;\nSymbol modification functions that alter these states, and an extended left-right mirror function handling additional ranges;\nGenerate semantic descriptions of symbols and in turn for entire signs;\nFlip signs between left- and right-handed signs, and between signer and viewer perspective;\nGenerate a reasonable temporal sequence for a sign.\n"
+  },
+  {
+    "title": "SymbolRange",
+    "link": "global.html#SymbolRange",
+    "description": "Pair of FSW symbols that define a range"
+  },
+  {
+    "title": "RangeSet",
+    "link": "global.html#RangeSet",
+    "description": "Set of symbol ranges"
+  },
+  {
+    "title": "symbolPartsNum",
+    "link": "global.html#symbolPartsNum",
+    "description": "Numeric components of a symbol"
+  },
+  {
+    "title": "symbolPartsStr",
+    "link": "global.html#symbolPartsStr",
+    "description": "String components of a symbol"
+  },
+  {
+    "title": "symbolParts",
+    "link": "global.html#symbolParts",
+    "description": "Symbol components as string and number"
+  }
+]

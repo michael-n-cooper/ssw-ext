@@ -1,0 +1,4330 @@
+<!DOCTYPE html>
+<html lang="en" data-version="1.2.2"  data-font="fira"   data-skin="default"  class=" has-skin-selector has-font-selector">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta content="This is a set of proposed additional features for the . For prototyping and demo purposes this is implemented only in the font-ttf module, and if accepted…" name="description">
+    
+    <title> Module: ssw-ext</title>
+    <link type="text/css" rel="stylesheet" href="styles/main.1.2.2.css">
+    
+    
+    
+</head>
+
+<body>
+
+<a href="#content-wrapper-inner" class="skip-content">Skip to content</a>
+
+<script>
+
+    const doc = document.documentElement;
+
+    // execute as soon as possible to prevent FOUC
+    if (window.localStorage) {
+        const darkMode = window.localStorage.getItem('darkmode');
+        if (darkMode === 'dark') doc.classList.add('is-dark-mode');
+        else if (!darkMode && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+             doc.classList.add('is-dark-mode')
+        }
+
+        const showPrivates = window.localStorage.getItem('showPrivates');
+        if (showPrivates === 'false') doc.classList.add('no-privates');
+
+        const showSidebar = window.localStorage.getItem('showSidebar');
+        if (showSidebar === 'false') doc.classList.add('no-sidebar');
+
+        const hasSkinSelector = doc.classList.contains('has-skin-selector');
+        if (hasSkinSelector) {
+            const skin = window.localStorage.getItem('skin');
+            if (skin) doc.dataset.skin = skin;
+        }
+
+        const collapseOnLoad = window.localStorage.getItem('collapseOnLoad');
+        if (collapseOnLoad === 'true') doc.classList.add('is-folded');
+        if (collapseOnLoad === 'false') doc.classList.remove('is-folded');
+
+        const uiScale = window.localStorage.getItem('uiScale');
+        if (uiScale) doc.style.setProperty('--font-size-base', `${parseInt(uiScale, 10)}px`);
+
+        const font = window.localStorage.getItem('fontFamily') || doc.dataset.font || 'ubuntu';
+        doc.dataset.font = font;
+    }
+
+    const scrollbarWidth = Math.max(0, window.innerWidth - doc.clientWidth);
+    if (scrollbarWidth > 0) doc.classList.add("has-scrollbar"); else doc.classList.add("has-no-scrollbar");
+
+</script>
+
+<div id="wrapper-global">
+
+    <header id="header-main">
+        <div id="header-main-inner">
+            <a id="logo" class="logo-link" href="index.html">
+                
+                
+                <div class="logo-text">Documentation</div>
+            </a>
+            <nav id="nav-main-wrapper">
+                <button id="menu-mobile-close" class="icon close" title="Close Mobile Menu"></button>
+                <menu id="nav-main"><li><a href="index.html">Home</a></li>
+            <li class="has-submenu">
+                <span>Modules</span>
+                <button aria-expanded="false" aria-haspopup="true" class="nav-submenu-toggle"></button>
+                <div class="menu-wrapper" data-lenis-prevent>
+                    <menu aria-hidden="true">
+                        <li><a href="module_ssw-ext.html">ssw-ext</a></li>
+                    </menu>
+                </div>
+            </li><li><a href="global.html">Global</a></li></menu>
+            </nav>
+            <button id="search-button" class="icon search" aria-label="Search" title="Search" />
+            <button id="settings-button" class="icon settings" aria-label="Settings" title="Settings" />
+            <button id="menu-mobile-button" class="icon" aria-label="Mobile Menu" title="Mobile Menu"></button>
+        </div>
+    </header>
+
+    <div id="content-wrapper" tabindex="-1">
+        <div id="content-wrapper-inner">
+
+            <main>
+                <h1 class="page-title">Module: ssw-ext</h1>
+                
+
+
+
+
+<section>
+
+<header>
+    
+        
+    
+</header>
+
+<article>
+
+    
+    <div class="container-overview">
+    
+
+        
+            <div class="description"><p>This is a set of proposed additional features for the <a href="https://www.sutton-signwriting.io/font-ttf/">Sutton Signwriting Javascript library</a>. For prototyping and demo purposes this is implemented only in the font-ttf module, and if accepted would need porting to the other modules. Some of the functions might be more appropriate for the core module but are here for now to keep it simple.</p>
+<p>Types of features:</p>
+<ul>
+<li>Symbol state functions to determine handedness, plane, and palm orientation;</li>
+<li>Symbol modification functions that alter these states, and an extended left-right mirror function handling additional ranges;</li>
+<li>Generate semantic descriptions of symbols and in turn for entire signs;</li>
+<li>Flip signs between left- and right-handed signs, and between signer and viewer perspective;</li>
+<li>Generate a reasonable temporal sequence for a sign.</li>
+</ul></div>
+        
+
+        
+            
+
+
+
+
+
+    
+
+    
+
+    
+
+
+
+
+<div id="ssw-ext_container"  class="foldable-container">
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        
+
+        
+
+        
+    
+
+    
+    <dt class="tag-source">Source</dt>
+    <dd class="tag-source">
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1">line 1</a>
+    </dd>
+    
+
+</dl>
+
+
+
+
+
+
+</div>
+
+
+        
+
+    
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h2 class="subsection-title" id="section-methods">Methods</h2>
+
+        
+            
+
+
+
+
+
+    
+
+    
+    <h3 class="name " id=".exports.signDescribe">
+        
+        <span class="signature-attributes">static </span>export signDescribe<span class="signature">(fswSign)</span> <span class="return-signature"> &rarr;  string</span>
+        <button type="button" class="foldable-toggle" aria-controls=".exports.signDescribe_container" aria-label="Toggle section: export signDescribe">
+    </h3>
+    
+
+    
+
+
+
+
+<div id=".exports.signDescribe_container"  class="foldable-container">
+
+
+<div class="description">
+    <p>Describe a sign by assembling symbol descriptions in order of the temporal sequence, which is generated if absent.</p>
+</div>
+
+
+
+    
+
+
+
+<figure class="params">
+<figcaption>Parameters:</figcaption>
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+            <td data-label="Name" class="name"><code>fswSign</code></td>
+            
+
+            <td data-label="Type" class="type ">
+            
+                
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SignObject</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td data-label="Description" class="description last    ">
+                <p>Sign</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+</figure>
+
+
+
+
+    
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-see">See</dt>
+    
+        <dd class="tag-see">symbolDescribe</dd>
+    
+        <dd class="tag-see">signGenerateTemporalIdx</dd>
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        
+            <dt>Returns</dt>
+            
+            
+
+
+
+<dd class="param-desc">
+    <p>Description</p>
+
+
+
+<dd class="returns">
+    <b>Type</b> 
+
+
+<span class="param-type">string</span>
+
+
+
+</dd>
+
+
+</dd>
+
+        
+
+        
+
+        
+    
+
+    
+    <dt class="tag-source">Source</dt>
+    <dd class="tag-source">
+        <a href="fsw-sign-description.js.html">fsw-sign-description.js</a>, <a href="fsw-sign-description.js.html#line17">line 17</a>
+    </dd>
+    
+
+</dl>
+
+
+
+
+
+    <h4 class="example">Example</h4>
+    
+
+
+    <pre class="prettyprint"><code class="language-javascript">// returns "Right - Index Middle Unit, Thumb Side - Side - Floor Plane - Forward; Hinge Movement, Up Down Large; Mouth Smile"describeSign("AS12d40S22112S33e00M542x540S33e00482x483S10001507x510S20f00516x504")</code></pre>
+
+
+
+
+</div>
+
+
+        
+            
+
+
+
+
+
+    
+
+    
+    <h3 class="name " id=".exports.signFlipX">
+        
+        <span class="signature-attributes">static </span>export signFlipX<span class="signature">(fswSign)</span> <span class="return-signature"> &rarr;  string|SignObject</span>
+        <button type="button" class="foldable-toggle" aria-controls=".exports.signFlipX_container" aria-label="Toggle section: export signFlipX">
+    </h3>
+    
+
+    
+
+
+
+
+<div id=".exports.signFlipX_container"  class="foldable-container">
+
+
+<div class="description">
+    <p>Change sign between left-handed and right-handed
+Conceptually flips sign in the X direction</p>
+</div>
+
+
+
+    
+
+
+
+<figure class="params">
+<figcaption>Parameters:</figcaption>
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+            <td data-label="Name" class="name"><code>fswSign</code></td>
+            
+
+            <td data-label="Type" class="type ">
+            
+                
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SignObject</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td data-label="Description" class="description last    ">
+                <p>Sign to flip</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+</figure>
+
+
+
+
+    
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        
+            <dt>Returns</dt>
+            
+            
+
+
+
+<dd class="param-desc">
+    <p>Updated sign</p>
+
+
+
+<dd class="returns">
+    <b>Type</b> 
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SignObject</span>
+
+
+
+</dd>
+
+
+</dd>
+
+        
+
+        
+
+        
+    
+
+    
+    <dt class="tag-source">Source</dt>
+    <dd class="tag-source">
+        <a href="fsw-sign-flip.js.html">fsw-sign-flip.js</a>, <a href="fsw-sign-flip.js.html#line16">line 16</a>
+    </dd>
+    
+
+</dl>
+
+
+
+
+
+    <h4 class="example">Example</h4>
+    
+
+
+    <pre class="prettyprint"><code class="language-javascript">// returns "AS12d40S22112S33e00M518x540S33e00482x483S10009472x510S20f00458x504"signFlipX("AS12d40S22112S33e00M542x540S33e00482x483S10001507x510S20f00516x504")</code></pre>
+
+
+
+
+</div>
+
+
+        
+            
+
+
+
+
+
+    
+
+    
+    <h3 class="name " id=".exports.signFlipZ">
+        
+        <span class="signature-attributes">static </span>export signFlipZ<span class="signature">(fswSign)</span> <span class="return-signature"> &rarr;  string|SignObject</span>
+        <button type="button" class="foldable-toggle" aria-controls=".exports.signFlipZ_container" aria-label="Toggle section: export signFlipZ">
+    </h3>
+    
+
+    
+
+
+
+
+<div id=".exports.signFlipZ_container"  class="foldable-container">
+
+
+<div class="description">
+    <p>Change sign between signer perspective and viewer perspective, and between left-handed and right-handed.
+Conceptually flips sign in the Z direction.</p>
+</div>
+
+
+
+    
+
+
+
+<figure class="params">
+<figcaption>Parameters:</figcaption>
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+            <td data-label="Name" class="name"><code>fswSign</code></td>
+            
+
+            <td data-label="Type" class="type ">
+            
+                
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SignObject</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td data-label="Description" class="description last    ">
+                <p>Sign to flip</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+</figure>
+
+
+
+
+    
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        
+            <dt>Returns</dt>
+            
+            
+
+
+
+<dd class="param-desc">
+    <p>Updated sign</p>
+
+
+
+<dd class="returns">
+    <b>Type</b> 
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SignObject</span>
+
+
+
+</dd>
+
+
+</dd>
+
+        
+
+        
+
+        
+    
+
+    
+    <dt class="tag-source">Source</dt>
+    <dd class="tag-source">
+        <a href="fsw-sign-flip.js.html">fsw-sign-flip.js</a>, <a href="fsw-sign-flip.js.html#line74">line 74</a>
+    </dd>
+    
+
+</dl>
+
+
+
+
+
+    <h4 class="example">Example</h4>
+    
+
+
+    <pre class="prettyprint"><code class="language-javascript">// returns "AS12d40S22112S33e00M542x531S33e00482x483S10021507x510S20f00516x504"signFlipY("AS12d40S22112S33e00M542x540S33e00482x483S10001507x510S20f00516x504")</code></pre>
+
+
+
+
+</div>
+
+
+        
+            
+
+
+
+
+
+    
+
+    
+    <h3 class="name " id=".exports.signGenerateTemporalIdx">
+        
+        <span class="signature-attributes">static </span>export signGenerateTemporalIdx<span class="signature">(sign, order<span class="signature-attributes">opt</span>)</span> <span class="return-signature"> &rarr;  string|SignObject</span>
+        <button type="button" class="foldable-toggle" aria-controls=".exports.signGenerateTemporalIdx_container" aria-label="Toggle section: export signGenerateTemporalIdx">
+    </h3>
+    
+
+    
+
+
+
+
+<div id=".exports.signGenerateTemporalIdx_container"  class="foldable-container">
+
+
+<div class="description">
+    <p>Generate the temporal sequence for a sign.
+Classifies symbols and groups them in a defined order.
+The order can be provided as an arry of tokens &quot;rightHand&quot; | &quot;leftHand&quot; | &quot;rightMovement&quot; | &quot;leftMovement&quot; | &quot;dynamic&quot; | &quot;head&quot; | &quot;trunk&quot; | &quot;limb&quot; | &quot;location&quot; | &quot;punctuation&quot;.
+The default order groups hand and movement into left- and right- groups of hand and movement symbol, and starts with the right hand.
+This is different from the SignSpelling guidelines which group all hand symbols before movement symbols, to explore if it's a useful approach, made possible by handedness detection.</p>
+</div>
+
+
+
+    
+
+
+
+<figure class="params">
+<figcaption>Parameters:</figcaption>
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+            <td data-label="Name" class="name"><code>sign</code></td>
+            
+
+            <td data-label="Type" class="type ">
+            
+                
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SignObject</span>
+
+
+
+            
+            </td>
+
+            
+            <td data-label="Attributes" class="attributes is-empty">
+                
+            </td>
+            
+
+            
+            <td data-label="Default" class="default is-empty">
+            
+            </td>
+            
+
+            <td data-label="Description" class="description last    ">
+                <p>Sign</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+            <td data-label="Name" class="name"><code>order</code></td>
+            
+
+            <td data-label="Type" class="type ">
+            
+                
+
+
+<span class="param-type">Array&lt;string&gt;</span>
+
+
+
+            
+            </td>
+
+            
+            <td data-label="Attributes" class="attributes ">
+                
+                <span class="param-attributes">
+                <span class="attribute">optional</span>
+                
+                
+                </span>
+                
+            </td>
+            
+
+            
+            <td data-label="Default" class="default ">
+            
+                ["rightHand", "rightMovement", "leftHand", "leftMovement", "dynamic", "head", "trunk", "limb", "location", "punctuation"]
+            
+            </td>
+            
+
+            <td data-label="Description" class="description last    ">
+                <p>Order of symbols, by default right hand, left hand, right movement, left movement, dynamic, head, trunk, limb, location, punctuation</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+</figure>
+
+
+
+
+    
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        
+            <dt>Returns</dt>
+            
+            
+
+
+
+<dd class="param-desc">
+    <p>Sequence, or sign with sequence added</p>
+
+
+
+<dd class="returns">
+    <b>Type</b> 
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SignObject</span>
+
+
+
+</dd>
+
+
+</dd>
+
+        
+
+        
+
+        
+    
+
+    
+    <dt class="tag-source">Source</dt>
+    <dd class="tag-source">
+        <a href="fsw-sign-generate-sequence.js.html">fsw-sign-generate-sequence.js</a>, <a href="fsw-sign-generate-sequence.js.html#line20">line 20</a>
+    </dd>
+    
+
+</dl>
+
+
+
+
+
+    <h4 class="example">Example</h4>
+    
+
+
+    <pre class="prettyprint"><code class="language-javascript">// returns "AS10001S33e00S20f00"signGenerateTemporalIdx("M542x540S33e00482x483S10001507x510S20f00516x504")</code></pre>
+
+
+
+
+</div>
+
+
+        
+            
+
+
+
+
+
+    
+
+    
+    <h3 class="name " id=".exports.symbolDescribe">
+        
+        <span class="signature-attributes">static </span>export symbolDescribe<span class="signature">(fswSym)</span> <span class="return-signature"> &rarr;  string</span>
+        <button type="button" class="foldable-toggle" aria-controls=".exports.symbolDescribe_container" aria-label="Toggle section: export symbolDescribe">
+    </h3>
+    
+
+    
+
+
+
+
+<div id=".exports.symbolDescribe_container"  class="foldable-container">
+
+
+<div class="description">
+    <p>Describe a symbol. This starts with the label of the base symbol, then examines range, fill, and rotation to work out information about orientation in space, movement direction, etc. The final text uses strings from /config/descMessages.json.</p>
+</div>
+
+
+
+    
+
+
+
+<figure class="params">
+<figcaption>Parameters:</figcaption>
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+            <td data-label="Name" class="name"><code>fswSym</code></td>
+            
+
+            <td data-label="Type" class="type ">
+            
+                
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SymbolObject</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td data-label="Description" class="description last    ">
+                <p>Symbol to describe</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+</figure>
+
+
+
+
+    
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        
+            <dt>Returns</dt>
+            
+            
+
+
+
+<dd class="param-desc">
+    <p>Description</p>
+
+
+
+<dd class="returns">
+    <b>Type</b> 
+
+
+<span class="param-type">string</span>
+
+
+
+</dd>
+
+
+</dd>
+
+        
+
+        
+
+        
+    
+
+    
+    <dt class="tag-source">Source</dt>
+    <dd class="tag-source">
+        <a href="fsw-symbol-description.js.html">fsw-symbol-description.js</a>, <a href="fsw-symbol-description.js.html#line19">line 19</a>
+    </dd>
+    
+
+</dl>
+
+
+
+
+
+    <h4 class="example">Example</h4>
+    
+
+
+    <pre class="prettyprint"><code class="language-javascript">// returns "Right - Index - Palm - Wall Plane - Up Left"describeSymbol("S10001")</code></pre>
+
+
+
+
+</div>
+
+
+        
+            
+
+
+
+
+
+    
+
+    
+    <h3 class="name " id=".exports.symbolSwapHands">
+        
+        <span class="signature-attributes">static </span>export symbolSwapHands<span class="signature">(fswSym)</span> <span class="return-signature"> &rarr;  string|SymbolObject</span>
+        <button type="button" class="foldable-toggle" aria-controls=".exports.symbolSwapHands_container" aria-label="Toggle section: export symbolSwapHands">
+    </h3>
+    
+
+    
+
+
+
+
+<div id=".exports.symbolSwapHands_container"  class="foldable-container">
+
+
+<div class="description">
+    <p>Swap between left-hand and right-hand symbol.
+Supports changing signs between left- and right-handed expression.
+Only applies to symbols with &quot;handedness&quot;, and does not alter both-hand symbols.
+Does not mirror the symbol, which is normally also desired but should be handled separately.
+Does not alter hand symbols, as their &quot;handedness&quot; is changed by mirroring. This is to avoid &quot;double-mirroring&quot;.</p>
+</div>
+
+
+
+    
+
+
+
+<figure class="params">
+<figcaption>Parameters:</figcaption>
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+            <td data-label="Name" class="name"><code>fswSym</code></td>
+            
+
+            <td data-label="Type" class="type ">
+            
+                
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SymbolObject</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td data-label="Description" class="description last    ">
+                <p>Symbol to change</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+</figure>
+
+
+
+
+    
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        
+            <dt>Returns</dt>
+            
+            
+
+
+
+<dd class="param-desc">
+    <p>Updated symbol</p>
+
+
+
+<dd class="returns">
+    <b>Type</b> 
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SymbolObject</span>
+
+
+
+</dd>
+
+
+</dd>
+
+        
+
+        
+
+        
+    
+
+    
+    <dt class="tag-source">Source</dt>
+    <dd class="tag-source">
+        <a href="fsw-symbol-swap.js.html">fsw-symbol-swap.js</a>, <a href="fsw-symbol-swap.js.html#line20">line 20</a>
+    </dd>
+    
+
+</dl>
+
+
+
+
+
+    <h4 class="example">Example</h4>
+    
+
+
+    <pre class="prettyprint"><code class="language-javascript">// returns "S22a10"symbolSwapHands("S22a00")</code></pre>
+
+
+
+
+</div>
+
+
+        
+            
+
+
+
+
+
+    
+
+    
+    <h3 class="name " id=".exports.symbolSwapPerspective">
+        
+        <span class="signature-attributes">static </span>export symbolSwapPerspective<span class="signature">(fswSym)</span> <span class="return-signature"> &rarr;  string|SymbolObject</span>
+        <button type="button" class="foldable-toggle" aria-controls=".exports.symbolSwapPerspective_container" aria-label="Toggle section: export symbolSwapPerspective">
+    </h3>
+    
+
+    
+
+
+
+
+<div id=".exports.symbolSwapPerspective_container"  class="foldable-container">
+
+
+<div class="description">
+    <p>Swap symbol between heel and palm orientation.
+Supports changing sign between signer and viewer perspective.
+Only applies to wall plane symbols with empty or solid fill.
+Does not mirror the symbol, which is normally also desired but should be handled separately.</p>
+</div>
+
+
+
+    
+
+
+
+<figure class="params">
+<figcaption>Parameters:</figcaption>
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+            <td data-label="Name" class="name"><code>fswSym</code></td>
+            
+
+            <td data-label="Type" class="type ">
+            
+                
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SymbolObject</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td data-label="Description" class="description last    ">
+                <p>Symbol to change</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+</figure>
+
+
+
+
+    
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        
+            <dt>Returns</dt>
+            
+            
+
+
+
+<dd class="param-desc">
+    <p>Updated symbol</p>
+
+
+
+<dd class="returns">
+    <b>Type</b> 
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SymbolObject</span>
+
+
+
+</dd>
+
+
+</dd>
+
+        
+
+        
+
+        
+    
+
+    
+    <dt class="tag-source">Source</dt>
+    <dd class="tag-source">
+        <a href="fsw-symbol-swap.js.html">fsw-symbol-swap.js</a>, <a href="fsw-symbol-swap.js.html#line66">line 66</a>
+    </dd>
+    
+
+</dl>
+
+
+
+
+
+    <h4 class="example">Example</h4>
+    
+
+
+    <pre class="prettyprint"><code class="language-javascript">// returns "S10028"symbolSwapPerspective("S10000")</code></pre>
+
+
+
+
+</div>
+
+
+        
+            
+
+
+
+
+
+    
+
+    
+    <h3 class="name " id=".exports.symbolSwapSides">
+        
+        <span class="signature-attributes">static </span>export symbolSwapSides<span class="signature">(fswSym)</span> <span class="return-signature"> &rarr;  string|SymbolObject</span>
+        <button type="button" class="foldable-toggle" aria-controls=".exports.symbolSwapSides_container" aria-label="Toggle section: export symbolSwapSides">
+    </h3>
+    
+
+    
+
+
+
+
+<div id=".exports.symbolSwapSides_container"  class="foldable-container">
+
+
+<div class="description">
+    <p>Swap horizontal position of symbol across centre of sign.
+Supports changing sign between signer and viewer perspective.
+Does not mirror the symbol, which is normally also desired but should be handled separately.</p>
+</div>
+
+
+
+    
+
+
+
+<figure class="params">
+<figcaption>Parameters:</figcaption>
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+            <td data-label="Name" class="name"><code>fswSym</code></td>
+            
+
+            <td data-label="Type" class="type ">
+            
+                
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SymbolObject</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td data-label="Description" class="description last    ">
+                <p>Symbol with coordinates</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+</figure>
+
+
+
+
+    
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        
+            <dt>Returns</dt>
+            
+            
+
+
+
+<dd class="param-desc">
+    <p>Updated symbol with coordinates</p>
+
+
+
+<dd class="returns">
+    <b>Type</b> 
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SymbolObject</span>
+
+
+
+</dd>
+
+
+</dd>
+
+        
+
+        
+
+        
+    
+
+    
+    <dt class="tag-source">Source</dt>
+    <dd class="tag-source">
+        <a href="fsw-symbol-swap.js.html">fsw-symbol-swap.js</a>, <a href="fsw-symbol-swap.js.html#line119">line 119</a>
+    </dd>
+    
+
+</dl>
+
+
+
+
+
+    <h4 class="example">Example</h4>
+    
+
+
+    <pre class="prettyprint"><code class="language-javascript">// returns "S10001472x510"symbolSwapSides("S10001507x510")</code></pre>
+
+
+
+
+</div>
+
+
+        
+            
+
+
+
+
+
+    
+
+    
+    <h3 class="name " id=".exports.symbolMirror">
+        
+        <span class="signature-attributes">static </span>export symbolMirror<span class="signature">(fswSym)</span> <span class="return-signature"> &rarr;  string|SymbolObject</span>
+        <button type="button" class="foldable-toggle" aria-controls=".exports.symbolMirror_container" aria-label="Toggle section: export symbolMirror">
+    </h3>
+    
+
+    
+
+
+
+
+<div id=".exports.symbolMirror_container"  class="foldable-container">
+
+
+<div class="description">
+    <p>Mirror a symbol, i.e., reverse left-right aspects while not changing up-down aspects.
+Mirrors additional ranges from the base package, using a variety of patterns for range sets.
+Symbols in ranges not covered by this extension return the base mirror result.</p>
+</div>
+
+
+
+    
+
+
+
+<figure class="params">
+<figcaption>Parameters:</figcaption>
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+            <td data-label="Name" class="name"><code>fswSym</code></td>
+            
+
+            <td data-label="Type" class="type ">
+            
+                
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SymbolObject</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td data-label="Description" class="description last    ">
+                <p>Symbol to change</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+</figure>
+
+
+
+
+    
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        
+            <dt>Returns</dt>
+            
+            
+
+
+
+<dd class="param-desc">
+    <p>Mirrored symbol</p>
+
+
+
+<dd class="returns">
+    <b>Type</b> 
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SymbolObject</span>
+
+
+
+</dd>
+
+
+</dd>
+
+        
+
+        
+
+        
+    
+
+    
+    <dt class="tag-source">Source</dt>
+    <dd class="tag-source">
+        <a href="fsw-symbol-swap.js.html">fsw-symbol-swap.js</a>, <a href="fsw-symbol-swap.js.html#line143">line 143</a>
+    </dd>
+    
+
+</dl>
+
+
+
+
+
+    <h4 class="example">Example</h4>
+    
+
+
+    <pre class="prettyprint"><code class="language-javascript">// returns "S10009"symbolMirror("S10001")</code></pre>
+
+
+
+
+</div>
+
+
+        
+            
+
+
+
+
+
+    
+
+    
+    <h3 class="name " id=".exports.isLeftHand">
+        
+        <span class="signature-attributes">static </span>export isLeftHand<span class="signature">(fswSym)</span> <span class="return-signature"> &rarr;  boolean</span>
+        <button type="button" class="foldable-toggle" aria-controls=".exports.isLeftHand_container" aria-label="Toggle section: export isLeftHand">
+    </h3>
+    
+
+    
+
+
+
+
+<div id=".exports.isLeftHand_container"  class="foldable-container">
+
+
+<div class="description">
+    <p>Determine if a symbol applies to left hand.
+For hand symbols this is based on rotation, for others fill.
+Occasionally a &quot;left&quot; symbol is used for the right hand in an unusual orientation.
+This does not test for that, but it could be heuristically corrected with position information.</p>
+</div>
+
+
+
+    
+
+
+
+<figure class="params">
+<figcaption>Parameters:</figcaption>
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+            <td data-label="Name" class="name"><code>fswSym</code></td>
+            
+
+            <td data-label="Type" class="type ">
+            
+                
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SymbolObject</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td data-label="Description" class="description last    ">
+                <p>Symbol to test</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+</figure>
+
+
+
+
+    
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        
+            <dt>Returns</dt>
+            
+            
+
+
+
+<dd class="param-desc">
+    <p>True if left hand, false if other hand or not handed</p>
+
+
+
+<dd class="returns">
+    <b>Type</b> 
+
+
+<span class="param-type">boolean</span>
+
+
+
+</dd>
+
+
+</dd>
+
+        
+
+        
+
+        
+    
+
+    
+    <dt class="tag-source">Source</dt>
+    <dd class="tag-source">
+        <a href="fsw-symbol-variant.js.html">fsw-symbol-variant.js</a>, <a href="fsw-symbol-variant.js.html#line17">line 17</a>
+    </dd>
+    
+
+</dl>
+
+
+
+
+
+    <h4 class="example">Example</h4>
+    
+
+
+    <pre class="prettyprint"><code class="language-javascript">// returns trueisLeftHand("S22a10")</code></pre>
+
+
+
+
+</div>
+
+
+        
+            
+
+
+
+
+
+    
+
+    
+    <h3 class="name " id=".exports.isRightHand">
+        
+        <span class="signature-attributes">static </span>export isRightHand<span class="signature">(fswSym)</span> <span class="return-signature"> &rarr;  boolean</span>
+        <button type="button" class="foldable-toggle" aria-controls=".exports.isRightHand_container" aria-label="Toggle section: export isRightHand">
+    </h3>
+    
+
+    
+
+
+
+
+<div id=".exports.isRightHand_container"  class="foldable-container">
+
+
+<div class="description">
+    <p>Determine if a symbol applies to right hand.
+For hand symbols this is based on rotation, for others fill.
+Occasionally a &quot;right&quot; symbol is used for the left hand in an unusual orientation.
+This does not test for that, but it could be heuristically corrected with position information.</p>
+</div>
+
+
+
+    
+
+
+
+<figure class="params">
+<figcaption>Parameters:</figcaption>
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+            <td data-label="Name" class="name"><code>fswSym</code></td>
+            
+
+            <td data-label="Type" class="type ">
+            
+                
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SymbolObject</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td data-label="Description" class="description last    ">
+                <p>Symbol to test</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+</figure>
+
+
+
+
+    
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        
+            <dt>Returns</dt>
+            
+            
+
+
+
+<dd class="param-desc">
+    <p>True if right hand, false if other hand or not handed</p>
+
+
+
+<dd class="returns">
+    <b>Type</b> 
+
+
+<span class="param-type">boolean</span>
+
+
+
+</dd>
+
+
+</dd>
+
+        
+
+        
+
+        
+    
+
+    
+    <dt class="tag-source">Source</dt>
+    <dd class="tag-source">
+        <a href="fsw-symbol-variant.js.html">fsw-symbol-variant.js</a>, <a href="fsw-symbol-variant.js.html#line45">line 45</a>
+    </dd>
+    
+
+</dl>
+
+
+
+
+
+    <h4 class="example">Example</h4>
+    
+
+
+    <pre class="prettyprint"><code class="language-javascript">// returns trueisRightHand("S22a00")</code></pre>
+
+
+
+
+</div>
+
+
+        
+            
+
+
+
+
+
+    
+
+    
+    <h3 class="name " id=".exports.isBothHand">
+        
+        <span class="signature-attributes">static </span>export isBothHand<span class="signature">(fswSym)</span> <span class="return-signature"> &rarr;  boolean</span>
+        <button type="button" class="foldable-toggle" aria-controls=".exports.isBothHand_container" aria-label="Toggle section: export isBothHand">
+    </h3>
+    
+
+    
+
+
+
+
+<div id=".exports.isBothHand_container"  class="foldable-container">
+
+
+<div class="description">
+    <p>Determine if a symbol applies to both hands.
+For movement symbols only and is based on fill.
+It always returns false for hand symbols.</p>
+</div>
+
+
+
+    
+
+
+
+<figure class="params">
+<figcaption>Parameters:</figcaption>
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+            <td data-label="Name" class="name"><code>fswSym</code></td>
+            
+
+            <td data-label="Type" class="type ">
+            
+                
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SymbolObject</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td data-label="Description" class="description last    ">
+                <p>Symbol to test</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+</figure>
+
+
+
+
+    
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        
+            <dt>Returns</dt>
+            
+            
+
+
+
+<dd class="param-desc">
+    <p>True if both hands, false if other hand or not handed</p>
+
+
+
+<dd class="returns">
+    <b>Type</b> 
+
+
+<span class="param-type">boolean</span>
+
+
+
+</dd>
+
+
+</dd>
+
+        
+
+        
+
+        
+    
+
+    
+    <dt class="tag-source">Source</dt>
+    <dd class="tag-source">
+        <a href="fsw-symbol-variant.js.html">fsw-symbol-variant.js</a>, <a href="fsw-symbol-variant.js.html#line73">line 73</a>
+    </dd>
+    
+
+</dl>
+
+
+
+
+
+    <h4 class="example">Example</h4>
+    
+
+
+    <pre class="prettyprint"><code class="language-javascript">// returns trueisBothHand("S22a20")</code></pre>
+
+
+
+
+</div>
+
+
+        
+            
+
+
+
+
+
+    
+
+    
+    <h3 class="name " id=".exports.isFloorPlane">
+        
+        <span class="signature-attributes">static </span>export isFloorPlane<span class="signature">(fswSym)</span> <span class="return-signature"> &rarr;  boolean</span>
+        <button type="button" class="foldable-toggle" aria-controls=".exports.isFloorPlane_container" aria-label="Toggle section: export isFloorPlane">
+    </h3>
+    
+
+    
+
+
+
+
+<div id=".exports.isFloorPlane_container"  class="foldable-container">
+
+
+<div class="description">
+    <p>Determine if a symbol is on the floor plane.
+For hand symbols this is determined by fill, for others by range.</p>
+</div>
+
+
+
+    
+
+
+
+<figure class="params">
+<figcaption>Parameters:</figcaption>
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+            <td data-label="Name" class="name"><code>fswSym</code></td>
+            
+
+            <td data-label="Type" class="type ">
+            
+                
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SymbolObject</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td data-label="Description" class="description last    ">
+                <p>Symbol to test</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+</figure>
+
+
+
+
+    
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        
+            <dt>Returns</dt>
+            
+            
+
+
+
+<dd class="param-desc">
+    <p>True if floor plane, false if other or no plane</p>
+
+
+
+<dd class="returns">
+    <b>Type</b> 
+
+
+<span class="param-type">boolean</span>
+
+
+
+</dd>
+
+
+</dd>
+
+        
+
+        
+
+        
+    
+
+    
+    <dt class="tag-source">Source</dt>
+    <dd class="tag-source">
+        <a href="fsw-symbol-variant.js.html">fsw-symbol-variant.js</a>, <a href="fsw-symbol-variant.js.html#line97">line 97</a>
+    </dd>
+    
+
+</dl>
+
+
+
+
+
+    <h4 class="example">Example</h4>
+    
+
+
+    <pre class="prettyprint"><code class="language-javascript">// returns trueisFloorPlane("S10030")</code></pre>
+
+
+
+
+</div>
+
+
+        
+            
+
+
+
+
+
+    
+
+    
+    <h3 class="name " id=".exports.isWallPlane">
+        
+        <span class="signature-attributes">static </span>export isWallPlane<span class="signature">(fswSym)</span> <span class="return-signature"> &rarr;  boolean</span>
+        <button type="button" class="foldable-toggle" aria-controls=".exports.isWallPlane_container" aria-label="Toggle section: export isWallPlane">
+    </h3>
+    
+
+    
+
+
+
+
+<div id=".exports.isWallPlane_container"  class="foldable-container">
+
+
+<div class="description">
+    <p>Determine if a symbol is on the wall plane.
+For hand symbols this is determined by fill, for others by range.</p>
+</div>
+
+
+
+    
+
+
+
+<figure class="params">
+<figcaption>Parameters:</figcaption>
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+            <td data-label="Name" class="name"><code>fswSym</code></td>
+            
+
+            <td data-label="Type" class="type ">
+            
+                
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SymbolObject</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td data-label="Description" class="description last    ">
+                <p>Symbol to test</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+</figure>
+
+
+
+
+    
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        
+            <dt>Returns</dt>
+            
+            
+
+
+
+<dd class="param-desc">
+    <p>True if wall plane, false if other or no plane</p>
+
+
+
+<dd class="returns">
+    <b>Type</b> 
+
+
+<span class="param-type">boolean</span>
+
+
+
+</dd>
+
+
+</dd>
+
+        
+
+        
+
+        
+    
+
+    
+    <dt class="tag-source">Source</dt>
+    <dd class="tag-source">
+        <a href="fsw-symbol-variant.js.html">fsw-symbol-variant.js</a>, <a href="fsw-symbol-variant.js.html#line116">line 116</a>
+    </dd>
+    
+
+</dl>
+
+
+
+
+
+    <h4 class="example">Example</h4>
+    
+
+
+    <pre class="prettyprint"><code class="language-javascript">// returns trueisWallPlane("S10000")</code></pre>
+
+
+
+
+</div>
+
+
+        
+            
+
+
+
+
+
+    
+
+    
+    <h3 class="name " id=".exports.isDiagonalTowards">
+        
+        <span class="signature-attributes">static </span>export isDiagonalTowards<span class="signature">(fswSym)</span> <span class="return-signature"> &rarr;  boolean</span>
+        <button type="button" class="foldable-toggle" aria-controls=".exports.isDiagonalTowards_container" aria-label="Toggle section: export isDiagonalTowards">
+    </h3>
+    
+
+    
+
+
+
+
+<div id=".exports.isDiagonalTowards_container"  class="foldable-container">
+
+
+<div class="description">
+    <p>Determine if a symbol is on the diagonal towards plane.
+Determined by range.</p>
+</div>
+
+
+
+    
+
+
+
+<figure class="params">
+<figcaption>Parameters:</figcaption>
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+            <td data-label="Name" class="name"><code>fswSym</code></td>
+            
+
+            <td data-label="Type" class="type ">
+            
+                
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SymbolObject</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td data-label="Description" class="description last    ">
+                <p>Symbol to test</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+</figure>
+
+
+
+
+    
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        
+            <dt>Returns</dt>
+            
+            
+
+
+
+<dd class="param-desc">
+    <p>True if diagonal towards, false if other or no plane</p>
+
+
+
+<dd class="returns">
+    <b>Type</b> 
+
+
+<span class="param-type">boolean</span>
+
+
+
+</dd>
+
+
+</dd>
+
+        
+
+        
+
+        
+    
+
+    
+    <dt class="tag-source">Source</dt>
+    <dd class="tag-source">
+        <a href="fsw-symbol-variant.js.html">fsw-symbol-variant.js</a>, <a href="fsw-symbol-variant.js.html#line135">line 135</a>
+    </dd>
+    
+
+</dl>
+
+
+
+
+
+    <h4 class="example">Example</h4>
+    
+
+
+    <pre class="prettyprint"><code class="language-javascript">// returns trueisDiagonalTowards("S25900")</code></pre>
+
+
+
+
+</div>
+
+
+        
+            
+
+
+
+
+
+    
+
+    
+    <h3 class="name " id=".exports.isDiagonalAway">
+        
+        <span class="signature-attributes">static </span>export isDiagonalAway<span class="signature">(fswSym)</span> <span class="return-signature"> &rarr;  boolean</span>
+        <button type="button" class="foldable-toggle" aria-controls=".exports.isDiagonalAway_container" aria-label="Toggle section: export isDiagonalAway">
+    </h3>
+    
+
+    
+
+
+
+
+<div id=".exports.isDiagonalAway_container"  class="foldable-container">
+
+
+<div class="description">
+    <p>Determine if a symbol is on the diagonal away plane.
+Determined by range.</p>
+</div>
+
+
+
+    
+
+
+
+<figure class="params">
+<figcaption>Parameters:</figcaption>
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+            <td data-label="Name" class="name"><code>fswSym</code></td>
+            
+
+            <td data-label="Type" class="type ">
+            
+                
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SymbolObject</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td data-label="Description" class="description last    ">
+                <p>Symbol to test</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+</figure>
+
+
+
+
+    
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        
+            <dt>Returns</dt>
+            
+            
+
+
+
+<dd class="param-desc">
+    <p>True if diagonal away, false if other or no plane</p>
+
+
+
+<dd class="returns">
+    <b>Type</b> 
+
+
+<span class="param-type">boolean</span>
+
+
+
+</dd>
+
+
+</dd>
+
+        
+
+        
+
+        
+    
+
+    
+    <dt class="tag-source">Source</dt>
+    <dd class="tag-source">
+        <a href="fsw-symbol-variant.js.html">fsw-symbol-variant.js</a>, <a href="fsw-symbol-variant.js.html#line154">line 154</a>
+    </dd>
+    
+
+</dl>
+
+
+
+
+
+    <h4 class="example">Example</h4>
+    
+
+
+    <pre class="prettyprint"><code class="language-javascript">// returns trueisDiagonalAway("S25500")</code></pre>
+
+
+
+
+</div>
+
+
+        
+            
+
+
+
+
+
+    
+
+    
+    <h3 class="name " id=".exports.isDiagonalPlane">
+        
+        <span class="signature-attributes">static </span>export isDiagonalPlane<span class="signature">(fswSym)</span> <span class="return-signature"> &rarr;  boolean</span>
+        <button type="button" class="foldable-toggle" aria-controls=".exports.isDiagonalPlane_container" aria-label="Toggle section: export isDiagonalPlane">
+    </h3>
+    
+
+    
+
+
+
+
+<div id=".exports.isDiagonalPlane_container"  class="foldable-container">
+
+
+<div class="description">
+    <p>Determine if a symbol is on either diagonal plane.
+Union of isDiagonalAway and isDiagonalTowards.</p>
+</div>
+
+
+
+    
+
+
+
+<figure class="params">
+<figcaption>Parameters:</figcaption>
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+            <td data-label="Name" class="name"><code>fswSym</code></td>
+            
+
+            <td data-label="Type" class="type ">
+            
+                
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SymbolObject</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td data-label="Description" class="description last    ">
+                <p>Symbol to test</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+</figure>
+
+
+
+
+    
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        
+            <dt>Returns</dt>
+            
+            
+
+
+
+<dd class="param-desc">
+    <p>True if diagonal, false if other or no plane</p>
+
+
+
+<dd class="returns">
+    <b>Type</b> 
+
+
+<span class="param-type">boolean</span>
+
+
+
+</dd>
+
+
+</dd>
+
+        
+
+        
+
+        
+    
+
+    
+    <dt class="tag-source">Source</dt>
+    <dd class="tag-source">
+        <a href="fsw-symbol-variant.js.html">fsw-symbol-variant.js</a>, <a href="fsw-symbol-variant.js.html#line174">line 174</a>
+    </dd>
+    
+
+</dl>
+
+
+
+
+
+    <h4 class="example">Example</h4>
+    
+
+
+    <pre class="prettyprint"><code class="language-javascript">// returns trueisDiagonalPlane("S25500")// returns trueisDiagonalAway("S25500")</code></pre>
+
+
+
+
+</div>
+
+
+        
+            
+
+
+
+
+
+    
+
+    
+    <h3 class="name " id=".exports.getHandOrientation">
+        
+        <span class="signature-attributes">static </span>export getHandOrientation<span class="signature">(fswSym)</span> <span class="return-signature"> &rarr;  string</span>
+        <button type="button" class="foldable-toggle" aria-controls=".exports.getHandOrientation_container" aria-label="Toggle section: export getHandOrientation">
+    </h3>
+    
+
+    
+
+
+
+
+<div id=".exports.getHandOrientation_container"  class="foldable-container">
+
+
+<div class="description">
+    <p>Determine palm, side, and back orientation of hand.
+Based on fill.</p>
+</div>
+
+
+
+    
+
+
+
+<figure class="params">
+<figcaption>Parameters:</figcaption>
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+            <td data-label="Name" class="name"><code>fswSym</code></td>
+            
+
+            <td data-label="Type" class="type ">
+            
+                
+
+
+<span class="param-type">string</span>
+ | 
+
+<span class="param-type">SymbolObject</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td data-label="Description" class="description last    ">
+                <p>Symbol to test</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+</figure>
+
+
+
+
+    
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        
+            <dt>Returns</dt>
+            
+            
+
+
+
+<dd class="param-desc">
+    <p>Orientation as &quot;palm&quot;, &quot;side&quot;, or &quot;back&quot;</p>
+
+
+
+<dd class="returns">
+    <b>Type</b> 
+
+
+<span class="param-type">string</span>
+
+
+
+</dd>
+
+
+</dd>
+
+        
+
+        
+
+        
+    
+
+    
+    <dt class="tag-source">Source</dt>
+    <dd class="tag-source">
+        <a href="fsw-symbol-variant.js.html">fsw-symbol-variant.js</a>, <a href="fsw-symbol-variant.js.html#line192">line 192</a>
+    </dd>
+    
+
+</dl>
+
+
+
+
+
+    <h4 class="example">Example</h4>
+    
+
+
+    <pre class="prettyprint"><code class="language-javascript">// returns "palm"getHandOrientation("S10000")// returns "side"getHandOrientation("S10010")// returns "back"getHandOrientation("S10020")</code></pre>
+
+
+
+
+</div>
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+            </main>
+
+            <aside id="sidebar">
+
+
+
+<nav id="nav-aside"><menu>
+
+
+
+
+
+
+
+
+
+
+    <li><a href="#section-methods">Methods</a>
+    <menu>
+    
+        
+        <li class=""><a href="#.exports.signDescribe">signDescribe</a></li>
+    
+        
+        <li class=""><a href="#.exports.signFlipX">signFlipX</a></li>
+    
+        
+        <li class=""><a href="#.exports.signFlipZ">signFlipZ</a></li>
+    
+        
+        <li class=""><a href="#.exports.signGenerateTemporalIdx">signGenerateTemporalIdx</a></li>
+    
+        
+        <li class=""><a href="#.exports.symbolDescribe">symbolDescribe</a></li>
+    
+        
+        <li class=""><a href="#.exports.symbolSwapHands">symbolSwapHands</a></li>
+    
+        
+        <li class=""><a href="#.exports.symbolSwapPerspective">symbolSwapPerspective</a></li>
+    
+        
+        <li class=""><a href="#.exports.symbolSwapSides">symbolSwapSides</a></li>
+    
+        
+        <li class=""><a href="#.exports.symbolMirror">symbolMirror</a></li>
+    
+        
+        <li class=""><a href="#.exports.isLeftHand">isLeftHand</a></li>
+    
+        
+        <li class=""><a href="#.exports.isRightHand">isRightHand</a></li>
+    
+        
+        <li class=""><a href="#.exports.isBothHand">isBothHand</a></li>
+    
+        
+        <li class=""><a href="#.exports.isFloorPlane">isFloorPlane</a></li>
+    
+        
+        <li class=""><a href="#.exports.isWallPlane">isWallPlane</a></li>
+    
+        
+        <li class=""><a href="#.exports.isDiagonalTowards">isDiagonalTowards</a></li>
+    
+        
+        <li class=""><a href="#.exports.isDiagonalAway">isDiagonalAway</a></li>
+    
+        
+        <li class=""><a href="#.exports.isDiagonalPlane">isDiagonalPlane</a></li>
+    
+        
+        <li class=""><a href="#.exports.getHandOrientation">getHandOrientation</a></li>
+    
+    </menu></li>
+
+
+
+
+
+
+</menu></nav>
+</aside>
+
+        </div>
+    </div>
+
+    <footer>
+
+        <div id="footer-content">
+            
+            <p>Documentation generated
+                
+                on 4/6/2026, 5:19:20 PM
+                by <a href="https://github.com/jsdoc/jsdoc" target=_blank>JSDoc 4.0.5</a>
+                &amp; <a href="https://github.com/alphanull/jsdoc-vision-theme" target=_blank>Vision Theme</a>.</p>
+        </div>
+
+    </footer>
+
+</div>
+
+<div id="settings" style="display: none;">
+
+    <h3>Settings</h3>
+
+    <menu class="is-grouped is-radio is-stretched" role="menu">
+        <li role="none"><button id="collapse-button" role="menuitem" onclick="collapseAllSections()">Collapse All</button></li>
+        <li role="none"><button id="expand-button" role="menuitem" onclick="expandAllSections()">Expand All</button></li>
+    </menu>
+
+    
+    <select id="skin-select">
+    
+        <option value="default">Default Skin</option>
+    
+        <option value="nordic">Nordic Skin</option>
+    
+        <option value="ocean">Ocean Skin</option>
+    
+        <option value="earth">Earth Skin</option>
+    
+        <option value="forest">Forest Skin</option>
+    
+        <option value="desert">Desert Skin</option>
+    
+        <option value="fire">Fire Skin</option>
+    
+        <option value="lavender">Lavender Skin</option>
+    
+        <option value="candy">Candy Skin</option>
+    
+        <option value="grayscale">Grayscale Skin</option>
+    
+    </select>
+    
+
+    
+    <select id="font-select">
+    
+        <option value="fira" >Fira Font Pack</option>
+    
+        <option value="recursive" >Recursive Font Pack</option>
+    
+        <option value="ubuntu" >Ubuntu Font Pack</option>
+    
+        <option value="source" >Source Font Pack</option>
+    
+        <option value="noto" >Noto Font Pack</option>
+    
+    </select>
+    
+
+    <label for="uiscale-settings">
+        <span class="form-label-text">UI Scale</span>
+        <input type="range" step="1" min="9" max="19" value="14" id="uiscale-settings" name="uiscale-settings" class="has-center-line">
+    </label>
+
+    <label for="darkmode-settings">
+        <span class="form-label-text">Darkmode</span>
+        <input type="checkbox" checked id="darkmode-settings" name="darkmode-settings" class="is-toggle">
+    </label>
+
+    <label for="collapse-settings">
+        <span class="form-label-text">Collapse on Load</span>
+        <input type="checkbox" checked id="collapse-settings" name="collapse-settings" class="is-toggle">
+    </label>
+
+    <label for="sidebar-settings">
+        <span class="form-label-text">Show Sidebar</span>
+        <input type="checkbox" checked id="sidebar-settings" name="sidebar-settings" class="is-toggle">
+    </label>
+
+    
+
+</div>
+
+<div id="search" style="display: none;">
+
+    <div class="search-input">
+        <input type="text" id="search-input" placeholder="Search docs" autocomplete="off">
+    </div>
+
+    <ul id="search-results"></ul>
+
+</div>
+
+<script defer src="static/index.js"></script>
+<script defer src="scripts/main.1.2.2.min.js"></script>
+
+</body>
+</html>

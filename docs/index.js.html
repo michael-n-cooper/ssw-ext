@@ -1,0 +1,245 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" data-version="1.2.2"  data-font="fira"   data-skin="default"  class=" has-skin-selector has-font-selector has-no-sidebar">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta content="Source file index.js – contains module:ssw-ext. This is a set of proposed additional features for the . For prototyping and demo purposes this is…" name="description">
+    
+    <title> Source: index.js</title>
+    <link type="text/css" rel="stylesheet" href="styles/main.1.2.2.css">
+    
+    
+    
+</head>
+
+<body>
+
+<a href="#content-wrapper-inner" class="skip-content">Skip to content</a>
+
+<script>
+
+    const doc = document.documentElement;
+
+    // execute as soon as possible to prevent FOUC
+    if (window.localStorage) {
+        const darkMode = window.localStorage.getItem('darkmode');
+        if (darkMode === 'dark') doc.classList.add('is-dark-mode');
+        else if (!darkMode && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+             doc.classList.add('is-dark-mode')
+        }
+
+        const showPrivates = window.localStorage.getItem('showPrivates');
+        if (showPrivates === 'false') doc.classList.add('no-privates');
+
+        const showSidebar = window.localStorage.getItem('showSidebar');
+        if (showSidebar === 'false') doc.classList.add('no-sidebar');
+
+        const hasSkinSelector = doc.classList.contains('has-skin-selector');
+        if (hasSkinSelector) {
+            const skin = window.localStorage.getItem('skin');
+            if (skin) doc.dataset.skin = skin;
+        }
+
+        const collapseOnLoad = window.localStorage.getItem('collapseOnLoad');
+        if (collapseOnLoad === 'true') doc.classList.add('is-folded');
+        if (collapseOnLoad === 'false') doc.classList.remove('is-folded');
+
+        const uiScale = window.localStorage.getItem('uiScale');
+        if (uiScale) doc.style.setProperty('--font-size-base', `${parseInt(uiScale, 10)}px`);
+
+        const font = window.localStorage.getItem('fontFamily') || doc.dataset.font || 'ubuntu';
+        doc.dataset.font = font;
+    }
+
+    const scrollbarWidth = Math.max(0, window.innerWidth - doc.clientWidth);
+    if (scrollbarWidth > 0) doc.classList.add("has-scrollbar"); else doc.classList.add("has-no-scrollbar");
+
+</script>
+
+<div id="wrapper-global">
+
+    <header id="header-main">
+        <div id="header-main-inner">
+            <a id="logo" class="logo-link" href="index.html">
+                
+                
+                <div class="logo-text">Documentation</div>
+            </a>
+            <nav id="nav-main-wrapper">
+                <button id="menu-mobile-close" class="icon close" title="Close Mobile Menu"></button>
+                <menu id="nav-main"><li><a href="index.html">Home</a></li>
+            <li class="has-submenu">
+                <span>Modules</span>
+                <button aria-expanded="false" aria-haspopup="true" class="nav-submenu-toggle"></button>
+                <div class="menu-wrapper" data-lenis-prevent>
+                    <menu aria-hidden="true">
+                        <li><a href="module_ssw-ext.html">ssw-ext</a></li>
+                    </menu>
+                </div>
+            </li><li><a href="global.html">Global</a></li></menu>
+            </nav>
+            <button id="search-button" class="icon search" aria-label="Search" title="Search" />
+            <button id="settings-button" class="icon settings" aria-label="Settings" title="Settings" />
+            <button id="menu-mobile-button" class="icon" aria-label="Mobile Menu" title="Mobile Menu"></button>
+        </div>
+    </header>
+
+    <div id="content-wrapper" tabindex="-1">
+        <div id="content-wrapper-inner">
+
+            <main>
+                <h1 class="page-title">Source: index.js</h1>
+                
+
+
+
+    
+
+
+    <section>
+        <article>
+            <pre class="prettyprint source source-page linenums"><code class="language-javascript">/**
+ * This is a set of proposed additional features for the {@link https://www.sutton-signwriting.io/font-ttf/ Sutton Signwriting Javascript library}. For prototyping and demo purposes this is implemented only in the font-ttf module, and if accepted would need porting to the other modules. Some of the functions might be more appropriate for the core module but are here for now to keep it simple.
+ * 
+ * Types of features:
+ * * Symbol state functions to determine handedness, plane, and palm orientation;
+ * * Symbol modification functions that alter these states, and an extended left-right mirror function handling additional ranges;
+ * * Generate semantic descriptions of symbols and in turn for entire signs;
+ * * Flip signs between left- and right-handed signs, and between signer and viewer perspective;
+ * * Generate a reasonable temporal sequence for a sign.
+ * @module ssw-ext
+ */
+
+import { isLeftHand, isRightHand, isBothHand, isFloorPlane, isWallPlane, isDiagonalAway, isDiagonalTowards, isDiagonalPlane, getHandOrientation } from "./fsw-symbol-variant.js";
+import { symbolSwapHands, symbolSwapPerspective, symbolSwapSides, symbolMirror } from "./fsw-symbol-swap.js";
+import { symbolDescribe } from "./fsw-symbol-description.js";
+import { signDescribe } from "./fsw-sign-description.js";
+import { signGenerateTemporalIdx } from "./fsw-sign-generate-sequence.js";
+import { signFlipX, signFlipZ, signFlipXZ } from "./fsw-sign-flip.js";
+
+export { isLeftHand, isRightHand, isBothHand, isFloorPlane, isWallPlane, isDiagonalAway, isDiagonalTowards, isDiagonalPlane, getHandOrientation, symbolSwapHands, symbolSwapPerspective, symbolSwapSides, symbolMirror, symbolDescribe, signDescribe, signGenerateTemporalIdx, signFlipX, signFlipZ, signFlipXZ };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+            </main>
+
+            <aside id="sidebar"></aside>
+
+        </div>
+    </div>
+
+    <footer>
+
+        <div id="footer-content">
+            
+            <p>Documentation generated
+                
+                on 4/6/2026, 5:19:20 PM
+                by <a href="https://github.com/jsdoc/jsdoc" target=_blank>JSDoc 4.0.5</a>
+                &amp; <a href="https://github.com/alphanull/jsdoc-vision-theme" target=_blank>Vision Theme</a>.</p>
+        </div>
+
+    </footer>
+
+</div>
+
+<div id="settings" style="display: none;">
+
+    <h3>Settings</h3>
+
+    <menu class="is-grouped is-radio is-stretched" role="menu">
+        <li role="none"><button id="collapse-button" role="menuitem" onclick="collapseAllSections()">Collapse All</button></li>
+        <li role="none"><button id="expand-button" role="menuitem" onclick="expandAllSections()">Expand All</button></li>
+    </menu>
+
+    
+    <select id="skin-select">
+    
+        <option value="default">Default Skin</option>
+    
+        <option value="nordic">Nordic Skin</option>
+    
+        <option value="ocean">Ocean Skin</option>
+    
+        <option value="earth">Earth Skin</option>
+    
+        <option value="forest">Forest Skin</option>
+    
+        <option value="desert">Desert Skin</option>
+    
+        <option value="fire">Fire Skin</option>
+    
+        <option value="lavender">Lavender Skin</option>
+    
+        <option value="candy">Candy Skin</option>
+    
+        <option value="grayscale">Grayscale Skin</option>
+    
+    </select>
+    
+
+    
+    <select id="font-select">
+    
+        <option value="fira" >Fira Font Pack</option>
+    
+        <option value="recursive" >Recursive Font Pack</option>
+    
+        <option value="ubuntu" >Ubuntu Font Pack</option>
+    
+        <option value="source" >Source Font Pack</option>
+    
+        <option value="noto" >Noto Font Pack</option>
+    
+    </select>
+    
+
+    <label for="uiscale-settings">
+        <span class="form-label-text">UI Scale</span>
+        <input type="range" step="1" min="9" max="19" value="14" id="uiscale-settings" name="uiscale-settings" class="has-center-line">
+    </label>
+
+    <label for="darkmode-settings">
+        <span class="form-label-text">Darkmode</span>
+        <input type="checkbox" checked id="darkmode-settings" name="darkmode-settings" class="is-toggle">
+    </label>
+
+    <label for="collapse-settings">
+        <span class="form-label-text">Collapse on Load</span>
+        <input type="checkbox" checked id="collapse-settings" name="collapse-settings" class="is-toggle">
+    </label>
+
+    <label for="sidebar-settings">
+        <span class="form-label-text">Show Sidebar</span>
+        <input type="checkbox" checked id="sidebar-settings" name="sidebar-settings" class="is-toggle">
+    </label>
+
+    
+
+</div>
+
+<div id="search" style="display: none;">
+
+    <div class="search-input">
+        <input type="text" id="search-input" placeholder="Search docs" autocomplete="off">
+    </div>
+
+    <ul id="search-results"></ul>
+
+</div>
+
+<script defer src="static/index.js"></script>
+<script defer src="scripts/main.1.2.2.min.js"></script>
+
+</body>
+</html>
