@@ -1,11 +1,11 @@
-import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
+import * as core from "../node_modules/@sutton-signwriting/core/core.mjs";
 import * as describe from "./fsw-symbol-description.js";
 import { signGenerateTemporalIdx } from "./fsw-sign-generate-sequence.js";
-import "../../../node_modules/@sutton-signwriting/core/src/types";
+import "../node_modules/@sutton-signwriting/core/src/types.js";
 
 /**
  * Describe a sign by assembling symbol descriptions in order of the temporal sequence, which is generated if absent.
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @param {(string|SignObject)} fswSign Sign
  * @returns {string} Description
  * @see symbolDescribe

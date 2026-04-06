@@ -1,11 +1,11 @@
-import labels from "../../../config/descMessages.json" with { type: "json" };
+import labels from "../config/descMessages.json" with { type: "json" };
 
 /**
  * Sets of names for symbol rotations. Sequences and patterns are maps of ranges and a particular sequence/pattern. Each set defines:
  * * names - array of keys in the config file for this set;
  * * sequences - array of numbers which point to the position in the names list of the key, for the rotation corresponding to the position in the sequences array;.
  * * patterns - array of numbers which define offsets in the sequence (relative to rotation 0) to combine multiple direction information in the symbol.
- * @memberof ext/ttf/fsw
+ * @memberof ssw-ext
  * @private
  */
 export const rotData = {

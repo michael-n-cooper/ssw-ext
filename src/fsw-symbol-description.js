@@ -1,15 +1,15 @@
-import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
+import * as core from "../node_modules/@sutton-signwriting/core/core.mjs";
 import * as util from "./util.js";
 import * as variants from "./fsw-symbol-variant.js";
-import { defmessages } from "../../../config/messages.js";
+import { defmessages } from "../config/messages.js";
 import { rotData } from "./rot-data.js";
-import labels from "../../../config/descMessages.json" with { type: "json" };
-import "../../../node_modules/@sutton-signwriting/core/src/types";
-import "../../types.js";
+import labels from "../config/descMessages.json" with { type: "json" };
+import "../node_modules/@sutton-signwriting/core/src/types.js";
+import "./types.js";
 
 /**
  * Describe a symbol. This starts with the label of the base symbol, then examines range, fill, and rotation to work out information about orientation in space, movement direction, etc. The final text uses strings from /config/descMessages.json.
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @param {string | SymbolObject} fswSym Symbol to describe
  * @returns {string} Description
  * @example
@@ -61,7 +61,7 @@ export function symbolDescribe(fswSym) {
 
 /**
  * Find the rotation pattern for a symbol
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @private
  * @param {number} baseNum Symbol base number
  * @param {Object[]} map Array of symbol ranges and patterns
@@ -78,7 +78,7 @@ function getRotPattern(baseNum, map) {
 }
 /**
  * Find the rotation name sequence for a symbol
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @private
  * @param {number} baseNum Symbol base number
  * @param {Object[]} map Array of symbol ranges and names
@@ -94,7 +94,7 @@ function getRotSeq(baseNum, map) {
 }
 /**
  * Adjust a rotation pattern to match the rotation of the symbol
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @private
  * @param {number[]} pattern Rotation pattern
  * @param {number} rot Symbol rotation
@@ -113,7 +113,7 @@ function rotateSymbolPattern(pattern, rot, short = false) {
 
 /**
  * Get the description for the rotation component of a symbol
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @private
  * @param {string | SymbolObject} fswSym Symbol to describe
  * @returns {string} Description
@@ -135,7 +135,7 @@ function getRotDescComponent(fswSym, comp) {
 
 /**
  * Generate information about the rotation of a symbol.
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @private
  * @param {number} rot Symbol rotation
  * @param {number[]} rotPattern Rotation pattern for the symbol

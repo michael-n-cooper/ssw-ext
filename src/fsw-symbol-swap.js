@@ -1,8 +1,8 @@
-import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
-import * as ttf from "../../../node_modules/@sutton-signwriting/font-ttf/index.mjs";
+import * as core from "../node_modules/@sutton-signwriting/core/core.mjs";
+import * as ttf from "../node_modules/@sutton-signwriting/font-ttf/index.mjs";
 import * as util from "./util.js";
 import * as variant from "./fsw-symbol-variant.js";
-import "../../../node_modules/@sutton-signwriting/core/src/types.js";
+import "../node_modules/@sutton-signwriting/core/src/types.js";
 
 /**
  * Swap between left-hand and right-hand symbol.
@@ -10,7 +10,7 @@ import "../../../node_modules/@sutton-signwriting/core/src/types.js";
  * Only applies to symbols with "handedness", and does not alter both-hand symbols.
  * Does not mirror the symbol, which is normally also desired but should be handled separately.
  * Does not alter hand symbols, as their "handedness" is changed by mirroring. This is to avoid "double-mirroring".
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @param {(string|SymbolObject)} fswSym Symbol to change
  * @returns {(string|SymbolObject)} Updated symbol
  * @example
@@ -56,7 +56,7 @@ export function symbolSwapHands(fswSym) {
  * Supports changing sign between signer and viewer perspective.
  * Only applies to wall plane symbols with empty or solid fill.
  * Does not mirror the symbol, which is normally also desired but should be handled separately.
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @param {(string|SymbolObject)} fswSym Symbol to change
  * @returns {(string|SymbolObject)} Updated symbol
  * @example
@@ -109,7 +109,7 @@ export function symbolSwapPerspective(fswSym) {
  * Swap horizontal position of symbol across centre of sign.
  * Supports changing sign between signer and viewer perspective.
  * Does not mirror the symbol, which is normally also desired but should be handled separately.
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @param {(string|SymbolObject)} fswSym Symbol with coordinates
  * @returns {(string|SymbolObject)} Updated symbol with coordinates
  * @example
@@ -133,7 +133,7 @@ export function symbolSwapSides(fswSym) {
  * Mirror a symbol, i.e., reverse left-right aspects while not changing up-down aspects.
  * Mirrors additional ranges from the base package, using a variety of patterns for range sets.
  * Symbols in ranges not covered by this extension return the base mirror result.
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @param {(string|SymbolObject)} fswSym Symbol to change
  * @returns {(string|SymbolObject)} Mirrored symbol
  * @example

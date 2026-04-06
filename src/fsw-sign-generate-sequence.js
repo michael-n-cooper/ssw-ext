@@ -1,7 +1,7 @@
-import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
+import * as core from "../node_modules/@sutton-signwriting/core/core.mjs";
 import * as variants from "./fsw-symbol-variant.js";
-import "../../../node_modules/@sutton-signwriting/core/src/types";
-import "../../types.js";
+import "../node_modules/@sutton-signwriting/core/src/types.js";
+import "./types.js";
 
 /**
  * Generate the temporal sequence for a sign. 
@@ -9,7 +9,7 @@ import "../../types.js";
  * The order can be provided as an arry of tokens "rightHand" | "leftHand" | "rightMovement" | "leftMovement" | "dynamic" | "head" | "trunk" | "limb" | "location" | "punctuation".
  * The default order groups hand and movement into left- and right- groups of hand and movement symbol, and starts with the right hand.
  * This is different from the SignSpelling guidelines which group all hand symbols before movement symbols, to explore if it's a useful approach, made possible by handedness detection.
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @param {(string|SignObject)} sign Sign
  * @param {string[]} [order=["rightHand", "rightMovement", "leftHand", "leftMovement", "dynamic", "head", "trunk", "limb", "location", "punctuation"]] Order of symbols, by default right hand, left hand, right movement, left movement, dynamic, head, trunk, limb, location, punctuation
  * @returns {string|SignObject} Sequence, or sign with sequence added

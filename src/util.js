@@ -1,10 +1,10 @@
-import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
+import * as core from "../node_modules/@sutton-signwriting/core/core.mjs";
 import { variantRanges } from "./variant-ranges";
-import "../../types.js";
+import "./types.js";
 
 /**
  * Get just the base component of a FSW symbol
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @param {string} fswSym Symbol
  * @returns {string} Base
  * @private
@@ -16,7 +16,7 @@ export function baseSymbol(fswSym) {
 
 /**
  * Split a symbol into base, fill, and rotation
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @param {(string | SymbolObject)} fswSym 
  * @returns {symbolParts} base, fill, and rotation components of symbol
  * @private
@@ -40,7 +40,7 @@ export function symbolParts(fswSym) {
 
 /**
  * Test if a symbol is in one of the ranges of a rangeset
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @param {number} val Value to test
  * @param {RangeSet} rangeSet Set of ranges to test
  * @private
@@ -54,7 +54,7 @@ export function inRangeSet(val, rangeSet) {
 
 /**
  * Determine if a symbol is in a hand or plane variant group
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @param {number} key ID of a base symbol
  * @param {string} variant Variant group to test
  * @returns boolean

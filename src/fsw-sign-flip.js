@@ -1,12 +1,12 @@
 import * as swap from "./fsw-symbol-swap.js";
-import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
-import * as ttf from "../../../node_modules/@sutton-signwriting/font-ttf/index.mjs";
-import "../../../node_modules/@sutton-signwriting/core/src/types";
+import * as core from "../node_modules/@sutton-signwriting/core/core.mjs";
+import * as ttf from "../node_modules/@sutton-signwriting/font-ttf/index.mjs";
+import "../node_modules/@sutton-signwriting/core/src/types.js";
 
 /**
  * Change sign between left-handed and right-handed
  * Conceptually flips sign in the X direction
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @param {(string|SignObject)} fswSign Sign to flip
  * @returns {string|SignObject} Updated sign
  * @example
@@ -33,7 +33,7 @@ export function signFlipX(fswSign) {
 /**
  * Change sign between signer perspective and viewer perspective.
  * Conceptually flips sign in the X and Z direction.
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @private
  * @param {(string|SignObject)} fswSign Sign to flip
  * @returns {(string|SignObject)} Updated sign
@@ -64,7 +64,7 @@ export function signFlipXZ(fswSign) {
 /**
  * Change sign between signer perspective and viewer perspective, and between left-handed and right-handed.
  * Conceptually flips sign in the Z direction.
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @param {(string|SignObject)} fswSign Sign to flip
  * @returns {(string|SignObject)} Updated sign
  * @example

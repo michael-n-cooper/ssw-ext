@@ -1,13 +1,13 @@
-import * as core from "../../../node_modules/@sutton-signwriting/core/core.mjs";
+import * as core from "../node_modules/@sutton-signwriting/core/core.mjs";
 import * as util from "./util.js";
-import "../../../node_modules/@sutton-signwriting/core/src/types.js";
+import "../node_modules/@sutton-signwriting/core/src/types.js";
 
 /**
  * Determine if a symbol applies to left hand.
  * For hand symbols this is based on rotation, for others fill.
  * Occasionally a "left" symbol is used for the right hand in an unusual orientation.
  * This does not test for that, but it could be heuristically corrected with position information.
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @param {(string|SymbolObject)} fswSym Symbol to test
  * @returns {boolean} True if left hand, false if other hand or not handed
  * @example
@@ -35,7 +35,7 @@ export function isLeftHand(fswSym) {
  * For hand symbols this is based on rotation, for others fill.
  * Occasionally a "right" symbol is used for the left hand in an unusual orientation.
  * This does not test for that, but it could be heuristically corrected with position information.
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @param {(string|SymbolObject)} fswSym Symbol to test
  * @returns {boolean} True if right hand, false if other hand or not handed
  * @example
@@ -63,7 +63,7 @@ export function isRightHand(fswSym) {
  * Determine if a symbol applies to both hands.
  * For movement symbols only and is based on fill.
  * It always returns false for hand symbols.
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @param {(string|SymbolObject)} fswSym Symbol to test
  * @returns {boolean} True if both hands, false if other hand or not handed
  * @example
@@ -87,7 +87,7 @@ export function isBothHand(fswSym) {
 /**
  * Determine if a symbol is on the floor plane.
  * For hand symbols this is determined by fill, for others by range.
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @param {(string|SymbolObject)} fswSym Symbol to test
  * @returns {boolean} True if floor plane, false if other or no plane
  * @example
@@ -106,7 +106,7 @@ export function isFloorPlane(fswSym) {
 /**
  * Determine if a symbol is on the wall plane.
  * For hand symbols this is determined by fill, for others by range.
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @param {(string|SymbolObject)} fswSym Symbol to test
  * @returns {boolean} True if wall plane, false if other or no plane
  * @example
@@ -125,7 +125,7 @@ export function isWallPlane(fswSym) {
 /**
  * Determine if a symbol is on the diagonal towards plane.
  * Determined by range.
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @param {(string|SymbolObject)} fswSym Symbol to test
  * @returns {boolean} True if diagonal towards, false if other or no plane
  * @example
@@ -144,7 +144,7 @@ export function isDiagonalTowards(fswSym) {
 /**
  * Determine if a symbol is on the diagonal away plane.
  * Determined by range.
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @param {(string|SymbolObject)} fswSym Symbol to test
  * @returns {boolean} True if diagonal away, false if other or no plane
  * @example
@@ -162,7 +162,7 @@ export function isDiagonalAway(fswSym) {
 /**
  * Determine if a symbol is on either diagonal plane.
  * Union of {@link isDiagonalAway} and {@link isDiagonalTowards}.
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @param {(string|SymbolObject)} fswSym Symbol to test
  * @returns {boolean} True if diagonal, false if other or no plane
  * @example
@@ -178,7 +178,7 @@ export function isDiagonalPlane(fswSym) {
 /**
  * Determine palm, side, and back orientation of hand.
  * Based on fill.
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @param {(string|SymbolObject)} fswSym Symbol to test
  * @returns {string} Orientation as "palm", "side", or "back"
  * @example

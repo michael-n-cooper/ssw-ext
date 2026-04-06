@@ -1,6 +1,6 @@
 /**
  * Ranges for hand and plane variants of symbols
- * @memberof module:ext/ttf/fsw
+ * @memberof module:ssw-ext
  * @private
  */
 export const variantRanges = {
