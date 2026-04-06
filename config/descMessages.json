@@ -1,0 +1,117 @@
+{
+	"hand": {
+		"left": "Left",
+		"right": "Right",
+		"both": "Both"
+	},
+	"palm": {
+		"back": "Back",
+		"palm": "Palm",
+		"side": "Side"
+	},
+	"plane": {
+		"floor": "Floor Plane",
+		"wall": "Wall Plane",
+		"diagonal": {
+			"toward": "Diagonal Toward",
+			"away": "Diagonal Away"
+		}
+	},
+	"orientation": {
+		"wall": {
+			"N": "Up",
+			"NW": "Up Left",
+			"W": "Left",
+			"SW": "Down Left",
+			"S": "Down",
+			"SE": "Down Right",
+			"E": "Right",
+			"NE": "Up Right"
+		},
+		"floor": {
+			"N": "Forward",
+			"NW": "Forward Left",
+			"W": "Left",
+			"SW": "Back Left",
+			"S": "Back",
+			"SE": "Back Right",
+			"E": "Right",
+			"NE": "Forward Right"
+		}
+	},
+	"curves": {
+		"wall": {
+			"anti": {
+				"N": "Up & Left",
+				"NW": "Left Down Diagonal",
+				"W": "Left & Down",
+				"SW": "Down Diagonal Left",
+				"S": "Down & Right",
+				"SE": "Up Diagonal Right",
+				"E": "Right & Up",
+				"NE": "Up Diagonal Right"
+			},
+			"clock": {
+				"N": "Up & Right",
+				"NW": "Right Down Diagonal",
+				"W": "Right & Down",
+				"SW": "Down Diagonal Right",
+				"S": "Down & Left",
+				"SE": "Up Diagonal Left",
+				"E": "Left & Up",
+				"NE": "Up Diagonal Left"
+			}
+		}
+	},
+	"circles": {
+		"starts": {
+			"wall": {
+				"N": "High",
+				"NW": "High-Diagonal-Left",
+				"W": "Left Side",
+				"SW": "Low-Diagonal-Left",
+				"S": "Low",
+				"SE": "Low-Diagonal-Right",
+				"E": "Right Side",
+				"NE": "High-Diagonal-Right"
+			},
+			"floor": {
+				"S": "Near",
+				"N": "Away"
+			}
+		},
+		"directions": {
+			"wall": {},
+			"floor": {
+				"N": "Parallel with Side Wall",
+				"NW": "Left High Diagonal",
+				"W": "Parallel with Floor",
+				"SW": "Left Low Diagonal",
+				"S": "Parallel with Side Wall",
+				"SE": "Right Low Diagonal",
+				"E": "Parallel with Floor",
+				"NE": "Right High Diagonal"
+			}
+		},
+		"types": {
+			"wall": {
+				"clock": "Clockwise",
+				"anti": "Anti-clockwise"
+			},
+			"floor": {
+				"clock": "Forward-Back",
+				"anti": "Back-Forward"
+			}
+		}
+	},
+	"twists": {
+		"over": {
+			"left": "Over Left",
+			"right": "Over Right"
+		},
+		"under": {
+			"left": "Under Left",
+			"right": "Under Right"
+		}
+	}
+}
